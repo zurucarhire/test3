@@ -1,0 +1,41 @@
+2022-01-30 00:00:44,459 INFO [http-nio-8090-exec-4] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:00:44,493 INFO [http-nio-8090-exec-4] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:00:44,518 INFO [http-nio-8090-exec-4] c.c.i.a.RoleResource [RoleResource.java:45] findAllRoles
+2022-01-30 00:00:51,023 INFO [http-nio-8090-exec-3] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:00:51,023 INFO [http-nio-8090-exec-3] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:00:51,066 INFO [http-nio-8090-exec-3] c.c.i.a.RoleResource [RoleResource.java:33] update 2 rerer
+2022-01-30 00:00:51,173 INFO [http-nio-8090-exec-10] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:00:51,173 INFO [http-nio-8090-exec-10] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:00:51,177 INFO [http-nio-8090-exec-10] c.c.i.a.RoleResource [RoleResource.java:45] findAllRoles
+2022-01-30 00:07:20,960 INFO [http-nio-8090-exec-5] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:20,960 INFO [http-nio-8090-exec-8] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:20,962 INFO [http-nio-8090-exec-5] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:20,964 INFO [http-nio-8090-exec-8] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:20,984 INFO [http-nio-8090-exec-8] c.c.i.a.RoleResource [RoleResource.java:45] findAllRoles
+2022-01-30 00:07:21,337 INFO [http-nio-8090-exec-1] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:21,337 INFO [http-nio-8090-exec-1] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:21,342 INFO [http-nio-8090-exec-9] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:21,342 INFO [http-nio-8090-exec-9] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:21,361 INFO [http-nio-8090-exec-9] c.c.i.a.ClientResource [ClientResource.java:23] findAllClients
+2022-01-30 00:07:23,563 INFO [http-nio-8090-exec-10] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:23,563 INFO [http-nio-8090-exec-10] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:23,569 INFO [http-nio-8090-exec-10] c.c.i.a.RoleResource [RoleResource.java:45] findAllRoles
+2022-01-30 00:07:32,889 INFO [http-nio-8090-exec-7] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:32,889 INFO [http-nio-8090-exec-7] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:32,895 INFO [http-nio-8090-exec-7] c.c.i.a.RoleResource [RoleResource.java:33] update 3 ppp
+2022-01-30 00:07:40,002 INFO [http-nio-8090-exec-8] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:40,003 INFO [http-nio-8090-exec-8] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:40,009 INFO [http-nio-8090-exec-8] c.c.i.a.RoleResource [RoleResource.java:33] update 3 sss
+2022-01-30 00:07:44,539 INFO [http-nio-8090-exec-3] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:44,539 INFO [http-nio-8090-exec-3] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:44,542 INFO [http-nio-8090-exec-1] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:44,542 INFO [http-nio-8090-exec-1] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:44,542 INFO [http-nio-8090-exec-3] c.c.i.a.RoleResource [RoleResource.java:45] findAllRoles
+2022-01-30 00:07:44,800 INFO [http-nio-8090-exec-6] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:44,800 INFO [http-nio-8090-exec-6] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:44,806 INFO [http-nio-8090-exec-6] c.c.i.a.ClientResource [ClientResource.java:23] findAllClients
+2022-01-30 00:07:44,806 INFO [http-nio-8090-exec-7] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:44,807 INFO [http-nio-8090-exec-7] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:45,789 INFO [http-nio-8090-exec-2] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:36] hello
+2022-01-30 00:07:45,789 INFO [http-nio-8090-exec-2] c.c.i.s.CustomAuthorizationFilter [CustomAuthorizationFilter.java:38] hello2 eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJkZCIsInJvbGVzIjpbIlJPTEVfVVNFUiJdLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjgwOTAvYXBpL2xvZ2luIiwiZXhwIjoxNjQ0NjcyNjkxfQ.dtpQH3QnHPL27dReuVqjLs-A_89FaP3259yfweJp6ig
+2022-01-30 00:07:45,792 INFO [http-nio-8090-exec-2] c.c.i.a.RoleResource [RoleResource.java:45] findAllRoles
