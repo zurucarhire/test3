@@ -3,17 +3,15 @@ package com.cellulant.iprs.serviceimpl;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
 import com.cellulant.iprs.model.*;
+import com.cellulant.iprs.repository.ChangeLogRepository;
 import com.cellulant.iprs.repository.RoleRepository;
 import com.cellulant.iprs.repository.UserRepository;
 import com.cellulant.iprs.service.IUserService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,6 +33,7 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ChangeLogRepository changeLogRepository;
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
@@ -43,10 +42,8 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
             log.error("user not found {}", s);
             throw new ResourceNotFoundException("user not found");
         }
-        log.info("user found {}", user.getRoles());
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> {
-            log.info("role {}", role);
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         });
         return new org.springframework.security.core.userdetails.User(user.getUserName(), user.getPassword(), authorities);
@@ -63,58 +60,51 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public UserPaging getAllUsers(Integer draw, Integer pageNo, Integer pageSize, String sortBy)
-    {
-        log.info("pga {} {}", pageNo, pageSize);
-        Pageable paging = PageRequest.of(pageNo, pageSize);
+    public User create(long insertedBy, User user) {
+        Role role = roleRepository.findByRoleID(user.getRoleID()).
+                orElseThrow(() -> new ResourceNotFoundException("Role not found " + user.getRoleID()));;
+        user.getRoles().add(role);
 
-        long count = userRepository.count();
-        log.info("count {}", count);
-        Page<User> pagedResult = userRepository.findAll(paging);
-        List<User> videosList = pagedResult.getContent();
-        log.info("countee {}", videosList);
-        return UserPaging.builder()
-                .draw(draw)
-                .recordsFiltered(count)
-                .recordsTotal(count)
-                .data(videosList)
+        ChangeLog changeLog = ChangeLog.builder()
+                .insertedBy(insertedBy)
+                .narration("create user " + user.getUserName())
                 .build();
 
-//        if(pagedResult.hasContent()) {
-//            return pagedResult.getContent();
-//        } else {
-//
-//            return new ArrayList<User>();
-//        }
-       // return userPaging;
-    }
-
-    @Override
-    public User create(User user) {
-        Role role = roleRepository.findByRoleID(user.getRoleID()).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + user.getRoleID()));;
-        user.getRoles().add(role);
+        changeLogRepository.save(changeLog);
         return userRepository.save(user);
     }
 
     @Override
-    public User update(long id, User user) {
-        User user1 = userRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + id));
+    public User update(long userId, long updatedBy, User user) {
+        User user1 = userRepository.findById(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
         user1.setClient(user.getClient());
         user1.setFullName(user.getFullName());
         user1.setEmailAddress(user.getEmailAddress());
         user1.setIdNumber(user.getIdNumber());
         user1.setMsisdn(user.getMsisdn());
+
+        ChangeLog changeLog = ChangeLog.builder()
+                .insertedBy(updatedBy)
+                .narration("update user " + user.getUserName())
+                .build();
+
+        changeLogRepository.save(changeLog);
         return userRepository.save(user1);
     }
 
     @Override
-    public User delete(long id) {
-        User user1 = userRepository.findById(id).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + id));
+    public User delete(long userId, long updatedBy) {
+        User user1 = userRepository.findById(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
         user1.setActive("INACTIVE");
-        log.info("active {}", user1);
+
+        ChangeLog changeLog = ChangeLog.builder()
+                .insertedBy(updatedBy)
+                .narration("deleted user " + user1.getUserName())
+                .build();
+
+        changeLogRepository.save(changeLog);
         return userRepository.save(user1);
     }
 
@@ -137,11 +127,21 @@ public class UserServiceImpl implements IUserService, UserDetailsService {
     }
 
     @Override
-    public User editUserRole(long userId, int roleId) {
+    public UserRole editUserRole(long userId, int roleId) {
         User user1 = userRepository.findById(userId).
                 orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
         user1.setRoleID(roleId);
-        return userRepository.save(user1);
+         userRepository.save(user1);
+         return userRepository.findUserRolesById(userId);
+    }
+
+    @Override
+    public UserRole deleteUserRole(long userId) {
+        User user1 = userRepository.findById(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
+        user1.setActive("INACTIVE");
+        userRepository.save(user1);
+        return userRepository.findUserRolesById(userId);
     }
 
     @Override

@@ -9,11 +9,11 @@ import java.util.List;
 public interface IUserService {
     List<User> findAll();
     List<UserRole> findAllUserRoles();
-    UserPaging getAllUsers(Integer draw, Integer pageNo, Integer pageSize, String sortBy);
-    User create(User user);
-    User update(long id, User user);
-    User delete(long id);
+    User create(long insertedBy, User user);
+    User update(long id, long updatedBy, User user);
+    User delete(long id, long updatedBy);
     void changePassword(long userId, String oldPassword, String newPassword, String confirmPassword);
-    User editUserRole(long userId, int roleId);
+    UserRole editUserRole(long userId, int roleId);
+    UserRole deleteUserRole(long userId);
     User editAccount(long userId, String email, String idNumber, String msisdn);
 }

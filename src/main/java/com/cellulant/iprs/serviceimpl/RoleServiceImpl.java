@@ -1,10 +1,9 @@
 package com.cellulant.iprs.serviceimpl;
 
+import com.cellulant.iprs.exception.ResourceFoundException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.model.Role;
-import com.cellulant.iprs.model.User;
 import com.cellulant.iprs.repository.RoleRepository;
-import com.cellulant.iprs.service.IClientService;
 import com.cellulant.iprs.service.IRoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +22,9 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public Role create(Role role) {
+        roleRepository.findByRoleName(role.getRoleName()).ifPresent(s -> {
+            throw new ResourceFoundException("Role exists " + s.getRoleName());
+        });
         return roleRepository.save(role);
     }
 
@@ -39,7 +41,6 @@ public class RoleServiceImpl implements IRoleService {
     public Role delete(int id) {
         Role role = roleRepository.findByRoleID(id).
                 orElseThrow(() -> new ResourceNotFoundException("User not found " + id));
-
         role.setActive(0);
         return roleRepository.save(role);
     }

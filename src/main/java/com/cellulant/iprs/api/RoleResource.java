@@ -1,7 +1,6 @@
 package com.cellulant.iprs.api;
 
 import com.cellulant.iprs.model.Role;
-import com.cellulant.iprs.model.User;
 import com.cellulant.iprs.service.IRoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class RoleResource {
     private final IRoleService roleService;
 
     @PostMapping("/create")
-    public ResponseEntity<Role> create(@RequestBody Role role){
+    public ResponseEntity<Role> create(@Valid @RequestBody Role role){
         log.info("createRole {}", role);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/iprs/role/create").toUriString());
         return ResponseEntity.created(uri).body(roleService.create(role));

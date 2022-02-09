@@ -49,15 +49,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         // ORDER MATTERS, PUT BELOW CODE ABOVE ALL PERMITS
-        http.authorizeRequests().antMatchers("/api/login/**").permitAll();
-//        http.authorizeRequests().antMatchers(
-//                "/api/iprs/user/findall","/api/iprs/user/findall2","/api/iprs/requesttype/findall",
-//                "/api/iprs/client/findall","/api/iprs/user/update/**","/api/iprs/user/delete/**",
-//                "/api/iprs/user/data/users", "/api/iprs/user/create").permitAll();
-//        http.authorizeRequests().antMatchers(GET, "/api/**").hasAnyAuthority("ROLE_USER");
-//        http.authorizeRequests().antMatchers(POST, "/api/iprs/user").hasAnyAuthority("ROLE_USER");
-//        http.authorizeRequests().antMatchers(POST, "/api/iprs/user").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().antMatchers("/api/iprs/user/**").hasAuthority("ROLE_USER");
+
+        http.authorizeRequests().antMatchers("/api/iprs/customer/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
+        http.authorizeRequests().antMatchers("/api/iprs/user/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
+        http.authorizeRequests().antMatchers("/api/iprs/client/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
+
+        http.authorizeRequests().antMatchers("/api/iprs/user/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/delete/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/changepassword/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/edituserrole/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/deleteuserrole/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/editaccount/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
+
+        http.authorizeRequests().antMatchers("/api/iprs/role/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/role/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/role/delete/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/role/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
+
+
+        //http.authorizeRequests().antMatchers("/api/iprs/loginlog/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+
         http.authorizeRequests().anyRequest().authenticated();
 
         //http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));

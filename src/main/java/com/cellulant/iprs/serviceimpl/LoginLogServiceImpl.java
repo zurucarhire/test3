@@ -1,10 +1,7 @@
 package com.cellulant.iprs.serviceimpl;
 
-import com.cellulant.iprs.model.Client;
 import com.cellulant.iprs.model.LoginLog;
-import com.cellulant.iprs.repository.ClientRepository;
 import com.cellulant.iprs.repository.LoginLogRepository;
-import com.cellulant.iprs.service.IClientService;
 import com.cellulant.iprs.service.ILoginLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

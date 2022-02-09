@@ -1,5 +1,6 @@
 package com.cellulant.iprs.service;
 
+import com.cellulant.iprs.model.ChangeLog;
 import com.cellulant.iprs.model.LoginLog;
 import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
 import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;

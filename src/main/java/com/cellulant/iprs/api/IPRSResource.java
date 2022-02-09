@@ -1,7 +1,7 @@
 package com.cellulant.iprs.api;
 
-import com.cellulant.iprs.model.RequestType;
-import com.cellulant.iprs.service.IRequestTypeService;
+import com.cellulant.iprs.model.Client;
+import com.cellulant.iprs.service.IClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +13,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/iprs/requesttype")
+@RequestMapping("/api/iprs/iprs")
 @Slf4j
-public class RequestTypeResource {
-    private final IRequestTypeService requestTypeService;
+public class IPRSResource {
+    private final IClientService iClientService;
 
     @GetMapping("/findall")
-    public ResponseEntity<List<RequestType>> findAll(){
-
-        return ResponseEntity.ok().body(requestTypeService.findAll());
+    public ResponseEntity<List<Client>> findAll(){
+        log.info("findAllClients");
+        return ResponseEntity.ok().body(iClientService.findAll());
     }
 }

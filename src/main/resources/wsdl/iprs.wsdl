@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="someName"
+             targetNamespace="http://www.wstutorial.com/ws/TutorialService" xmlns="http://schemas.xmlsoap.org/wsdl/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.wstutorial.com/ws/TutorialService">
+
+    <types>
+        <xs:schema targetNamespace="http://www.wstutorial.com/ws/TutorialService">
+            <xs:complexType name="statusCode">
+                <xs:sequence>
+                    <xs:element name="code" type="xs:long" />
+                </xs:sequence>
+            </xs:complexType>
+            <xs:complexType name="TutorialType">
+                <xs:all>
+                    <xs:element name="id" type="xs:long" />
+                    <xs:element name="name" type="xs:string" />
+                    <xs:element name="author" type="xs:string" />
+                </xs:all>
+            </xs:complexType>
+
+            <xs:element name="updateTutorialRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="tutorialType" type="tns:TutorialType" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="updateTutorialResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="statusCode" type="tns:statusCode" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="deleteTutorialRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:long" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="deleteTutorialResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="statusCode" type="tns:statusCode" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getTutorialsRequest">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="id" type="xs:long" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:element name="getTutorialsResponse">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element type="tns:TutorialType" minOccurs="0"
+                                    maxOccurs="unbounded" name="tutorials" />
+                    </xs:sequence>
+                </xs:complexType>
+            </xs:element>
+
+            <xs:complexType name="TutorialTypes">
+                <xs:sequence>
+                    <xs:element type="tns:TutorialType" minOccurs="0"
+                                maxOccurs="unbounded" name="tutorials" />
+                </xs:sequence>
+            </xs:complexType>
+
+            <xs:element name="tutorialFault" type="xs:string" />
+        </xs:schema>
+    </types>
+
+    <message name="tutorialFault">
+        <part name="params" element="tns:tutorialFault" />
+    </message>
+
+    <message name="getTutorialsRequestMsg">
+        <part name="params" element="tns:getTutorialsRequest" />
+    </message>
+    <message name="getTutorialsResponseMsg">
+        <part name="params" element="tns:getTutorialsResponse" />
+    </message>
+
+    <message name="deleteTutorialRequestMsg">
+        <part name="params" element="tns:deleteTutorialRequest" />
+    </message>
+    <message name="deleteTutorialResponseMsg">
+        <part name="params" element="tns:deleteTutorialResponse" />
+    </message>
+
+    <message name="updateTutorialRequestMsg">
+        <part name="params" element="tns:updateTutorialRequest" />
+    </message>
+    <message name="updateTutorialResponseMsg">
+        <part name="params" element="tns:updateTutorialResponse" />
+    </message>
+
+    <portType name="TutorialServicePortType">
+        <operation name="deleteTutorial">
+            <input message="tns:deleteTutorialRequestMsg" />
+            <output message="tns:deleteTutorialResponseMsg" />
+            <fault name="fault" message="tns:tutorialFault" />
+        </operation>
+        <operation name="updateTutorial">
+            <input message="tns:updateTutorialRequestMsg" />
+            <output message="tns:updateTutorialResponseMsg" />
+            <fault name="fault" message="tns:tutorialFault" />
+        </operation>
+        <operation name="getTutorials">
+            <input message="tns:getTutorialsRequestMsg" />
+            <output message="tns:getTutorialsResponseMsg" />
+            <fault name="fault" message="tns:tutorialFault" />
+        </operation>
+    </portType>
+
+    <binding name="tutorialServiceSOAPBinding" type="tns:TutorialServicePortType">
+        <soap:binding style="document"
+                      transport="http://schemas.xmlsoap.org/soap/http" />
+        <operation name="deleteTutorial">
+            <soap:operation soapAction="deleteTutorial" />
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+            <fault name="fault">
+                <soap:fault name="fault" use="literal" />
+            </fault>
+        </operation>
+        <operation name="updateTutorial">
+            <soap:operation soapAction="updateTutorial" />
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+            <fault name="fault">
+                <soap:fault name="fault" use="literal" />
+            </fault>
+        </operation>
+        <operation name="getTutorials">
+            <soap:operation soapAction="getTutorials" />
+            <input>
+                <soap:body use="literal" />
+            </input>
+            <output>
+                <soap:body use="literal" />
+            </output>
+            <fault name="fault">
+                <soap:fault name="fault" use="literal" />
+            </fault>
+        </operation>
+    </binding>
+    <service name="TutorialService">
+        <port name="TutorialServicePort" binding="tns:tutorialServiceSOAPBinding">
+            <soap:address
+                    location="http://localhost:8090/wsdlfirst/tutorialService" />
+        </port>
+    </service>
+</definitions>

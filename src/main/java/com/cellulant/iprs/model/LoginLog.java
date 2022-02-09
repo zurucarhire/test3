@@ -23,9 +23,9 @@ public class LoginLog {
     private Long userLogID;
     @Column(name = "userID", nullable = false)
     private Long userID;
-    @Column(name = "loginTime", nullable = false)
+    @Column(name = "loginTime")
     private Timestamp loginTime;
-    @Column(name = "logoutTime", nullable = false)
+    @Column(name = "logoutTime")
     private Timestamp logoutTime;
     @Column(name = "loginIP", nullable = false)
     private String loginIP;
@@ -43,7 +43,7 @@ public class LoginLog {
     private Timestamp dateModified;
     @Column(name = "dateCreated")
     private Timestamp dateCreated;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = EAGER)
-    @JoinColumn(name = "userID", referencedColumnName = "userID", insertable = false, updatable = false)
-    private User user;
+//    @ManyToOne(cascade = CascadeType.ALL, fetch = EAGER)
+//    @JoinColumn(name = "userID", referencedColumnName = "userID", insertable = false, updatable = false)
+//    private User user;
 }

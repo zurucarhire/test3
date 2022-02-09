@@ -1,8 +1,12 @@
 package com.cellulant.iprs.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -13,6 +17,8 @@ import static javax.persistence.FetchType.EAGER;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "users")
 public class User {
@@ -40,8 +46,6 @@ public class User {
     private String password;
     @Column(name = "passwordAttempts")
     private int passwordAttempts;
-    @Column(name = "passwordStatusID")
-    private String passwordStatusID;
     @Column(name = "active")
     private String active;
     @ManyToMany(fetch = EAGER)
@@ -52,8 +56,10 @@ public class User {
     @Column(name = "dateActivated")
     private Timestamp dateActivated;
     @Column(name = "dateCreated")
+    @CreationTimestamp
     private Timestamp dateCreated;
     @Column(name = "dateModified")
+    @UpdateTimestamp
     private Timestamp dateModified;
     @Column(name = "updatedBy")
     private int updatedBy;

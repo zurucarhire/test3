@@ -1,9 +1,9 @@
 package com.cellulant.iprs.service;
 
 import com.cellulant.iprs.model.ChangeLog;
-
-import java.util.List;
+import org.springframework.data.jpa.datatables.mapping.DataTablesInput;
+import org.springframework.data.jpa.datatables.mapping.DataTablesOutput;
 
 public interface IChangeLogService {
-    List<ChangeLog> findAll();
+    DataTablesOutput<ChangeLog> findAll(DataTablesInput var1);
 }
