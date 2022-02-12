@@ -231,7 +231,7 @@ public class UserServiceImplTest {
     public void shouldChangePasswordThrowUserNotFoundError(){
         when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user1));
 
-        assertThatThrownBy(() -> userService.changePassword(user2.getUpdatedBy(), user2.getUserID(),
+        assertThatThrownBy(() -> userService.changePassword(user2.getUserID(),
                 "joe123","hello1", "hello1"))
                 .isInstanceOf(ResourceNotFoundException.class)
                 .hasMessageContaining("User not found " + user2.getUserID());
@@ -244,7 +244,7 @@ public class UserServiceImplTest {
     public void shouldChangePasswordIncorrectOldPassword(){
         when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user1));
 
-        assertThatThrownBy(() -> userService.changePassword(user1.getUpdatedBy(), user1.getUserID(),
+        assertThatThrownBy(() -> userService.changePassword(user1.getUserID(),
                 "joe1234","hello1", "hello1"))
                 .isInstanceOf(UnprocessedResourceException.class)
                 .hasMessageContaining("Password mismatch");
@@ -257,7 +257,7 @@ public class UserServiceImplTest {
     public void shouldChangePasswordIncorrectNewConfirmPassword(){
         when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user1));
 
-        assertThatThrownBy(() -> userService.changePassword(user1.getUpdatedBy(), user1.getUserID(),
+        assertThatThrownBy(() -> userService.changePassword(user1.getUserID(),
                 "joe123","hello12", "hello22"))
                 .isInstanceOf(UnprocessedResourceException.class)
                 .hasMessageContaining("Passwords do not match");
@@ -272,7 +272,7 @@ public class UserServiceImplTest {
         when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user1));
 
         // execute service call
-        userService.changePassword(user1.getUpdatedBy(), user1.getUserID(),
+        userService.changePassword(user1.getUserID(),
                 "joe123","hello1", "hello1");
 
         // verify

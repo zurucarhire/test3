@@ -134,18 +134,19 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public void changePassword(long updatedBy, long userId, String oldPassword, String newPassword, String confirmPassword) {
+    public void changePassword(long userId, String oldPassword, String newPassword, String confirmPassword) {
         User user1 = userRepository.findById(userId).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
+                orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         if(!passwordEncoder.matches(oldPassword, user1.getPassword())){
-            throw new UnprocessedResourceException("Password mismatch");
+            throw new UnprocessedResourceException("Old password is incorrect");
         }
 
         if (!newPassword.equals(confirmPassword)){
             throw new UnprocessedResourceException("Passwords do not match");
         }
 
+        log.info("the -> {} {}", user1.getUserName(), newPassword);
         user1.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user1);
     }

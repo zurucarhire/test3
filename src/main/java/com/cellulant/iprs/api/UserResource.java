@@ -46,14 +46,13 @@ public class UserResource {
         return ResponseEntity.ok(userService.update(userId, updatedBy, user));
     }
 
-    @PutMapping(value = "/changepassword/{updatedBy}")
-    public ResponseEntity<Void> changePassword(@PathVariable(value = "updatedBy") long updatedBy,
-                                               @RequestParam("userId") long userId,
+    @PutMapping(value = "/changepassword")
+    public ResponseEntity<Void> changePassword(@RequestParam("userId") long userId,
                                                @RequestParam("oldPassword") String oldPassword,
                                                @RequestParam("newPassword") String newPassword,
                                                @RequestParam("confirmPassword") String confirmPassword) {
-        log.info("changePassword {} {} {} {} {}", updatedBy, userId, oldPassword, newPassword, confirmPassword);
-        userService.changePassword(updatedBy, userId, oldPassword, newPassword, confirmPassword);
+        log.info("changePassword {} {} {} {}", userId, oldPassword, newPassword, confirmPassword);
+        userService.changePassword(userId, oldPassword, newPassword, confirmPassword);
         return ResponseEntity.ok().build();
     }
 

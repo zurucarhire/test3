@@ -13,7 +13,7 @@ public interface IUserService {
     User create(long createdBy, User user);
     User update(long id, long updatedBy, User user);
     Long delete(long id, long updatedBy);
-    void changePassword(long updatedBy, long userId, String oldPassword, String newPassword, String confirmPassword);
+    void changePassword(long userId, String oldPassword, String newPassword, String confirmPassword);
     UserRole updateUserRole(long userId, long roleId, long updatedBy);
     void deleteUserRole(long userId, long updatedBy);
     User updateAccount(long userId, String email, String idNumber, String msisdn);
