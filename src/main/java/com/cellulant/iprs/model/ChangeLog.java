@@ -1,5 +1,6 @@
 package com.cellulant.iprs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,10 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
+
+import static javax.persistence.FetchType.EAGER;
 
 @Data
 @NoArgsConstructor
@@ -25,52 +30,11 @@ public class ChangeLog {
     private String narration;
     @Column(name = "insertedBy", nullable = false)
     private Long insertedBy;
-    @Column(name = "dateModified", nullable = false)
-    @UpdateTimestamp
-    private Timestamp dateModified;
     @Column(name = "dateCreated", nullable = false)
     @CreationTimestamp
-    private Timestamp dateCreated;
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "changeLogID", nullable = false)
-//    private Long changeLogID;
-//    @Column(name = "clientID", nullable = false)
-//    private Long clientID;
-//    @Column(name = "app", nullable = false)
-//    private String app;
-//    @Column(name = "changeStateID", nullable = false)
-//    private int changeStateID;
-//    @Column(name = "moduleID", nullable = false)
-//    private int moduleID;
-//    @Column(name = "makerUserID", nullable = false)
-//    private int makerUserID;
-//    @Column(name = "makerNarration", nullable = false)
-//    private String makerNarration;
-//    @Column(name = "makerIpAddress", nullable = false)
-//    private String makerIpAddress;
-//    @Column(name = "makerSessionID", nullable = false)
-//    private String makerSessionID;
-//    @Column(name = "checkerUserID", nullable = false)
-//    private int checkerUserID;
-//    @Column(name = "checkerNarration", nullable = false)
-//    private String checkerNarration;
-//    @Column(name = "checkerIpAddress", nullable = false)
-//    private String checkerIpAddress;
-//    @Column(name = "checkerSessionID", nullable = false)
-//    private String checkerSessionID;
-//    @Column(name = "changeTrackerKey", nullable = false)
-//    private String changeTrackerKey;
-//    @Column(name = "hostName", nullable = false)
-//    private String hostName;
-//    @Column(name = "insertedBy", nullable = false)
-//    private int insertedBy;
-//    @Column(name = "updatedBy", nullable = false)
-//    private int updatedBy;
-//    @Column(name = "dateChecked", nullable = false)
-//    private Timestamp dateChecked;
-//    @Column(name = "dateModified", nullable = false)
-//    private Timestamp dateModified;
-//    @Column(name = "dateCreated", nullable = false)
-//    private Timestamp dateCreated;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private Date dateCreated;
+    @ManyToOne(fetch = EAGER)
+    @JoinColumn(name = "insertedBy", referencedColumnName = "userID", insertable = false, updatable = false)
+    private User user;
 }

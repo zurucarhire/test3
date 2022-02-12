@@ -1,7 +1,7 @@
 package com.cellulant.iprs.api;
 
+import com.cellulant.iprs.model.ResetPasswordDTO;
 import com.cellulant.iprs.model.User;
-import com.cellulant.iprs.model.UserPaging;
 import com.cellulant.iprs.model.UserRole;
 import com.cellulant.iprs.service.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.net.URI;
 import java.util.List;
 
@@ -26,16 +31,11 @@ public class UserResource {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
-    @GetMapping("/findalluserroles")
-    public ResponseEntity<List<UserRole>> findAllUserRoles() {
-        return ResponseEntity.ok().body(userService.findAllUserRoles());
-    }
-
-    @PostMapping("/create/{insertedBy}")
-    public ResponseEntity<User> create(@PathVariable(value = "insertedBy") long insertedBy, @RequestBody User user) {
+    @PostMapping("/create/{createdBy}")
+    public ResponseEntity<User> create(@PathVariable(value = "createdBy") long createdBy, @RequestBody User user) {
         log.info("createUser {}", user);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/iprs/user/create").toUriString());
-        return ResponseEntity.created(uri).body(userService.create(insertedBy, user));
+        return ResponseEntity.created(uri).body(userService.create(createdBy, user));
     }
 
     @PutMapping(value = "/update/{userId}/{updatedBy}")
@@ -43,45 +43,65 @@ public class UserResource {
                                        @PathVariable(value = "updatedBy") long updatedBy,
                                        @RequestBody User user) {
         log.info("update {} {}", userId, user);
-        return new ResponseEntity<User>(userService.update(userId, updatedBy, user), HttpStatus.OK);
+        return ResponseEntity.ok(userService.update(userId, updatedBy, user));
     }
 
-    @PutMapping(value = "/changepassword")
-    public ResponseEntity<Void> changePassword(@RequestParam("userId") long userId,
+    @PutMapping(value = "/changepassword/{updatedBy}")
+    public ResponseEntity<Void> changePassword(@PathVariable(value = "updatedBy") long updatedBy,
+                                               @RequestParam("userId") long userId,
                                                @RequestParam("oldPassword") String oldPassword,
                                                @RequestParam("newPassword") String newPassword,
                                                @RequestParam("confirmPassword") String confirmPassword) {
-        log.info("changePassword {} {} {} {}", userId, oldPassword, newPassword, confirmPassword);
-        userService.changePassword(userId, oldPassword, newPassword, confirmPassword);
+        log.info("changePassword {} {} {} {} {}", updatedBy, userId, oldPassword, newPassword, confirmPassword);
+        userService.changePassword(updatedBy, userId, oldPassword, newPassword, confirmPassword);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping(value = "/edituserrole/{userId}/{roleId}")
-    public ResponseEntity<UserRole> editUserRole(@PathVariable(value = "userId") long userId,
-                                                 @PathVariable(value = "roleId") int roleId) {
-        log.info("editUserRole {} {}", roleId, userId);
-        return new ResponseEntity<UserRole>(userService.editUserRole(userId, roleId), HttpStatus.OK);
+    @PutMapping(value = "/updateaccount")
+    public ResponseEntity<User> updateAccount(@RequestParam("userId") long userId,
+                                              @RequestParam("email") String email,
+                                              @RequestParam("idNumber") String idNumber,
+                                              @RequestParam("msisdn") String msisdn) {
+        log.info("updateAccount {} {} {} {}", userId, email, idNumber, msisdn);
+        return ResponseEntity.ok(userService.updateAccount(userId, email, idNumber, msisdn));
     }
 
-    @DeleteMapping(value = "/deleteuserrole/{userId}")
-    public ResponseEntity<UserRole> deleteUserRole(@PathVariable(value = "userId") long userId) {
-        log.info("deleteUserRole {}", userId);
-        return new ResponseEntity<UserRole>(userService.deleteUserRole(userId), HttpStatus.OK);
-    }
-
-    @PutMapping(value = "/editaccount")
-    public ResponseEntity<User> editAccount(@RequestParam("userId") long userId,
-                                            @RequestParam("email") String email,
-                                            @RequestParam("idNumber") String idNumber,
-                                            @RequestParam("msisdn") String msisdn) {
-        log.info("editAccount {} {} {} {}", userId, email, idNumber, msisdn);
-        return new ResponseEntity<User>(userService.editAccount(userId, email, idNumber, msisdn), HttpStatus.OK);
+    @PutMapping(value = "/resetpassword/{userId}/{updatedBy}")
+    public ResponseEntity<ResetPasswordDTO> resetPassword(@PathVariable(value = "userId") long userId,
+                                                          @PathVariable(value = "updatedBy") String updatedBy) {
+        log.info("resetPassword {} {}", userId, updatedBy);
+        return ResponseEntity.ok(userService.resetPassword(userId, updatedBy));
     }
 
     @DeleteMapping(value = "/delete/{userId}/{updatedBy}")
-    public ResponseEntity<User> deleteUser(@PathVariable(value = "userId") long userId,
+    public ResponseEntity<Long> deleteUser(@PathVariable(value = "userId") long userId,
                                            @PathVariable(value = "updatedBy") long updatedBy) {
         log.info("delete {} ", userId);
-        return new ResponseEntity<User>(userService.delete(userId, updatedBy), HttpStatus.OK);
+        userService.delete(userId, updatedBy);
+        return ResponseEntity.ok(userId);
     }
+
+    // =================================== USER ROLES ===========================================
+
+    @PutMapping(value = "/updateuserrole/{userId}/{roleId}/{updatedBy}")
+    public ResponseEntity<UserRole> updateUserRole(@PathVariable(value = "userId") long userId,
+                                                 @PathVariable(value = "roleId") long roleId,
+                                                 @PathVariable(value = "updatedBy") long updatedBy) {
+        log.info("editUserRole {} {} {}", roleId, userId, updatedBy);
+        return ResponseEntity.ok(userService.updateUserRole(userId, roleId,updatedBy));
+    }
+
+    @DeleteMapping(value = "/deleteuserrole/{userId}/{updatedBy}")
+    public ResponseEntity<Long> deleteUserRole(@PathVariable(value = "userId") @NotNull Long userId,
+                                               @PathVariable(value = "updatedBy") @NotNull Long updatedBy) {
+        log.info("deleteUserRole {} {}", userId, updatedBy);
+        userService.deleteUserRole(userId, updatedBy);
+        return ResponseEntity.ok(userId);
+    }
+
+    @GetMapping("/findalluserroles")
+    public ResponseEntity<List<UserRole>> findAllUserRoles() {
+        return ResponseEntity.ok().body(userService.findAllUserRoles());
+    }
+
 }

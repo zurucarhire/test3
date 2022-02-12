@@ -1,12 +1,15 @@
 package com.cellulant.iprs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -24,26 +27,17 @@ public class LoginLog {
     @Column(name = "userID", nullable = false)
     private Long userID;
     @Column(name = "loginTime")
-    private Timestamp loginTime;
+    @CreationTimestamp
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private Date loginTime;
     @Column(name = "logoutTime")
-    private Timestamp logoutTime;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private Date logoutTime;
     @Column(name = "loginIP", nullable = false)
     private String loginIP;
-    @Column(name = "token")
-    private String token;
-    @Column(name = "sessionID")
-    private String sessionID;
     @Column(name = "attemptsBeforeLogin", nullable = false)
     private int attemptsBeforeLogin;
-    @Column(name = "insertedBy")
-    private int insertedBy;
-    @Column(name = "updatedBy")
-    private int updatedBy;
-    @Column(name = "dateModified")
-    private Timestamp dateModified;
-    @Column(name = "dateCreated")
-    private Timestamp dateCreated;
-//    @ManyToOne(cascade = CascadeType.ALL, fetch = EAGER)
-//    @JoinColumn(name = "userID", referencedColumnName = "userID", insertable = false, updatable = false)
-//    private User user;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = EAGER)
+    @JoinColumn(name = "userID", referencedColumnName = "userID", insertable = false, updatable = false)
+    private User user;
 }

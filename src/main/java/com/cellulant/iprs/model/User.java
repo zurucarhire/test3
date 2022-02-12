@@ -1,5 +1,6 @@
 package com.cellulant.iprs.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,9 +10,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import static javax.persistence.FetchType.EAGER;
 
@@ -24,21 +27,28 @@ import static javax.persistence.FetchType.EAGER;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userID", nullable = false)
+    @Column(name = "userID")
     private Long userID;
     @Column(name = "clientID")
+    @NotNull
     private Long clientID;
     @Column(name = "roleID")
-    private int roleID;
-    @Column(name = "userName", columnDefinition = "VARCHAR(50) NOT NULL")
+    @NotNull
+    private long roleID;
+    @Column(name = "userName", columnDefinition = "VARCHAR(50) NOT NULL UNIQUE")
+    @NotNull
     private String userName;
     @Column(name = "fullName", columnDefinition = "VARCHAR(120) NOT NULL")
+    @NotNull
     private String fullName;
     @Column(name = "emailAddress", columnDefinition = "VARCHAR(120) NOT NULL")
+    @NotNull
     private String emailAddress;
     @Column(name = "idNumber", columnDefinition = "VARCHAR(30) NOT NULL")
+    @NotNull
     private String idNumber;
     @Column(name = "msisdn", columnDefinition = "VARCHAR(30) NOT NULL")
+    @NotNull
     private String msisdn;
     @Column(name = "canAccessUi", columnDefinition = "VARCHAR(10) NOT NULL")
     private String canAccessUi;
@@ -46,35 +56,31 @@ public class User {
     private String password;
     @Column(name = "passwordAttempts")
     private int passwordAttempts;
-    @Column(name = "active")
-    private String active;
+    @Column(name = "active", nullable = false)
+    private int active;
     @ManyToMany(fetch = EAGER)
     @JoinColumn(name = "roleID", referencedColumnName = "roleID", insertable = false, updatable = false)
     private Collection<Role> roles = new ArrayList<>();
     @Column(name = "datePasswordChanged")
-    private Timestamp datePasswordChanged;
-    @Column(name = "dateActivated")
-    private Timestamp dateActivated;
+    private Date datePasswordChanged;
     @Column(name = "dateCreated")
     @CreationTimestamp
-    private Timestamp dateCreated;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private Date dateCreated;
     @Column(name = "dateModified")
     @UpdateTimestamp
-    private Timestamp dateModified;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private Date dateModified;
     @Column(name = "updatedBy")
-    private int updatedBy;
+    private Long updatedBy;
     @Column(name = "createdBy")
-    private int createdBy;
-
+    private Long createdBy;
     @Column(name = "lastLoginDate")
-    private Timestamp lastLoginDate;
-    @Column(name = "lastLoginDisplayDate")
-    private Timestamp lastLoginDisplayDate;
-    @Column(name = "authorities")
-    private String authorities;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
+    private Date lastLoginDate;
     @Column(name = "isNotLocked")
     private int isNotLocked;
-    @ManyToOne(cascade = CascadeType.ALL, fetch = EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = EAGER)
     @JoinColumn(name = "clientID", referencedColumnName = "clientID", insertable = false, updatable = false)
     private Client client;
 }

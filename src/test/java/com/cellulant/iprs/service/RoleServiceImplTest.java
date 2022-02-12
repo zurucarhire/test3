@@ -25,9 +25,10 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
+import static org.skyscreamer.jsonassert.JSONAssert.assertEquals;
 
 @SpringBootTest
-//@ExtendWith(MockitoExtension.class)
+@ExtendWith(MockitoExtension.class)
 public class RoleServiceImplTest {
 
     @Autowired
@@ -47,58 +48,19 @@ public class RoleServiceImplTest {
     public static void setupModel() {
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
-        role1 = Role.builder().roleName("ADMIN").roleID(1)
-                .dateCreated(timestamp).dateModified(timestamp).updatedBy(1)
-                .insertedBy(1).active(1).description("").build();
-        role2 = Role.builder().roleID(2).roleName("USER")
-                .dateCreated(timestamp).dateModified(timestamp).updatedBy(1)
-                .insertedBy(1).active(1).description("").build();
+        role1 = Role.builder().roleName("ADMIN").roleID(1L)
+                .dateCreated(timestamp).dateModified(timestamp).updatedBy(1L)
+                .insertedBy(1L).active(1).description("").build();
+        role2 = Role.builder().roleID(2L).roleName("USER")
+                .dateCreated(timestamp).dateModified(timestamp).updatedBy(1L)
+                .insertedBy(1L).active(1).description("").build();
     }
 
     @Test
     @DisplayName("Should create config")
-    public void shouldCreateRole() throws Exception {
-        roleService.create(role1);
-        verify(roleRepository, times(1)).save(role1);
-    }
-
-    @Test
-    @DisplayName("Should create config")
-    public void shouldThrowResourceFoundExceptionWhenRoleExists() throws Exception {
-        Throwable e = null;
-        when(roleRepository.findByRoleName("ADMIN"))
-                .thenReturn(java.util.Optional.of(role1));
-
-        try {
-            roleService.create(role1);
-        } catch (Throwable ex) {
-            e = ex;
-        }
-        // assert exception
-        assertTrue(e instanceof ResourceFoundException);
-        verify(roleRepository, times(0)).save(role1);
-    }
-
-
-    @Test
-    @DisplayName("Should create config")
-    public void shouldCreateRole2() throws Exception {
-        // given
-        Date date = new Date();
-        Timestamp timestamp = new Timestamp(date.getTime());
-        Role role = Role.builder()
-                .roleID(1)
-                .roleName("ADMIN")
-                .active(1)
-                .dateCreated(timestamp)
-                .dateModified(timestamp)
-                .description("admin role")
-                .insertedBy(1)
-                .updatedBy(1)
-                .build();
-
+    public void shouldCreateRole() {
         // when
-        roleService.create(role);
+        roleService.create(role1);
 
         // then
         // capture student value inserted
@@ -114,29 +76,60 @@ public class RoleServiceImplTest {
     @DisplayName("Should create config")
     public void shouldCreateRoleThrowError()  {
         // given
-        Date date = new Date();
-        Timestamp timestamp = new Timestamp(date.getTime());
-        Role role = Role.builder()
-                .roleID(1)
-                .roleName("ADMIN")
-                .active(1)
-                .dateCreated(timestamp)
-                .dateModified(timestamp)
-                .description("admin role")
-                .insertedBy(1)
-                .updatedBy(1)
-                .build();
-
         given(roleRepository.findByRoleName(anyString()))
-                .willReturn(java.util.Optional.of(role));
+                .willReturn(java.util.Optional.of(role1));
 
         // when, then
-        assertThatThrownBy(() -> roleService.create(role))
+        assertThatThrownBy(() -> roleService.create(role1))
                 .isInstanceOf(ResourceFoundException.class)
-                .hasMessageContaining("Role exists " + role.getRoleName());
+                .hasMessageContaining("Role exists " + role1.getRoleName());
 
         // mock never saves any role, mock never executed
         verify(roleRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Should create config")
+    public void shouldUpdateRole() {
+        // create mock behaviour
+        when(roleRepository.findByRoleID(anyLong())).thenReturn(Optional.ofNullable(role1));
+        // execute service call
+        Role role = roleService.update(1L, role1);
+        System.out.println(">>>>> "+role);
+        // verify
+        verify(roleRepository).save(role1);
+    }
+
+    @Test
+    @DisplayName("Should create config")
+    public void shouldUpdateRoleThrowError() {
+        when(roleRepository.findByRoleID(1L)).thenReturn(Optional.ofNullable(role1));
+
+        assertThatThrownBy(() -> roleService.update(2L, role1))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Role not found " + 2L);
+
+        verify(roleRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("Should delete Role")
+    public void shouldDeleteRole(){
+        when(roleRepository.findByRoleID(anyLong())).thenReturn(Optional.ofNullable(role1));
+        roleService.delete(1L);
+        verify(roleRepository).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("Should create config")
+    public void shouldDeleteRoleThrowErrorIfRoleNotFound() {
+        when(roleRepository.findByRoleID(1L)).thenReturn(Optional.ofNullable(role1));
+
+        assertThatThrownBy(() -> roleService.delete(2L))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("Role not found " + 2L);
+
+        verify(roleRepository, never()).delete(any());
     }
 
     @Test
@@ -149,18 +142,4 @@ public class RoleServiceImplTest {
         // verify that role repository.findAll() is invoked
         verify(roleRepository, times(1)).findAll();
     }
-
-//    @Test
-//    @DisplayName("Should update Config")
-//    public void shouldUpdateRole() throws  Exception{
-//        // create mock behaviour
-//        when(roleRepository.findById(1L)).thenReturn(Optional.ofNullable(role1));
-//
-//        roleService.create(role1);
-//        // execute service call
-//        roleService.update(1, "hello world");
-//        verify(roleRepository).save(role1);
-//        JSONAssert.assertEquals("{enabled:\"false\"}", objectMapper.writeValueAsString(role1), JSONCompareMode.LENIENT);
-//       // verify(roleRepository).findByName(config1.getName());
-//    }
 }

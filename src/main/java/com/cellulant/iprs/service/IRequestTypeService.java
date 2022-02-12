@@ -5,5 +5,9 @@ import com.cellulant.iprs.model.RequestType;
 import java.util.List;
 
 public interface IRequestTypeService {
+    RequestType create(long createdBy, RequestType requestType);
+    RequestType update(long requestTypeId, long updatedBy, RequestType requestType);
+    Long delete(long requestTypeId, long updatedBy);
+    List<RequestType> findAllActiveRequestTypes();
     List<RequestType> findAll();
 }

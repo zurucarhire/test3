@@ -27,11 +27,6 @@ public class LoginLogServiceImpl implements ILoginLogService {
 
     @Override
     public List<LoginLog> findAll() {
-        return (List<LoginLog>) loginLogRepository.findAll();
-    }
-
-    @Override
-    public DataTablesOutput<LoginLog> findAll(DataTablesInput var1) {
-        return loginLogRepository.findAll(var1);
+        return loginLogRepository.findAll();
     }
 }

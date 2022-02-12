@@ -2,6 +2,7 @@ package com.cellulant.iprs.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.model.AuthenticationResponse;
 import com.cellulant.iprs.model.LoginLog;
 import com.cellulant.iprs.model.User;
@@ -108,7 +109,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setContentType(APPLICATION_JSON_VALUE);
 
         log.info("authResponse101 {}", user.getUsername());
-        User user1 = userRepository.findByUserName(user.getUsername());
+        User user1 = userRepository.findByUserName(user.getUsername()).orElseThrow(() -> new ResourceNotFoundException("User not found "));;
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
         LoginLog loginLog = LoginLog.builder()
@@ -117,12 +118,11 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .loginIP(request.getRemoteAddr())
                 .loginTime(timestamp)
                 .logoutTime(timestamp)
-                .dateCreated(timestamp)
-                .dateModified(timestamp)
-                .insertedBy(1)
-                .updatedBy(1)
-                .sessionID("123")
-                .token("123")
+                //.dateModified(timestamp)
+                //.insertedBy(1)
+               // .updatedBy(1)
+                //.sessionID("123")
+                //.token("123")
                 .build();
         loginLogService.create(loginLog);
 

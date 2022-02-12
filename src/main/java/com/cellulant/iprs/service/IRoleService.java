@@ -6,7 +6,8 @@ import java.util.List;
 
 public interface IRoleService {
     Role create(Role role);
-    Role update(int id, String description);
-    Role delete(int id);
+    Role update(long id, Role role);
+    void delete(long id);
+    List<Role> findAllActiveRoles();
     List<Role> findAll();
 }

@@ -29,20 +29,25 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public Role update(int id, String description) {
-        Role role = roleRepository.findByRoleID(id).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + id));
+    public Role update(long id, Role role) {
+        Role role1 = roleRepository.findByRoleID(id).
+                orElseThrow(() -> new ResourceNotFoundException("Role not found " + id));
 
-        role.setDescription(description);
+        role1.setDescription(role.getDescription());
+        role1.setActive(role.getActive());
         return roleRepository.save(role);
     }
 
     @Override
-    public Role delete(int id) {
-        Role role = roleRepository.findByRoleID(id).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + id));
-        role.setActive(0);
-        return roleRepository.save(role);
+    public void delete(long id) {
+        roleRepository.findByRoleID(id).
+                orElseThrow(() -> new ResourceNotFoundException("Role not found " + id));
+        roleRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Role> findAllActiveRoles() {
+        return roleRepository.findAllActiveRoles();
     }
 
     @Override

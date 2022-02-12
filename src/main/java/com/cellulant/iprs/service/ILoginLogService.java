@@ -10,5 +10,4 @@ import java.util.List;
 public interface ILoginLogService {
     LoginLog create(LoginLog loginLog);
     List<LoginLog> findAll();
-    DataTablesOutput<LoginLog> findAll(DataTablesInput var1);
 }

@@ -27,22 +27,29 @@ public class RoleResource {
         return ResponseEntity.created(uri).body(roleService.create(role));
     }
 
-    @PutMapping(value = "/update/{roleId}/{description}")
-    public ResponseEntity<Role> update(@PathVariable(value = "roleId") int roleId,
-                                       @PathVariable(value = "description") String description) {
-        log.info("update {} {}",roleId, description);
-        return new ResponseEntity<Role>(roleService.update(roleId, description), HttpStatus.OK);
+    @PutMapping(value = "/update/{roleId}")
+    public ResponseEntity<Role> update(@PathVariable(value = "roleId") long roleId,
+                                       @RequestBody Role role) {
+        log.info("update {} {}",roleId, role);
+        return new ResponseEntity<Role>(roleService.update(roleId, role), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/delete/{roleId}")
-    public ResponseEntity<Role> update(@PathVariable(value = "roleId") int roleId) {
+    public ResponseEntity<Void> delete(@PathVariable(value = "roleId") int roleId) {
         log.info("delete {}",roleId);
-        return new ResponseEntity<Role>(roleService.delete(roleId), HttpStatus.OK);
+        roleService.delete(roleId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @GetMapping("/findall")
     public ResponseEntity<List<Role>> findAll(){
         log.info("findAllRoles");
         return ResponseEntity.ok().body(roleService.findAll());
+    }
+
+    @GetMapping("/findallactiveroles")
+    public ResponseEntity<List<Role>> findAllActiveRoles(){
+        log.info("findAllActiveRoles");
+        return ResponseEntity.ok().body(roleService.findAllActiveRoles());
     }
 }
