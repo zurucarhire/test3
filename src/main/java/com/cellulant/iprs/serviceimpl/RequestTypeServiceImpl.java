@@ -1,5 +1,6 @@
 package com.cellulant.iprs.serviceimpl;
 
+import com.cellulant.iprs.exception.ResourceFoundException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
 import com.cellulant.iprs.model.ChangeLog;
@@ -29,7 +30,7 @@ public class RequestTypeServiceImpl implements IRequestTypeService {
     @Override
     public RequestType create(long createdBy, RequestType requestType) {
         requestTypeRepository.findByRequestTypeNameIgnoreCase(requestType.getRequestTypeName()).ifPresent(s -> {
-            throw new UnprocessedResourceException("Request Type exists " + s.getRequestTypeName());
+            throw new ResourceFoundException("Request Type exists " + s.getRequestTypeName());
         });
 
         RequestType requestType1 = requestTypeRepository.save(requestType);
@@ -51,7 +52,6 @@ public class RequestTypeServiceImpl implements IRequestTypeService {
         requestType1.setRequestTypeName(requestType.getRequestTypeName());
         requestType1.setActive(requestType.getActive());
         requestType1.setUpdatedBy(updatedBy);
-        //client1.setDateModified(new Date());
 
         RequestType updatedRequestType = requestTypeRepository.save(requestType1);
         changeLogService.create(updatedBy, "update request type " + requestType.getRequestTypeName());

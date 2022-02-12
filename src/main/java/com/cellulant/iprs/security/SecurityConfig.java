@@ -73,12 +73,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/api/iprs/requesttype/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/requesttype/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
-        http.authorizeRequests().antMatchers("/api/iprs/requesttype/delete/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/requesttype/delete/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/api/iprs/requesttype/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
 
         http.authorizeRequests().antMatchers("/api/iprs/expiryperiod/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/expiryperiod/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/expiryperiod/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
+
+        http.authorizeRequests().antMatchers("/api/iprs/loginlog/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
 
         //http.authorizeRequests().antMatchers("/api/iprs/loginlog/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
 

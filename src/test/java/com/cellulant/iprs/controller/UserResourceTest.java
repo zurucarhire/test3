@@ -129,8 +129,8 @@ public class UserResourceTest {
     }
 
     @Test
-    @DisplayName("shouldRejectCreateUserIfRoleUser")
-    public void shouldRejectCreateUserIfRoleUser() throws Exception {
+    @DisplayName("shouldForbidCreateUserIfRoleUser")
+    public void shouldForbidCreateUserIfRoleUser() throws Exception {
         mockMvc.perform(post("/api/iprs/user/create/{createdBy}", user1.getCreatedBy())
                         .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("USER"))
                         .with(csrf())

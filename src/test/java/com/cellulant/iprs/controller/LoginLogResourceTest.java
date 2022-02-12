@@ -23,6 +23,7 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
 
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -71,14 +72,15 @@ public class LoginLogResourceTest {
     }
 
     @Test
-    @DisplayName("shouldFindAllUsersIfUserHasRoleUser")
-    public void shouldFindAllLoginLogsIfUserHasRoleUser() throws Exception{
+    @DisplayName("shouldFindAllLoginLogsIfRoleUser")
+    public void shouldFindAllLoginLogsIfRoleUser() throws Exception{
         // create test behaviour
         Mockito.when(loginLogService.findAll()).thenReturn(Arrays.asList(loginLog1, loginLog2));
 
         // mock route and validate
         mockMvc.perform(get("/api/iprs/loginlog/findall")
-                .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("USER")))
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("USER"))
+                        .with(csrf()))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", Matchers.is(2)))
@@ -88,14 +90,51 @@ public class LoginLogResourceTest {
     }
 
     @Test
-    @DisplayName("shouldFindAllUsersIfUserHasRoleEditor")
-    public void shouldFindAllLoginLogsIfUserHasRoleEditor() throws Exception{
+    @DisplayName("shouldFindAllLoginLogsIfRoleCreator")
+    public void shouldFindAllLoginLogsIfRoleCreator() throws Exception{
         // create test behaviour
         Mockito.when(loginLogService.findAll()).thenReturn(Arrays.asList(loginLog1, loginLog2));
 
         // mock route and validate
         mockMvc.perform(get("/api/iprs/loginlog/findall")
-                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("EDITOR")))
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("CREATOR"))
+                        .with(csrf()))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].userID", Matchers.is(1)))
+                .andExpect(jsonPath("$[1].userID", Matchers.is(2)))
+                .andExpect(content().string(objectMapper.writeValueAsString(Arrays.asList(loginLog1, loginLog2))));
+    }
+
+    @Test
+    @DisplayName("shouldFindAllLoginLogsIfRoleEditor")
+    public void shouldFindAllLoginLogsIfRoleEditor() throws Exception{
+        // create test behaviour
+        Mockito.when(loginLogService.findAll()).thenReturn(Arrays.asList(loginLog1, loginLog2));
+
+        // mock route and validate
+        mockMvc.perform(get("/api/iprs/loginlog/findall")
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("EDITOR"))
+                        .with(csrf()))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].userID", Matchers.is(1)))
+                .andExpect(jsonPath("$[1].userID", Matchers.is(2)))
+                .andExpect(content().string(objectMapper.writeValueAsString(Arrays.asList(loginLog1, loginLog2))));
+    }
+
+    @Test
+    @DisplayName("shouldFindAllLoginLogsIfRoleAdmin")
+    public void shouldFindAllLoginLogsIfRoleAdmin() throws Exception{
+        // create test behaviour
+        Mockito.when(loginLogService.findAll()).thenReturn(Arrays.asList(loginLog1, loginLog2));
+
+        // mock route and validate
+        mockMvc.perform(get("/api/iprs/loginlog/findall")
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("ADMIN"))
+                        .with(csrf()))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", Matchers.is(2)))

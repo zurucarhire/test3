@@ -48,4 +48,10 @@ public class ClientResource {
         log.info("findAllClients");
         return ResponseEntity.ok().body(clientService.findAll());
     }
+
+    @GetMapping("/findallactive")
+    public ResponseEntity<List<Client>> findAllActive(){
+        log.info("findAllActiveClients");
+        return ResponseEntity.ok().body(clientService.findAllActive());
+    }
 }

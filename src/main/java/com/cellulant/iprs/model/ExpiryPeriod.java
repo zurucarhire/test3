@@ -21,8 +21,8 @@ import java.util.Date;
 public class ExpiryPeriod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "expiryID")
-    private Long expiryID;
+    @Column(name = "expiryPeriodID")
+    private Long expiryPeriodID;
     @Column(name = "expiryPeriod", nullable = false)
     private int expiryPeriod;
     @Column(name = "active")

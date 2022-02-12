@@ -86,6 +86,23 @@ public class ChangeLogResourceTest {
     }
 
     @Test
+    @DisplayName("shouldFindAllUsersIfUserHasRoleCreator")
+    public void shouldFindAllUsersIfUserHasRoleCreator() throws Exception{
+        // create test behaviour
+        Mockito.when(changeLogService.findAll()).thenReturn(Arrays.asList(changeLog1, changeLog2));
+
+        // mock route and validate
+        mockMvc.perform(get("/api/iprs/changelog/findall")
+                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("CREATOR")))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].changeLogID", Matchers.is(1)))
+                .andExpect(jsonPath("$[1].changeLogID", Matchers.is(2)))
+                .andExpect(content().string(objectMapper.writeValueAsString(Arrays.asList(changeLog1, changeLog2))));
+    }
+
+    @Test
     @DisplayName("shouldFindAllUsersIfUserHasRoleEditor")
     public void shouldFindAllLoginLogsIfUserHasRoleEditor() throws Exception{
         // create test behaviour
@@ -94,6 +111,23 @@ public class ChangeLogResourceTest {
         // mock route and validate
         mockMvc.perform(get("/api/iprs/changelog/findall")
                         .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("EDITOR")))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].changeLogID", Matchers.is(1)))
+                .andExpect(jsonPath("$[1].changeLogID", Matchers.is(2)))
+                .andExpect(content().string(objectMapper.writeValueAsString(Arrays.asList(changeLog1, changeLog2))));
+    }
+
+    @Test
+    @DisplayName("shouldFindAllLoginLogsIfUserHasRoleAdmin")
+    public void shouldFindAllLoginLogsIfUserHasRoleAdmin() throws Exception{
+        // create test behaviour
+        Mockito.when(changeLogService.findAll()).thenReturn(Arrays.asList(changeLog1, changeLog2));
+
+        // mock route and validate
+        mockMvc.perform(get("/api/iprs/changelog/findall")
+                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("ADMIN")))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", Matchers.is(2)))

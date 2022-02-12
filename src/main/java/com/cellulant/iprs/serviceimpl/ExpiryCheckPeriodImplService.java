@@ -3,7 +3,7 @@ package com.cellulant.iprs.serviceimpl;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.model.ExpiryPeriod;
 import com.cellulant.iprs.repository.ExpiryPeriodRepository;
-import com.cellulant.iprs.service.IExpiryCheckPeriod;
+import com.cellulant.iprs.service.IExpiryCheckPeriodService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class ExpiryCheckPeriodImpl implements IExpiryCheckPeriod {
+public class ExpiryCheckPeriodImplService implements IExpiryCheckPeriodService {
 
     private final ExpiryPeriodRepository expiryPeriodRepository;
 
@@ -31,18 +31,10 @@ public class ExpiryCheckPeriodImpl implements IExpiryCheckPeriod {
     }
 
     @Override
-    public ExpiryPeriod update(long id, int period) {
-        ExpiryPeriod expiryPeriod = expiryPeriodRepository.findByExpiryID(id).
-                orElseThrow(() -> new ResourceNotFoundException("expiry id not found " + id));
+    public ExpiryPeriod update(long expiryPeriodId, int period, long updatedBy) {
+        ExpiryPeriod expiryPeriod = expiryPeriodRepository.findByExpiryPeriodID(expiryPeriodId).
+                orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
         expiryPeriod.setExpiryPeriod(period);
-        return expiryPeriodRepository.save(expiryPeriod);
-    }
-
-    @Override
-    public ExpiryPeriod delete(long id) {
-        ExpiryPeriod expiryPeriod = expiryPeriodRepository.findByExpiryID(id).
-                orElseThrow(() -> new ResourceNotFoundException("expiry id not found " + id));
-        expiryPeriod.setActive(0);
         return expiryPeriodRepository.save(expiryPeriod);
     }
 }

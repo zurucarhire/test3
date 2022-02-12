@@ -75,4 +75,9 @@ public class ClientServiceImpl implements IClientService {
     public List<Client> findAll() {
         return clientRepository.findAll();
     }
+
+    @Override
+    public List<Client> findAllActive() {
+        return clientRepository.findAllActive();
+    }
 }

@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface ExpiryPeriodRepository extends JpaRepository<ExpiryPeriod, Long> {
-    Optional<ExpiryPeriod> findByExpiryID(long id);
+    Optional<ExpiryPeriod> findByExpiryPeriodID(long expiryPeriodId);
 }

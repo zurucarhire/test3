@@ -1,7 +1,7 @@
 package com.cellulant.iprs.controller;
 
 import com.cellulant.iprs.model.ExpiryPeriod;
-import com.cellulant.iprs.service.IExpiryCheckPeriod;
+import com.cellulant.iprs.service.IExpiryCheckPeriodService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,6 +23,9 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -37,7 +40,7 @@ public class ExpiryPeriodResourceTest {
     private WebApplicationContext context;
 
     @MockBean
-    private IExpiryCheckPeriod expiryCheckService;
+    private IExpiryCheckPeriodService expiryCheckPeriodService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -51,7 +54,7 @@ public class ExpiryPeriodResourceTest {
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
         expiryPeriod1 = ExpiryPeriod.builder()
-                .expiryID(1L)
+                .expiryPeriodID(1L)
                 .expiryPeriod(10)
                 .active(1)
                 .createdBy(1L)
@@ -60,7 +63,7 @@ public class ExpiryPeriodResourceTest {
                 .dateModified(timestamp)
                 .build();
         expiryPeriod2 = ExpiryPeriod.builder()
-                .expiryID(2L)
+                .expiryPeriodID(2L)
                 .expiryPeriod(20)
                 .active(1)
                 .createdBy(1L)
@@ -79,107 +82,198 @@ public class ExpiryPeriodResourceTest {
     }
 
     @Test
-    @DisplayName("shouldRejectDeleteExpiryWhenUserIsNotAdmin")
-    public void shouldRejectDeleteExpiryWhenUserIsNotAdmin() throws Exception {
-        mockMvc
-                .perform(get("/api/iprs/role/findall").with(csrf()))
+    @DisplayName("shouldForbidCreateExpiryPeriodIfRoleUser")
+    public void shouldForbidCreateExpiryPeriodIfRoleUser() throws Exception {
+        mockMvc.perform(post("/api/iprs/expiryperiod/create/{createdBy}", expiryPeriod1.getCreatedBy())
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("USER"))
+                        .with(csrf())
+                        .content(objectMapper.writeValueAsString(expiryPeriod1)))
                 .andExpect(status().isForbidden());
     }
 
     @Test
-    @DisplayName("shouldAllowDeleteExpiryWhenUserIsAdmin")
-    public void shouldAllowDeleteExpiryWhenUserIsAdmin() throws Exception {
-        mockMvc.perform(get("/api/iprs/role/findall")
-                                .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("ADMIN", "USER"))
-                                .with(csrf()))
-                .andExpect(status().isOk());
+    @DisplayName("shouldAllowCreateExpiryPeriodIfRoleCreator")
+    public void shouldAllowCreateExpiryPeriodIfRoleCreator() throws Exception {
+        // create test behaviour
+        when(expiryCheckPeriodService.create(anyLong(), any(ExpiryPeriod.class))).thenReturn(expiryPeriod1);
+        // mock route and validate
+        mockMvc.perform(post("/api/iprs/expiryperiod/create/{createdBy}", expiryPeriod1.getCreatedBy())
+                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("CREATOR"))
+                        .with(csrf())
+                        .content(objectMapper.writeValueAsString(expiryPeriod1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.expiryPeriod").value(10))
+                .andExpect(header().exists("Location"))
+                .andExpect(header().string("Location", Matchers.containsString("/api/iprs/expiryperiod/create")));
+
     }
 
+    @Test
+    @DisplayName("shouldAllowCreateExpiryPeriodIfRoleEditor")
+    public void shouldAllowCreateExpiryPeriodIfRoleEditor() throws Exception {
+        // create test behaviour
+        when(expiryCheckPeriodService.create(anyLong(), any(ExpiryPeriod.class))).thenReturn(expiryPeriod1);
+        // mock route and validate
+        mockMvc.perform(post("/api/iprs/expiryperiod/create/{createdBy}", expiryPeriod1.getCreatedBy())
+                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("ADMIN"))
+                        .with(csrf())
+                        .content(objectMapper.writeValueAsString(expiryPeriod1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.expiryPeriod").value(10))
+                .andExpect(header().exists("Location"))
+                .andExpect(header().string("Location", Matchers.containsString("/api/iprs/expiryperiod/create")));
+
+    }
 
     @Test
-    @DisplayName("shouldAllowUpdateExpiryIfUserHasRoleEditor")
-    public void shouldAllowUpdateExpiryIfUserHasRoleEditor() throws Exception {
-
-        // record test behaviour
-        Mockito.when(expiryCheckService.update(2, 20)).thenReturn(expiryPeriod1);
-
+    @DisplayName("shouldAllowCreateExpiryPeriodIfRoleAdmin")
+    public void shouldAllowCreateExpiryPeriodIfRoleAdmin() throws Exception {
+        // create test behaviour
+        when(expiryCheckPeriodService.create(anyLong(), any(ExpiryPeriod.class))).thenReturn(expiryPeriod1);
         // mock route and validate
-        mockMvc.perform(put("/api/iprs/expiry/update/{expiryId}/{period}", 2, 20)
-                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("EDITOR"))
+        mockMvc.perform(post("/api/iprs/expiryperiod/create/{createdBy}", expiryPeriod1.getCreatedBy())
+                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("ADMIN"))
+                        .with(csrf())
+                        .content(objectMapper.writeValueAsString(expiryPeriod1))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.expiryPeriod").value(10))
+                .andExpect(header().exists("Location"))
+                .andExpect(header().string("Location", Matchers.containsString("/api/iprs/expiryperiod/create")));
+
+    }
+
+    @Test
+    @DisplayName("shouldForbidUpdateExpiryPeriodIfRoleUser")
+    public void shouldForbidUpdateExpiryPeriodIfRoleUser() throws Exception {
+        mockMvc.perform(put("/api/iprs/expiryperiod/update/{requestTypeId}/{updatedBy}",
+                        expiryPeriod1.getExpiryPeriod(), expiryPeriod1.getUpdatedBy())
+                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("USER"))
+                        .with(csrf())
+                        .content(objectMapper.writeValueAsString(expiryPeriod1)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("shouldForbidUpdateExpiryPeriodIfRoleCreator")
+    public void shouldForbidUpdateExpiryPeriodIfRoleCreator() throws Exception {
+        mockMvc.perform(put("/api/iprs/expiryperiod/update/{requestTypeId}/{updatedBy}",
+                        expiryPeriod1.getExpiryPeriod(), expiryPeriod1.getUpdatedBy())
+                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("CREATOR"))
+                        .with(csrf())
+                        .content(objectMapper.writeValueAsString(expiryPeriod1)))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @DisplayName("shouldAllowUpdateUserIfRoleEditor")
+    public void shouldAllowUpdateExpiryPeriodIfRoleEditor() throws Exception {
+        when(expiryCheckPeriodService.update(1, 10, 1)).thenReturn(expiryPeriod1);
+        mockMvc.perform(put("/api/iprs/expiryperiod/update/{expiryPeriodId}/{period}/{updatedBy}",
+                        expiryPeriod1.getExpiryPeriodID(),
+                        expiryPeriod1.getExpiryPeriod(),
+                        expiryPeriod1.getUpdatedBy())
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("EDITOR"))
+                        .with(csrf())
                         .content(objectMapper.writeValueAsString(expiryPeriod1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(jsonPath("$.expiryPeriod").exists())
-                .andExpect(jsonPath("$.expiryPeriod", Matchers.is(10)))
-                .andExpect(jsonPath("$.active").exists())
-                .andExpect(jsonPath("$.active", Matchers.is(1)));
+                .andExpect(jsonPath("$.expiryPeriodID").value(1))
+                .andExpect(jsonPath("$.expiryPeriod").value(10));
     }
 
     @Test
-    @DisplayName("shouldRejectUpdateExpiryIfUserHasRoleCreator")
-    public void shouldRejectUpdateExpiryIfUserHasRoleCreator() throws Exception {
-
-        // record test behaviour
-        Mockito.when(expiryCheckService.update(Mockito.anyInt(), Mockito.anyInt())).thenReturn(expiryPeriod1);
-
-        // mock route and validate
-        mockMvc.perform(put("/api/iprs/expiry/update/{expiryId}/{period}", 2, 20)
-                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("USER"))
+    @DisplayName("shouldAllowUpdateExpiryPeriodIfRoleAdmin")
+    public void shouldAllowUpdateExpiryPeriodIfRoleAdmin() throws Exception {
+        when(expiryCheckPeriodService.update(1, 10, 1)).thenReturn(expiryPeriod1);
+        mockMvc.perform(put("/api/iprs/expiryperiod/update/{expiryPeriodId}/{period}/{updatedBy}",
+                        expiryPeriod1.getExpiryPeriodID(),
+                        expiryPeriod1.getExpiryPeriod(),
+                        expiryPeriod1.getUpdatedBy())
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("ADMIN"))
+                        .with(csrf())
                         .content(objectMapper.writeValueAsString(expiryPeriod1))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.expiryPeriodID").value(1))
+                .andExpect(jsonPath("$.expiryPeriod").value(10));
     }
 
     @Test
-    @DisplayName("shouldAllowDeleteExpiryIfUserHasRoleEditor")
-    public void shouldAllowDeleteExpiryIfUserHasRoleEditor() throws Exception {
-        // mock route and validate
-        mockMvc.perform(delete("/api/iprs/expiry/delete/{expiryId}", 1)
-                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("EDITOR")))
-                .andExpect(status().isOk());
-    }
-
-    @Test
-    @DisplayName("shouldRejectDeleteExpiryIfUserHasRoleUser")
-    public void shouldRejectDeleteExpiryIfUserHasRoleUser() throws Exception {
-        // mock route and validate
-        mockMvc.perform(delete("/api/iprs/expiry/delete/{expiryId}", 1)
-                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("USER")))
-                .andExpect(status().isForbidden());
-    }
-
-    @Test
-    @DisplayName("shouldFindAllExpiryIfUserHasRoleUser")
-    public void shouldFindAllExpiryIfUserHasRoleUser() throws Exception{
+    @DisplayName("shouldFindAllExpiryPeriodIfRoleUser")
+    public void shouldFindAllExpiryPeriodIfRoleUser() throws Exception{
         // create test behaviour
-        Mockito.when(expiryCheckService.findAll()).thenReturn(Arrays.asList(expiryPeriod1, expiryPeriod2));
+        Mockito.when(expiryCheckPeriodService.findAll()).thenReturn(Arrays.asList(expiryPeriod1, expiryPeriod2));
 
         // mock route and validate
-        mockMvc.perform(get("/api/iprs/expiry/findall")
-                .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("USER")))
+        mockMvc.perform(get("/api/iprs/expiryperiod/findall")
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("USER")))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", Matchers.is(2)))
                 .andExpect(jsonPath("$[0].expiryPeriod", Matchers.is(10)))
-                .andExpect(jsonPath("$[1].expiryPeriod", Matchers.is(20)));
+                .andExpect(jsonPath("$[1].expiryPeriod", Matchers.is(20)))
+                .andExpect(content().string(objectMapper.writeValueAsString(Arrays.asList(expiryPeriod1, expiryPeriod2))));
     }
 
     @Test
-    @DisplayName("shouldFindAllExpiryIfUserHasRoleEditor")
-    public void shouldFindAllExpiryIfUserHasRoleEditor() throws Exception{
+    @DisplayName("shouldFindAllExpiryPeriodIfRoleCreator")
+    public void shouldFindAllExpiryPeriodIfRoleCreator() throws Exception{
         // create test behaviour
-        Mockito.when(expiryCheckService.findAll()).thenReturn(Arrays.asList(expiryPeriod1, expiryPeriod2));
+        Mockito.when(expiryCheckPeriodService.findAll()).thenReturn(Arrays.asList(expiryPeriod1, expiryPeriod2));
 
         // mock route and validate
-        mockMvc.perform(get("/api/iprs/expiry/findall")
-                        .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("EDITOR")))
+        mockMvc.perform(get("/api/iprs/expiryperiod/findall")
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("CREATOR")))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.size()", Matchers.is(2)))
                 .andExpect(jsonPath("$[0].expiryPeriod", Matchers.is(10)))
-                .andExpect(jsonPath("$[1].expiryPeriod", Matchers.is(20)));
+                .andExpect(jsonPath("$[1].expiryPeriod", Matchers.is(20)))
+                .andExpect(content().string(objectMapper.writeValueAsString(Arrays.asList(expiryPeriod1, expiryPeriod2))));
+    }
+
+    @Test
+    @DisplayName("shouldFindAllExpiryPeriodIfRoleEditor")
+    public void shouldFindAllExpiryPeriodIfRoleEditor() throws Exception{
+        // create test behaviour
+        Mockito.when(expiryCheckPeriodService.findAll()).thenReturn(Arrays.asList(expiryPeriod1, expiryPeriod2));
+
+        // mock route and validate
+        mockMvc.perform(get("/api/iprs/expiryperiod/findall")
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("EDITOR")))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].expiryPeriod", Matchers.is(10)))
+                .andExpect(jsonPath("$[1].expiryPeriod", Matchers.is(20)))
+                .andExpect(content().string(objectMapper.writeValueAsString(Arrays.asList(expiryPeriod1, expiryPeriod2))));
+    }
+
+    @Test
+    @DisplayName("shouldFindAllRequestTypesIfRoleAdmin")
+    public void shouldFindAllExpiryPeriodIfRoleAdmin() throws Exception{
+        // create test behaviour
+        Mockito.when(expiryCheckPeriodService.findAll()).thenReturn(Arrays.asList(expiryPeriod1, expiryPeriod2));
+
+        // mock route and validate
+        mockMvc.perform(get("/api/iprs/expiryperiod/findall")
+                        .with(SecurityMockMvcRequestPostProcessors.user("test").roles("ADMIN")))
+                .andExpect(status().is(200))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.size()", Matchers.is(2)))
+                .andExpect(jsonPath("$[0].expiryPeriod", Matchers.is(10)))
+                .andExpect(jsonPath("$[1].expiryPeriod", Matchers.is(20)))
+                .andExpect(content().string(objectMapper.writeValueAsString(Arrays.asList(expiryPeriod1, expiryPeriod2))));
     }
 }

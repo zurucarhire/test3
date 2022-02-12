@@ -146,7 +146,7 @@ public class UserServiceImpl implements IUserService {
             throw new UnprocessedResourceException("Passwords do not match");
         }
 
-        log.info("the -> {} {}", user1.getUserName(), newPassword);
+        log.info("the -> {}", passwordEncoder.encode("Zuru@123"));
         user1.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user1);
     }

@@ -13,11 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -66,12 +68,17 @@ public class LoginLogServiceImplTest {
     }
 
     @Test
-    @DisplayName("Should Find All Login Logs")
+    @DisplayName("shouldFindAllLoginLogs")
     public void shouldFindAllLoginLogs()  {
+
+        when(loginLogRepository.findAll()).thenReturn(Arrays.asList(loginLog1, loginLog2));
+
         // when
-        loginLogRepository.findAll();
+        List<LoginLog> loginLogList = loginLogRepository.findAll();
 
         // then
+        // assert
+        assertEquals(2, loginLogList.size());
         // verify that role repository.findAll() is invoked
         verify(loginLogRepository, times(1)).findAll();
     }
