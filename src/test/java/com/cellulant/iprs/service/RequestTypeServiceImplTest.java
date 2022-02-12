@@ -1,11 +1,10 @@
 package com.cellulant.iprs.service;
 
-import com.cellulant.iprs.exception.ResourceFoundException;
+import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
 import com.cellulant.iprs.model.ChangeLog;
 import com.cellulant.iprs.model.RequestType;
-import com.cellulant.iprs.model.User;
 import com.cellulant.iprs.repository.RequestTypeRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -75,8 +74,8 @@ public class RequestTypeServiceImplTest {
         when(requestTypeRepository.findByRequestTypeNameIgnoreCase(anyString()))
                 .thenReturn(Optional.ofNullable(null));
 
-        //when(changeLogService.create(anyLong(), anyString()))
-          //      .thenReturn(changeLog);
+        when(changeLogService.create(anyLong(), anyString()))
+                .thenReturn(changeLog);
 
         // when
         requestTypeService.create(2L, requestType1);
@@ -99,7 +98,7 @@ public class RequestTypeServiceImplTest {
                 .thenReturn(Optional.ofNullable(requestType1));
 
         assertThatThrownBy(() -> requestTypeService.create(1, requestType1))
-                .isInstanceOf(ResourceFoundException.class)
+                .isInstanceOf(ResourceExistsException.class)
                 .hasMessageContaining("Request Type exists " + requestType1.getRequestTypeName());
 
         // mock never saves any user, mock never executed
@@ -166,7 +165,7 @@ public class RequestTypeServiceImplTest {
     @DisplayName("shouldDeleteRequestTypeThrowResourceNotFoundExceptionIfEntityNotFound")
     public void shouldDeleteRequestTypeThrowResourceNotFoundExceptionIfEntityNotFound() {
         // create mock behaviour
-        when(requestTypeRepository.findById(1L)).thenReturn(Optional.ofNullable(requestType1));
+        when(requestTypeRepository.findByRequestTypeID(1L)).thenReturn(Optional.ofNullable(null));
         // execute service call
         assertThatThrownBy(() -> requestTypeService.delete(requestType1.getRequestTypeID(),
                 requestType1.getUpdatedBy()))
@@ -193,13 +192,13 @@ public class RequestTypeServiceImplTest {
     @DisplayName("shouldFindAllActiveRequestTypes")
     public void shouldFindAllActiveRequestTypes()  {
         // create mock behaviour
-        when(requestTypeRepository.findAll()).thenReturn(Arrays.asList(requestType1, requestType2));
+        when(requestTypeRepository.findAllActiveRequestTypes()).thenReturn(Arrays.asList(requestType1, requestType2));
 
         // Execute service call
-        List<RequestType> requestTypes = requestTypeService.findAll();
+        List<RequestType> requestTypes = requestTypeService.findAllActiveRequestTypes();
 
         // assert
         assertEquals(2, requestTypes.size());
-        verify(requestTypeRepository, times(1)).findAll();
+        verify(requestTypeRepository, times(1)).findAllActiveRequestTypes();
     }
 }

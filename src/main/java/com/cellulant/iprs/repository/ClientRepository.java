@@ -10,8 +10,8 @@ import java.util.Optional;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
-    Optional<Client> findByClientNameIgnoreCase(String clientName);
     Optional<Client> findByClientID(long clientId);
+    Optional<Client> findByClientNameIgnoreCase(String clientName);
     void deleteByClientID(long clientId);
     @Query("SELECT c FROM Client c WHERE c.active = 1")
     List<Client> findAllActive();

@@ -1,11 +1,9 @@
 package com.cellulant.iprs.serviceimpl;
 
-import com.cellulant.iprs.exception.ResourceFoundException;
+import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
-import com.cellulant.iprs.model.ChangeLog;
 import com.cellulant.iprs.model.Client;
-import com.cellulant.iprs.model.User;
 import com.cellulant.iprs.repository.ChangeLogRepository;
 import com.cellulant.iprs.repository.ClientRepository;
 import com.cellulant.iprs.service.IChangeLogService;
@@ -15,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -31,7 +28,7 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public Client create(long createdBy, Client client) {
         clientRepository.findByClientNameIgnoreCase(client.getClientName()).ifPresent(s -> {
-            throw new UnprocessedResourceException("Client exists " + s.getClientName());
+            throw new ResourceExistsException("Resource Already Exists");
         });
 
         Client client1 = clientRepository.save(client);
@@ -43,11 +40,11 @@ public class ClientServiceImpl implements IClientService {
     public Client update(long clientId, long updatedBy, Client client) {
 
         Client client1 = clientRepository.findByClientID(clientId).
-                orElseThrow(() -> new ResourceNotFoundException("Client not found"));
+                orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
 
         if (!client.getClientName().equals(client1.getClientName())){
             clientRepository.findByClientNameIgnoreCase(client.getClientName()).ifPresent(s -> {
-                throw new UnprocessedResourceException("Client exists " + s.getClientName());
+                throw new ResourceExistsException("Resource Already Exists");
             });
         }
 
@@ -65,7 +62,7 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public Long delete(long clientId, long updatedBy) {
         Client client = clientRepository.findByClientID(clientId).
-                orElseThrow(() -> new ResourceNotFoundException("Client not found"));
+                orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
         clientRepository.deleteByClientID(clientId);
         changeLogService.create(updatedBy, "delete client " + client.getClientName());
         return clientId;

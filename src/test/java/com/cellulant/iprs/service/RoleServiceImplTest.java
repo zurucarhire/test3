@@ -1,6 +1,6 @@
 package com.cellulant.iprs.service;
 
-import com.cellulant.iprs.exception.ResourceFoundException;
+import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.model.Role;
 import com.cellulant.iprs.repository.RoleRepository;
@@ -81,7 +81,7 @@ public class RoleServiceImplTest {
 
         // when, then
         assertThatThrownBy(() -> roleService.create(role1))
-                .isInstanceOf(ResourceFoundException.class)
+                .isInstanceOf(ResourceExistsException.class)
                 .hasMessageContaining("Role exists " + role1.getRoleName());
 
         // mock never saves any role, mock never executed

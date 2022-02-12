@@ -6,19 +6,16 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +29,8 @@ import static org.springframework.http.HttpStatus.*;
 @ControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(value = ResourceFoundException.class)
-    public ResponseEntity<Object> resourceFoundException(ResourceFoundException exception) {
+    @ExceptionHandler(value = ResourceExistsException.class)
+    public ResponseEntity<Object> resourceFoundException(ResourceExistsException exception) {
         return buildResponseEntity(new ApiException(NOT_FOUND, exception.getMessage(), ZonedDateTime.now(ZoneId.of("Africa/Nairobi"))));
     }
 

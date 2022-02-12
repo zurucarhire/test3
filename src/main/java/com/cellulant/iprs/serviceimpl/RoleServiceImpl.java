@@ -1,6 +1,6 @@
 package com.cellulant.iprs.serviceimpl;
 
-import com.cellulant.iprs.exception.ResourceFoundException;
+import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.model.Role;
 import com.cellulant.iprs.repository.RoleRepository;
@@ -23,7 +23,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public Role create(Role role) {
         roleRepository.findByRoleName(role.getRoleName()).ifPresent(s -> {
-            throw new ResourceFoundException("Role exists " + s.getRoleName());
+            throw new ResourceExistsException("Role exists " + s.getRoleName());
         });
         return roleRepository.save(role);
     }

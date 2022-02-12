@@ -71,7 +71,7 @@ public class RequestTypeResourceTest {
     }
 
     @Test
-    @DisplayName("shouldRejectCreateRequestTypeIfRoleUser")
+    @DisplayName("shouldForbidCreateRequestTypeIfRoleUser")
     public void shouldForbidCreateRequestTypeIfRoleUser() throws Exception {
         mockMvc.perform(post("/api/iprs/requesttype/create/{createdBy}", requestType1.getCreatedBy())
                         .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("USER"))

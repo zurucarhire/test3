@@ -1,10 +1,8 @@
 package com.cellulant.iprs.serviceimpl;
 
-import com.cellulant.iprs.exception.ResourceFoundException;
+import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
-import com.cellulant.iprs.model.ChangeLog;
-import com.cellulant.iprs.model.Client;
 import com.cellulant.iprs.model.RequestType;
 import com.cellulant.iprs.repository.ChangeLogRepository;
 import com.cellulant.iprs.repository.RequestTypeRepository;
@@ -30,7 +28,7 @@ public class RequestTypeServiceImpl implements IRequestTypeService {
     @Override
     public RequestType create(long createdBy, RequestType requestType) {
         requestTypeRepository.findByRequestTypeNameIgnoreCase(requestType.getRequestTypeName()).ifPresent(s -> {
-            throw new ResourceFoundException("Request Type exists " + s.getRequestTypeName());
+            throw new ResourceExistsException("Request Type exists " + s.getRequestTypeName());
         });
 
         RequestType requestType1 = requestTypeRepository.save(requestType);

@@ -1,10 +1,8 @@
 package com.cellulant.iprs.serviceimpl;
 
-import com.cellulant.iprs.exception.ResourceFoundException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
 import com.cellulant.iprs.model.*;
-import com.cellulant.iprs.repository.ChangeLogRepository;
 import com.cellulant.iprs.repository.RoleRepository;
 import com.cellulant.iprs.repository.UserRepository;
 import com.cellulant.iprs.service.IChangeLogService;
@@ -12,19 +10,10 @@ import com.cellulant.iprs.service.IUserService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 

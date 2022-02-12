@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/api/iprs/client/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/client/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
-        http.authorizeRequests().antMatchers("/api/iprs/client/delete/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/client/delete/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/api/iprs/client/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
 
         http.authorizeRequests().antMatchers("/api/iprs/role/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
