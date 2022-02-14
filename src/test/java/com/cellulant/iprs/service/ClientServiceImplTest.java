@@ -189,7 +189,7 @@ public class ClientServiceImplTest {
         when(clientRepository.findAll()).thenReturn(Arrays.asList(client1, client2));
 
         // Execute service call
-        List<Client> requestTypes = clientRepository.findAll();
+        List<Client> requestTypes = clientService.findAll();
 
         // assert
         assertEquals(2, requestTypes.size());
@@ -203,7 +203,7 @@ public class ClientServiceImplTest {
         when(clientRepository.findAllActive()).thenReturn(Arrays.asList(client1, client2));
 
         // Execute service call
-        List<Client> requestTypes = clientRepository.findAllActive();
+        List<Client> requestTypes = clientService.findAllActive();
 
         // assert
         assertEquals(2, requestTypes.size());

@@ -2,7 +2,6 @@ package com.cellulant.iprs.service;
 
 import com.cellulant.iprs.model.ResetPasswordDTO;
 import com.cellulant.iprs.model.User;
-import com.cellulant.iprs.model.UserPaging;
 import com.cellulant.iprs.model.UserRole;
 
 import java.util.List;
@@ -15,7 +14,6 @@ public interface IUserService {
     Long delete(long id, long updatedBy);
     void changePassword(long userId, String oldPassword, String newPassword, String confirmPassword);
     UserRole updateUserRole(long userId, long roleId, long updatedBy);
-    void deleteUserRole(long userId, long updatedBy);
     User updateAccount(long userId, String email, String idNumber, String msisdn);
     ResetPasswordDTO resetPassword(long userId, String updatedBy);
 }

@@ -1,10 +1,9 @@
 package com.cellulant.iprs.service;
 
+import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
-import com.cellulant.iprs.model.Role;
-import com.cellulant.iprs.model.User;
-import com.cellulant.iprs.model.UserRole;
+import com.cellulant.iprs.model.*;
 import com.cellulant.iprs.repository.RoleRepository;
 import com.cellulant.iprs.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -45,11 +44,14 @@ public class UserServiceImplTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    protected MockMvc mockMvc;
+    @MockBean
+    private IChangeLogService changeLogService;
 
     private User user1, user2;
     private UserRole userRole1, userRole2;
     private Role role1, role2;
+
+    private static ChangeLog changeLog;
 
     @BeforeEach
     public void setupModel() {
@@ -58,11 +60,11 @@ public class UserServiceImplTest {
 
         role1 = Role.builder().roleID(1L).roleName("ADMIN")
                 .dateCreated(timestamp).dateModified(timestamp).updatedBy(1L)
-                .insertedBy(1L).active(1).description("hello").build();
+                .createdBy(1L).active(1).description("hello").build();
 
         role2 = Role.builder().roleID(2L).roleName("USER")
                 .dateCreated(timestamp).dateModified(timestamp).updatedBy(2L)
-                .insertedBy(2L).active(2).description("world").build();
+                .createdBy(2L).active(2).description("world").build();
 
         Collection<Role> roles = new ArrayList<>();
         roles.add(role1);
@@ -121,18 +123,26 @@ public class UserServiceImplTest {
 
         role1 = Role.builder().roleName("ADMIN")
                 .dateCreated(timestamp).dateModified(timestamp).updatedBy(1L)
-                .insertedBy(1L).active(1).description("hello").build();
+                .createdBy(1L).active(1).description("hello").build();
+
+        changeLog = ChangeLog.builder()
+                .narration("hello world 2")
+                .insertedBy(2L)
+                .build();
     }
 
     @AfterEach
     void tearDown() {
-        userRepository.deleteAll();
+
     }
 
     @Test
     @DisplayName("shouldCreateUser")
     public void shouldCreateUser() {
         when(roleRepository.findByRoleID(anyLong())).thenReturn(Optional.ofNullable(role1));
+
+        when(changeLogService.create(anyLong(), anyString()))
+                .thenReturn(changeLog);
 
         // when
         userService.create(1, user1);
@@ -148,13 +158,69 @@ public class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("shouldCreateUserThrowUserNotFoundError")
-    public void shouldCreateUserThrowUserNotFoundError()  {
-        when(roleRepository.findByRoleID(2L)).thenReturn(Optional.ofNullable(role2));
+    @DisplayName("shouldCreateUserThrowResourceExistsExceptionIfEntityExists")
+    public void shouldCreateUserThrowResourceExistsExceptionIfEntityExists()  {
+        when(roleRepository.findByRoleID(1L)).thenReturn(Optional.ofNullable(null));
 
         assertThatThrownBy(() -> userService.create(1, user1))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("Role not found " + 1);
+                .hasMessageContaining("Role Not Found");
+
+        // mock never saves any user, mock never executed
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldCreateUserThrowResourceExistsExceptionIfUsernameExists")
+    public void shouldCreateUserThrowResourceExistsExceptionIfUsernameExists()  {
+        when(roleRepository.findByRoleID(1L)).thenReturn(Optional.ofNullable(role1));
+        when(userRepository.findByUserNameIgnoreCase(anyString())).thenReturn(Optional.ofNullable(user1));
+
+        assertThatThrownBy(() -> userService.create(1, user1))
+                .isInstanceOf(ResourceExistsException.class)
+                .hasMessageContaining("Username Already Exists");
+
+        // mock never saves any user, mock never executed
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldCreateUserThrowResourceExistsExceptionIfEmailAddressExists")
+    public void shouldCreateUserThrowResourceExistsExceptionIfEmailAddressExists()  {
+        when(roleRepository.findByRoleID(1L)).thenReturn(Optional.ofNullable(role1));
+        when(userRepository.findByEmailAddressIgnoreCase(anyString())).thenReturn(Optional.ofNullable(user1));
+
+        assertThatThrownBy(() -> userService.create(1, user1))
+                .isInstanceOf(ResourceExistsException.class)
+                .hasMessageContaining("Email Address Already Exists");
+
+        // mock never saves any user, mock never executed
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldCreateUserThrowResourceExistsExceptionIfIDNumberExists")
+    public void shouldCreateUserThrowResourceExistsExceptionIfIDNumberExists()  {
+        when(roleRepository.findByRoleID(1L)).thenReturn(Optional.ofNullable(role1));
+        when(userRepository.findByIdNumber(anyString())).thenReturn(Optional.ofNullable(user1));
+
+        assertThatThrownBy(() -> userService.create(1, user1))
+                .isInstanceOf(ResourceExistsException.class)
+                .hasMessageContaining("ID Number Already Exists");
+
+        // mock never saves any user, mock never executed
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldCreateUserThrowResourceExistsExceptionIfIDNumberExists")
+    public void shouldCreateUserThrowResourceExistsExceptionIfMsisdnExists()  {
+        when(roleRepository.findByRoleID(1L)).thenReturn(Optional.ofNullable(role1));
+        when(userRepository.findByMsisdn(anyString())).thenReturn(Optional.ofNullable(user1));
+
+        assertThatThrownBy(() -> userService.create(1, user1))
+                .isInstanceOf(ResourceExistsException.class)
+                .hasMessageContaining("Phone Number Already Exists");
 
         // mock never saves any user, mock never executed
         verify(userRepository, never()).save(any(User.class));
@@ -164,7 +230,11 @@ public class UserServiceImplTest {
     @DisplayName("shouldUpdateUser")
     public void shouldUpdateUser() {
         // create mock behaviour
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findByUserID(anyLong())).thenReturn(Optional.ofNullable(user1));
+
+        when(changeLogService.create(anyLong(), anyString()))
+                .thenReturn(changeLog);
+
         // execute service call
         userService.update(user1.getUserID(), user1.getUpdatedBy(), user1);
 
@@ -180,8 +250,98 @@ public class UserServiceImplTest {
         // execute service call
         assertThatThrownBy(() -> userService.update(user2.getUserID(), user2.getUpdatedBy(), user2))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("User not found " + user2.getUserID());
+                .hasMessageContaining("User Not Found");
         // verify
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldUpdateUserThrowResourceNotFoundIfUserNameConflicts")
+    public void shouldUpdateUserThrowResourceNotFoundIfUserNameConflicts() {
+        // create mock behaviour
+        when(userRepository.findByUserID(1L)).thenReturn(Optional.ofNullable(user2));
+
+        when(userRepository.findByUserNameIgnoreCase(user1.getUserName()))
+                .thenReturn(Optional.ofNullable(user1));
+
+        // execute service call
+        assertThatThrownBy(() -> userService.update(1, 1, user1))
+                .isInstanceOf(ResourceExistsException.class)
+                .hasMessageContaining("Username Already Exists");
+
+        // mock never saves any user, mock never executed
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldUpdateUserThrowResourceNotFoundIfEmailAddressConflicts")
+    public void shouldUpdateUserThrowResourceNotFoundIfEmailAddressConflicts() {
+        // create mock behaviour
+        when(userRepository.findByUserID(1L)).thenReturn(Optional.ofNullable(user2));
+
+        when(userRepository.findByEmailAddressIgnoreCase(user1.getEmailAddress()))
+                .thenReturn(Optional.ofNullable(user1));
+
+        // execute service call
+        assertThatThrownBy(() -> userService.update(1, 1, user1))
+                .isInstanceOf(ResourceExistsException.class)
+                .hasMessageContaining("Email Address Already Exists");
+
+        // mock never saves any user, mock never executed
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldUpdateUserThrowResourceNotFoundIfIDNumberConflicts")
+    public void shouldUpdateUserThrowResourceNotFoundIfIDNumberConflicts() {
+        // create mock behaviour
+        when(userRepository.findByUserID(1L)).thenReturn(Optional.ofNullable(user2));
+
+        when(userRepository.findByIdNumber(user1.getIdNumber()))
+                .thenReturn(Optional.ofNullable(user1));
+
+        // execute service call
+        assertThatThrownBy(() -> userService.update(1, 1, user1))
+                .isInstanceOf(ResourceExistsException.class)
+                .hasMessageContaining("ID Number Already Exists");
+
+        // mock never saves any user, mock never executed
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldUpdateUserThrowResourceNotFoundIfIDNumberConflicts")
+    public void shouldUpdateUserThrowResourceNotFoundIfMsisdnConflicts() {
+        // create mock behaviour
+        when(userRepository.findByUserID(1L)).thenReturn(Optional.ofNullable(user2));
+
+        when(userRepository.findByMsisdn(user1.getMsisdn()))
+                .thenReturn(Optional.ofNullable(user1));
+
+        // execute service call
+        assertThatThrownBy(() -> userService.update(1, 1, user1))
+                .isInstanceOf(ResourceExistsException.class)
+                .hasMessageContaining("Phone Number Already Exists");
+
+        // mock never saves any user, mock never executed
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldUpdateUserThrowResourceNotFoundIfIDNumberConflicts")
+    public void shouldUpdateUserThrowResourceNotFoundIfMsisdnConflicts2() {
+        // create mock behaviour
+        when(userRepository.findByUserID(1L)).thenReturn(Optional.ofNullable(user2));
+
+        when(userRepository.findByMsisdn(user1.getMsisdn()))
+                .thenReturn(Optional.ofNullable(user1));
+
+        // execute service call
+        assertThatThrownBy(() -> userService.update(1, 1, user1))
+                .isInstanceOf(ResourceExistsException.class)
+                .hasMessageContaining("Phone Number Already Exists");
+
+        // mock never saves any user, mock never executed
         verify(userRepository, never()).save(any(User.class));
     }
 
@@ -198,14 +358,14 @@ public class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("shouldDeleteUserThrowUserNotFoundError")
-    public void shouldDeleteUserThrowUserNotFoundError() {
+    @DisplayName("shouldDeleteUserThrowResourceNotFoundExceptionIfEntityNotFound")
+    public void shouldDeleteUserThrowResourceNotFoundExceptionIfEntityNotFound() {
         // create mock behaviour
-        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(null));
         // execute service call
-        assertThatThrownBy(() -> userService.delete(user2.getUserID(), user2.getUpdatedBy()))
+        assertThatThrownBy(() -> userService.delete(user1.getUserID(), user1.getUpdatedBy()))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("User not found " + user2.getUserID());
+                .hasMessageContaining("User Not Found");
         // verify
         verify(userRepository, never()).deleteById(anyLong());
     }
@@ -225,14 +385,14 @@ public class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("shouldChangePasswordThrowUserNotFoundError")
-    public void shouldChangePasswordThrowUserNotFoundError(){
-        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user1));
+    @DisplayName("shouldChangePasswordThrowResourceNotFoundExceptionIfEntityNotFound")
+    public void shouldChangePasswordThrowResourceNotFoundExceptionIfEntityNotFound(){
+        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(null));
 
-        assertThatThrownBy(() -> userService.changePassword(user2.getUserID(),
+        assertThatThrownBy(() -> userService.changePassword(user1.getUserID(),
                 "joe123","hello1", "hello1"))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("User not found " + user2.getUserID());
+                .hasMessageContaining("User Not Found");
 
         verify(userRepository, never()).save(any(User.class));
     }
@@ -245,7 +405,7 @@ public class UserServiceImplTest {
         assertThatThrownBy(() -> userService.changePassword(user1.getUserID(),
                 "joe1234","hello1", "hello1"))
                 .isInstanceOf(UnprocessedResourceException.class)
-                .hasMessageContaining("Password mismatch");
+                .hasMessageContaining("Old password is incorrect");
 
         verify(userRepository, never()).save(any(User.class));
     }
@@ -281,7 +441,7 @@ public class UserServiceImplTest {
     @DisplayName("shouldUpdateAccount")
     public void shouldUpdateAccount() {
         // create mock behaviour
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findByUserID(anyLong())).thenReturn(Optional.ofNullable(user1));
         // execute service call
         userService.updateAccount(user1.getUserID(), user1.getEmailAddress(), user1.getIdNumber(), user1.getMsisdn());
 
@@ -290,14 +450,37 @@ public class UserServiceImplTest {
     }
 
     @Test
+    @DisplayName("shouldUpdateAccount")
+    public void shouldResetPassword() {
+        // create mock behaviour
+        when(userRepository.findByUserID(anyLong())).thenReturn(Optional.ofNullable(user1));
+        // execute service call
+        userService.resetPassword(user1.getUserID(), anyString());
+        // verify
+        verify(userRepository).save(any(User.class));
+    }
+
+    @Test
+    @DisplayName("shouldResetPasswordThrowResourceNotFoundExceptionIfEntityNotFound")
+    public void shouldResetPasswordThrowResourceNotFoundExceptionIfEntityNotFound() {
+        // create mock behaviour
+        when(userRepository.findByUserID(anyLong())).thenReturn(Optional.ofNullable(null));
+        assertThatThrownBy(() -> userService.resetPassword(user1.getUserID(),anyString()))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("User Not Found");
+
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
     @DisplayName("shouldUpdateAccountThrowUserNotFoundError")
     public void shouldUpdateAccountThrowUserNotFoundError() {
         // create mock behaviour
-        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findByUserID(1L)).thenReturn(Optional.ofNullable(null));
         // execute service call
-        assertThatThrownBy(() -> userService.updateAccount(user2.getUserID(), user2.getEmailAddress(), user2.getIdNumber(), user2.getMsisdn()))
+        assertThatThrownBy(() -> userService.updateAccount(user1.getUserID(), user1.getEmailAddress(), user1.getIdNumber(), user1.getMsisdn()))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("User not found " + user2.getUserID());
+                .hasMessageContaining("User Not Found");
         // verify
         verify(userRepository, never()).save(any(User.class));
     }
@@ -306,7 +489,7 @@ public class UserServiceImplTest {
     @DisplayName("shouldUpdateUserRole")
     public void shouldUpdateUserRole() {
         // create mock behaviour
-        when(userRepository.findById(anyLong())).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findByUserID(anyLong())).thenReturn(Optional.ofNullable(user1));
         // execute service call
         userService.updateUserRole(user1.getUserID(), user1.getRoleID(), user1.getUpdatedBy());
 
@@ -320,11 +503,11 @@ public class UserServiceImplTest {
     @Test
     @DisplayName("shouldUpdateUserRoleThrowUserNotFoundError")
     public void shouldUpdateUserRoleThrowUserNotFoundError() {
-        when(userRepository.findById(1L)).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findByUserID(1L)).thenReturn(Optional.ofNullable(null));
 
-        assertThatThrownBy(() -> userService.updateUserRole(user2.getUserID(), user2.getRoleID(), user2.getUpdatedBy()))
+        assertThatThrownBy(() -> userService.updateUserRole(user1.getUserID(), user1.getRoleID(), user1.getUpdatedBy()))
                 .isInstanceOf(ResourceNotFoundException.class)
-                .hasMessageContaining("User not found " + user2.getUserID());
+                .hasMessageContaining("User Not Found");
 
         verify(userRepository, never()).save(any(User.class));
     }

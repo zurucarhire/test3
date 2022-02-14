@@ -58,20 +58,6 @@ public class ChangeLogServiceImplTest {
     }
 
     @Test
-    @DisplayName("Should Find All Change Logs")
-    public void shouldFindAllChangeLogs()  {
-        // create mock behaviour
-        when(changeLogRepository.findAll()).thenReturn(Arrays.asList(changeLog1, changeLog2));
-
-        // Execute service call
-        List<ChangeLog> usersList = changeLogService.findAll();
-
-        // assert
-        assertEquals(2, usersList.size());
-        verify(changeLogRepository, times(1)).findAll();
-    }
-
-    @Test
     @DisplayName("shouldCreateUser")
     public void shouldCreateUser() {
         // when
@@ -85,5 +71,19 @@ public class ChangeLogServiceImplTest {
         verify(changeLogRepository).save(userArgumentCaptor.capture());
         ChangeLog capturedChangeLog = userArgumentCaptor.getValue();
         assertThat(capturedChangeLog).isEqualTo(changeLog3);
+    }
+
+    @Test
+    @DisplayName("Should Find All Change Logs")
+    public void shouldFindAllChangeLogs()  {
+        // create mock behaviour
+        when(changeLogRepository.findAll()).thenReturn(Arrays.asList(changeLog1, changeLog2));
+
+        // Execute service call
+        List<ChangeLog> usersList = changeLogService.findAll();
+
+        // assert
+        assertEquals(2, usersList.size());
+        verify(changeLogRepository, times(1)).findAll();
     }
 }

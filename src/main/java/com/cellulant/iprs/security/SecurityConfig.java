@@ -52,13 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/api/iprs/user/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
-        http.authorizeRequests().antMatchers("/api/iprs/user/delete/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
-        http.authorizeRequests().antMatchers("/api/iprs/user/findalluserroles/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
-        http.authorizeRequests().antMatchers("/api/iprs/user/changepassword/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
-        http.authorizeRequests().antMatchers("/api/iprs/user/updateaccount/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
-        http.authorizeRequests().antMatchers("/api/iprs/user/updateuserrole/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
-        http.authorizeRequests().antMatchers("/api/iprs/user/deleteuserrole/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/delete/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers("/api/iprs/user/findalluserroles/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR","ROLE_CREATOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/resetpassword/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/updateuserrole/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/user/deleteuserrole/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/api/iprs/user/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
 
         http.authorizeRequests().antMatchers("/api/iprs/client/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
@@ -68,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests().antMatchers("/api/iprs/role/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/role/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
-        http.authorizeRequests().antMatchers("/api/iprs/role/delete/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/api/iprs/role/delete/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/api/iprs/role/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
 
         http.authorizeRequests().antMatchers("/api/iprs/requesttype/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");

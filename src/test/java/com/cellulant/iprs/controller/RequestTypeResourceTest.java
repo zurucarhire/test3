@@ -174,7 +174,6 @@ public class RequestTypeResourceTest {
                                 .content(objectMapper.writeValueAsString(requestType1))
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .accept(MediaType.APPLICATION_JSON))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.requestTypeID").value(2))
                 .andExpect(jsonPath("$.requestTypeName").value("Passport"));
@@ -314,10 +313,10 @@ public class RequestTypeResourceTest {
     @DisplayName("shouldFindAllActiveRequestTypesIfRoleUser")
     public void shouldFindAllActiveRequestTypesIfRoleUser() throws Exception{
         // create test behaviour
-        Mockito.when(requestTypeService.findAllActiveRequestTypes()).thenReturn(Arrays.asList(requestType1, requestType2));
+        Mockito.when(requestTypeService.findAllActive()).thenReturn(Arrays.asList(requestType1, requestType2));
 
         // mock route and validate
-        mockMvc.perform(get("/api/iprs/requesttype/findallactiverequesttypes")
+        mockMvc.perform(get("/api/iprs/requesttype/findallactive")
                         .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("USER")))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -331,10 +330,10 @@ public class RequestTypeResourceTest {
     @DisplayName("shouldFindAllActiveRequestTypesIfRoleCreator")
     public void shouldFindAllActiveRequestTypesIfRoleCreator() throws Exception{
         // create test behaviour
-        Mockito.when(requestTypeService.findAllActiveRequestTypes()).thenReturn(Arrays.asList(requestType1, requestType2));
+        Mockito.when(requestTypeService.findAllActive()).thenReturn(Arrays.asList(requestType1, requestType2));
 
         // mock route and validate
-        mockMvc.perform(get("/api/iprs/requesttype/findallactiverequesttypes")
+        mockMvc.perform(get("/api/iprs/requesttype/findallactive")
                         .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("CREATOR")))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -348,10 +347,10 @@ public class RequestTypeResourceTest {
     @DisplayName("shouldFindAllActiveRequestTypesIfRoleEditor")
     public void shouldFindAllActiveRequestTypesIfRoleEditor() throws Exception{
         // create test behaviour
-        Mockito.when(requestTypeService.findAllActiveRequestTypes()).thenReturn(Arrays.asList(requestType1, requestType2));
+        Mockito.when(requestTypeService.findAllActive()).thenReturn(Arrays.asList(requestType1, requestType2));
 
         // mock route and validate
-        mockMvc.perform(get("/api/iprs/requesttype/findallactiverequesttypes")
+        mockMvc.perform(get("/api/iprs/requesttype/findallactive")
                         .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("EDITOR")))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -365,10 +364,10 @@ public class RequestTypeResourceTest {
     @DisplayName("shouldFindAllActiveRequestTypesIfRoleAdmin")
     public void shouldFindAllActiveRequestTypesIfRoleAdmin() throws Exception{
         // create test behaviour
-        Mockito.when(requestTypeService.findAllActiveRequestTypes()).thenReturn(Arrays.asList(requestType1, requestType2));
+        Mockito.when(requestTypeService.findAllActive()).thenReturn(Arrays.asList(requestType1, requestType2));
 
         // mock route and validate
-        mockMvc.perform(get("/api/iprs/requesttype/findallactiverequesttypes")
+        mockMvc.perform(get("/api/iprs/requesttype/findallactive")
                         .with(SecurityMockMvcRequestPostProcessors.user("dd").roles("ADMIN")))
                 .andExpect(status().is(200))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))

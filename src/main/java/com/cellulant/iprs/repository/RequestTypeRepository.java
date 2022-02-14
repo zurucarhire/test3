@@ -13,6 +13,6 @@ public interface RequestTypeRepository extends JpaRepository<RequestType, Long> 
     Optional<RequestType> findByRequestTypeID(Long requestTypeID);
     Optional<RequestType> findByRequestTypeNameIgnoreCase(String requestTypeName);
     @Query("SELECT r FROM RequestType r WHERE r.active = 1")
-    List<RequestType> findAllActiveRequestTypes();
+    List<RequestType> findAllActive();
     void deleteByRequestTypeID(Long requestTypeID);
 }

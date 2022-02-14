@@ -1,5 +1,6 @@
 package com.cellulant.iprs.serviceimpl;
 
+import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
 import com.cellulant.iprs.model.*;
@@ -37,22 +38,22 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User create(long createdBy, User user) {
         Role role = roleRepository.findByRoleID(user.getRoleID()).
-                orElseThrow(() -> new ResourceNotFoundException("Role not found " + user.getRoleID()));
+                orElseThrow(() -> new ResourceNotFoundException("Role Not Found"));
 
         userRepository.findByUserNameIgnoreCase(user.getUserName()).ifPresent(s -> {
-            throw new UnprocessedResourceException("Username exists, " + s.getUserName());
+            throw new ResourceExistsException("Username Already Exists");
         });
 
         userRepository.findByEmailAddressIgnoreCase(user.getEmailAddress()).ifPresent(s -> {
-            throw new UnprocessedResourceException("Email address exists, " + s.getEmailAddress());
+            throw new ResourceExistsException("Email Address Already Exists");
         });
 
         userRepository.findByIdNumber(user.getIdNumber()).ifPresent(s -> {
-            throw new UnprocessedResourceException("ID Number exists, " + s.getIdNumber());
+            throw new ResourceExistsException("ID Number Already Exists");
         });
 
         userRepository.findByMsisdn(user.getMsisdn()).ifPresent(s -> {
-            throw new UnprocessedResourceException("Phone number exists, " + s.getMsisdn());
+            throw new ResourceExistsException("Phone Number Already Exists");
         });
 
         user.getRoles().add(role);
@@ -73,30 +74,30 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User update(long userId, long updatedBy, User user) {
-        User user1 = userRepository.findById(userId).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
+        User user1 = userRepository.findByUserID(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
         if (!user.getUserName().equals(user1.getUserName())){
             userRepository.findByUserNameIgnoreCase(user.getUserName()).ifPresent(s -> {
-                throw new UnprocessedResourceException("Username exists, " + s.getUserName());
+                throw new ResourceExistsException("Username Already Exists");
             });
         }
 
         if (!user.getEmailAddress().equals(user1.getEmailAddress())){
             userRepository.findByEmailAddressIgnoreCase(user.getEmailAddress()).ifPresent(s -> {
-                throw new UnprocessedResourceException("Email exists, " + s.getEmailAddress());
+                throw new ResourceExistsException("Email Address Already Exists");
             });
         }
 
         if (!user.getIdNumber().equals(user1.getIdNumber())){
             userRepository.findByIdNumber(user.getIdNumber()).ifPresent(s -> {
-                throw new UnprocessedResourceException("ID Number exists, " + s.getIdNumber());
+                throw new ResourceExistsException("ID Number Already Exists");
             });
         }
 
         if (!user.getMsisdn().equals(user1.getMsisdn())){
             userRepository.findByMsisdn(user.getMsisdn()).ifPresent(s -> {
-                throw new UnprocessedResourceException("Phone number exists, " + s.getMsisdn());
+                throw new ResourceExistsException("Phone Number Already Exists");
             });
         }
         user1.setClient(user.getClient());
@@ -115,7 +116,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public Long delete(long userId, long updatedBy) {
         User user1 = userRepository.findById(userId).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
+                orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
         changeLogService.create(updatedBy, "deleted user " + user1.getUserName());
 
@@ -125,7 +126,7 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void changePassword(long userId, String oldPassword, String newPassword, String confirmPassword) {
         User user1 = userRepository.findById(userId).
-                orElseThrow(() -> new ResourceNotFoundException("User not found"));
+                orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
         if(!passwordEncoder.matches(oldPassword, user1.getPassword())){
             throw new UnprocessedResourceException("Old password is incorrect");
@@ -135,15 +136,14 @@ public class UserServiceImpl implements IUserService {
             throw new UnprocessedResourceException("Passwords do not match");
         }
 
-        log.info("the -> {}", passwordEncoder.encode("Zuru@123"));
         user1.setPassword(passwordEncoder.encode(newPassword));
         userRepository.save(user1);
     }
 
     @Override
     public User updateAccount(long userId, String email, String idNumber, String msisdn) {
-        User user1 = userRepository.findById(userId).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
+        User user1 = userRepository.findByUserID(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         user1.setEmailAddress(email);
         user1.setIdNumber(idNumber);
         user1.setMsisdn(msisdn);
@@ -152,8 +152,8 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public ResetPasswordDTO resetPassword(long userId, String updatedBy) {
-        User user1 = userRepository.findById(userId).
-                orElseThrow(() -> new ResourceNotFoundException("User not found"));
+        User user1 = userRepository.findByUserID(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         RandomString session = new RandomString();
         String generatedPassword = session.nextString();
         log.info("session -> {}", generatedPassword);
@@ -164,21 +164,11 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public UserRole updateUserRole(long userId, long roleId, long updatedBy) {
-        User user1 = userRepository.findById(userId).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
+        User user1 = userRepository.findByUserID(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         user1.setRoleID(roleId);
         userRepository.save(user1);
         return userRepository.findUserRolesById(userId);
-    }
-
-    @Override
-    public void deleteUserRole(long userId, long updatedBy) {
-        User user1 = userRepository.findById(userId).
-                orElseThrow(() -> new ResourceNotFoundException("User not found " + userId));
-       // user1.setActive("INACTIVE");
-//        userRepository.save(user1);
-//        userRepository.findUserRolesById(userId);
-
     }
 
     @Override

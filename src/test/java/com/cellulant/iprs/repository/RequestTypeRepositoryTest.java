@@ -95,8 +95,8 @@ public class RequestTypeRepositoryTest {
     void findByRequestTypeID() {
         requestTypeRepository.save(requestType1);
         Optional<RequestType> requestType = requestTypeRepository.findByRequestTypeID(requestType1.getRequestTypeID());
-        System.out.println(">>> "+requestType);
         assertThat(requestType).isNotEmpty();
+        assertThat(requestType.get()).isEqualTo(requestType1);
     }
 
     @Test
@@ -105,13 +105,14 @@ public class RequestTypeRepositoryTest {
         requestTypeRepository.save(requestType1);
         Optional<RequestType> requestType = requestTypeRepository.findByRequestTypeNameIgnoreCase(requestType1.getRequestTypeName());
         assertThat(requestType).isNotEmpty();
+        assertThat(requestType.get()).isEqualTo(requestType1);
     }
 
     @Test
     @DisplayName("shouldFindAllActiveRequestTypes")
     void findAllActiveRequestTypes() {
         requestTypeRepository.saveAll(Arrays.asList(requestType1, requestType2, requestType3));
-        List<RequestType> requestType = requestTypeRepository.findAllActiveRequestTypes();
+        List<RequestType> requestType = requestTypeRepository.findAllActive();
         assertThat(requestType).hasSize(2);
     }
 
@@ -120,7 +121,7 @@ public class RequestTypeRepositoryTest {
     void deleteByRequestTypeID() {
         requestTypeRepository.saveAll(Arrays.asList(requestType1, requestType2, requestType3));
         requestTypeRepository.deleteByRequestTypeID(requestType1.getRequestTypeID());
-        List<RequestType> requestType = requestTypeRepository.findAllActiveRequestTypes();
-        assertThat(requestType).hasSize(1);
+        List<RequestType> requestType = requestTypeRepository.findAll();
+        assertThat(requestType).hasSize(2);
     }
 }

@@ -1,6 +1,6 @@
 package com.cellulant.iprs.repository;
 
-import com.cellulant.iprs.model.ExpiryPeriod;
+import com.cellulant.iprs.model.Role;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,18 +16,20 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * ExpiryPeriod repository tests
+ * Client repository tests
  */
 @Testcontainers
 @DataJpaTest
-@ContextConfiguration(initializers = ExpiryPeriodRepositoryTest.Initializer.class)
+@ContextConfiguration(initializers = RoleRepositoryTest.Initializer.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ExpiryPeriodRepositoryTest {
+public class RoleRepositoryTest {
     // create Postgres container definition
     @Container
     static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:latest")
@@ -37,21 +39,25 @@ public class ExpiryPeriodRepositoryTest {
             .withDatabaseName("testrepo");
 
     @Autowired
-    ExpiryPeriodRepository expiryPeriodRepository;
+    RoleRepository roleRepository;
 
-    private ExpiryPeriod expiryPeriod1;
+    private Role role1, role2, role3;
 
     /**
      * Execute code before running each test
      */
     @BeforeEach
     public void setupModel() {
-        expiryPeriod1 = ExpiryPeriod.builder()
-                .expiryPeriod(1)
-                .active(1)
-                .createdBy(1L)
-                .updatedBy(1L)
-                .build();
+        role1 = Role.builder().roleName("ADMIN").roleID(1L)
+                .updatedBy(1L).permissions("READ,WRITE,UPDATE,DELETE")
+                .description("admin").roleAlias("ADMIN")
+                .createdBy(1L).active(1).build();
+        role2 = Role.builder().roleID(2L).roleName("EDITOR").roleAlias("EDITOR")
+                .updatedBy(1L).permissions("READ,WRITE,UPDATE").description("editor")
+                .createdBy(1L).active(1).build();
+        role3 = Role.builder().roleID(3L).roleName("USER").roleAlias("USER")
+                .updatedBy(1L).permissions("READ").description("user")
+                .createdBy(1L).active(0).build();
     }
 
     /**
@@ -59,7 +65,6 @@ public class ExpiryPeriodRepositoryTest {
      */
     @AfterEach
     public void tearDown() {
-        expiryPeriod1 = null;
     }
 
     /**
@@ -78,11 +83,30 @@ public class ExpiryPeriodRepositoryTest {
     }
 
     @Test
-    @DisplayName("shouldFindByExpiryPeriodID")
-    void findByExpiryPeriodID() {
-        expiryPeriodRepository.save(expiryPeriod1);
-        Optional<ExpiryPeriod> expiryPeriod = expiryPeriodRepository.findByExpiryPeriodID(expiryPeriod1.getExpiryPeriodID());
-        assertThat(expiryPeriod).isNotEmpty();
-        assertThat(expiryPeriod.get()).isEqualTo(expiryPeriod1);
+    @DisplayName("shouldFindByRoleID")
+    void findByRoleID() {
+        roleRepository.save(role1);
+        Optional<Role> role = roleRepository.findByRoleID(role1.getRoleID());
+        assertThat(role).isNotEmpty();
+       // assertThat(role.get()).isEqualTo(role1);
+        assertThat(role.get()).usingRecursiveComparison().ignoringFields("dateModified").isEqualTo(role1);
+    }
+
+    @Test
+    @DisplayName("shouldFindByRoleNameIgnoreCase")
+    void findByRoleNameIgnoreCase() {
+        roleRepository.save(role1);
+        Optional<Role> role = roleRepository.findByRoleNameIgnoreCase(role1.getRoleName());
+        assertThat(role).isNotEmpty();
+        //assertThat(role.get()).isEqualTo(role1);
+        assertThat(role.get()).usingRecursiveComparison().ignoringFields("dateModified").isEqualTo(role1);
+    }
+
+    @Test
+    @DisplayName("shouldFindAllActive")
+    void findAllActive() {
+        roleRepository.saveAll(Arrays.asList(role1, role2, role3));
+        List<Role> requestType = roleRepository.findAllActive();
+        assertThat(requestType).hasSize(2);
     }
 }

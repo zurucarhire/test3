@@ -20,25 +20,28 @@ import java.util.List;
 public class RoleResource {
     private final IRoleService roleService;
 
-    @PostMapping("/create")
-    public ResponseEntity<Role> create(@Valid @RequestBody Role role){
+    @PostMapping("/create/{createdBy}")
+    public ResponseEntity<Role> create(@PathVariable(value = "createdBy") long createdBy,
+                                       @Valid @RequestBody Role role){
         log.info("createRole {}", role);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/iprs/role/create").toUriString());
-        return ResponseEntity.created(uri).body(roleService.create(role));
+        return ResponseEntity.created(uri).body(roleService.create(createdBy, role));
     }
 
-    @PutMapping(value = "/update/{roleId}")
+    @PutMapping(value = "/update/{roleId}/{updatedBy}")
     public ResponseEntity<Role> update(@PathVariable(value = "roleId") long roleId,
+                                       @PathVariable(value = "updatedBy") long updatedBy,
                                        @RequestBody Role role) {
         log.info("update {} {}",roleId, role);
-        return new ResponseEntity<Role>(roleService.update(roleId, role), HttpStatus.OK);
+        return ResponseEntity.ok(roleService.update(roleId, updatedBy, role));
     }
 
-    @DeleteMapping(value = "/delete/{roleId}")
-    public ResponseEntity<Void> delete(@PathVariable(value = "roleId") int roleId) {
+    @DeleteMapping(value = "/delete/{roleId}/{updatedBy}")
+    public ResponseEntity<Long> delete(@PathVariable(value = "roleId") long roleId,
+                                       @PathVariable(value = "updatedBy") long updatedBy) {
         log.info("delete {}",roleId);
-        roleService.delete(roleId);
-        return new ResponseEntity<Void>(HttpStatus.OK);
+        roleService.delete(roleId, updatedBy);
+        return ResponseEntity.ok(roleId);
     }
 
     @GetMapping("/findall")
@@ -47,9 +50,9 @@ public class RoleResource {
         return ResponseEntity.ok().body(roleService.findAll());
     }
 
-    @GetMapping("/findallactiveroles")
-    public ResponseEntity<List<Role>> findAllActiveRoles(){
+    @GetMapping("/findallactive")
+    public ResponseEntity<List<Role>> findAllActive(){
         log.info("findAllActiveRoles");
-        return ResponseEntity.ok().body(roleService.findAllActiveRoles());
+        return ResponseEntity.ok().body(roleService.findAllActive());
     }
 }

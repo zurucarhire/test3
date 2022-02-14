@@ -71,7 +71,7 @@ public class RequestTypeServiceImpl implements IRequestTypeService {
     }
 
     @Override
-    public List<RequestType> findAllActiveRequestTypes() {
-        return requestTypeRepository.findAllActiveRequestTypes();
+    public List<RequestType> findAllActive() {
+        return requestTypeRepository.findAllActive();
     }
 }

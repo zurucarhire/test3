@@ -90,14 +90,6 @@ public class UserResource {
         return ResponseEntity.ok(userService.updateUserRole(userId, roleId,updatedBy));
     }
 
-    @DeleteMapping(value = "/deleteuserrole/{userId}/{updatedBy}")
-    public ResponseEntity<Long> deleteUserRole(@PathVariable(value = "userId") @NotNull Long userId,
-                                               @PathVariable(value = "updatedBy") @NotNull Long updatedBy) {
-        log.info("deleteUserRole {} {}", userId, updatedBy);
-        userService.deleteUserRole(userId, updatedBy);
-        return ResponseEntity.ok(userId);
-    }
-
     @GetMapping("/findalluserroles")
     public ResponseEntity<List<UserRole>> findAllUserRoles() {
         return ResponseEntity.ok().body(userService.findAllUserRoles());

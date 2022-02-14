@@ -48,8 +48,8 @@ public class RequestTypeResource {
         return ResponseEntity.ok().body(requestTypeService.findAll());
     }
 
-    @GetMapping("/findallactiverequesttypes")
-    public ResponseEntity<List<RequestType>> findAllActiveRequestTypes(){
-        return ResponseEntity.ok().body(requestTypeService.findAllActiveRequestTypes());
+    @GetMapping("/findallactive")
+    public ResponseEntity<List<RequestType>> findAllActive(){
+        return ResponseEntity.ok().body(requestTypeService.findAllActive());
     }
 }

@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Optional<Role> findByRoleID(Long id);
-    Optional<Role> findByRoleName(String rolName);
+    Optional<Role> findByRoleNameIgnoreCase(String rolName);
     @Query("SELECT r FROM Role r WHERE r.active = 1")
-    List<Role> findAllActiveRoles();
+    List<Role> findAllActive();
 
 }

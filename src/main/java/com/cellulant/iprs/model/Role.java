@@ -39,8 +39,8 @@ public class Role {
     private String permissions;
     @Column(name = "active")
     private int active;
-    @Column(name = "insertedBy")
-    private Long insertedBy;
+    @Column(name = "createdBy")
+    private Long createdBy;
     @Column(name = "updatedBy")
     private Long updatedBy;
     @Column(name = "dateCreated")

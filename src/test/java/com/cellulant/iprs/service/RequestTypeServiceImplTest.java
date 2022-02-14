@@ -192,13 +192,13 @@ public class RequestTypeServiceImplTest {
     @DisplayName("shouldFindAllActiveRequestTypes")
     public void shouldFindAllActiveRequestTypes()  {
         // create mock behaviour
-        when(requestTypeRepository.findAllActiveRequestTypes()).thenReturn(Arrays.asList(requestType1, requestType2));
+        when(requestTypeRepository.findAllActive()).thenReturn(Arrays.asList(requestType1, requestType2));
 
         // Execute service call
-        List<RequestType> requestTypes = requestTypeService.findAllActiveRequestTypes();
+        List<RequestType> requestTypes = requestTypeService.findAllActive();
 
         // assert
         assertEquals(2, requestTypes.size());
-        verify(requestTypeRepository, times(1)).findAllActiveRequestTypes();
+        verify(requestTypeRepository, times(1)).findAllActive();
     }
 }

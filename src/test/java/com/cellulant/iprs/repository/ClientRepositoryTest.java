@@ -102,16 +102,18 @@ public class ClientRepositoryTest {
     @DisplayName("shouldFindByClientID")
     void findByClientID() {
         clientRepository.save(client1);
-        Optional<Client> requestType = clientRepository.findByClientID(client1.getClientID());
-        assertThat(requestType).isNotEmpty();
+        Optional<Client> client = clientRepository.findByClientID(client1.getClientID());
+        assertThat(client).isNotEmpty();
+        assertThat(client.get()).isEqualTo(client1);
     }
 
     @Test
     @DisplayName("shouldFindByClientNameIgnoreCase")
     void findByClientNameIgnoreCase() {
         clientRepository.save(client1);
-        Optional<Client> requestType = clientRepository.findByClientNameIgnoreCase(client1.getClientName());
-        assertThat(requestType).isNotEmpty();
+        Optional<Client> client = clientRepository.findByClientNameIgnoreCase(client1.getClientName());
+        assertThat(client).isNotEmpty();
+        assertThat(client.get()).isEqualTo(client1);
     }
 
     @Test
