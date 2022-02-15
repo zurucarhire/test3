@@ -37,11 +37,11 @@
 			<artifactId>jacoco-maven-plugin</artifactId>
 			<version>0.8.6</version>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 			<version>4.0.3</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -75,7 +75,7 @@
 		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
-			<scope>test</scope>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
@@ -182,6 +182,23 @@
 					</schemaIncludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>2.2.0</version>
+				<configuration>
+					<from>
+						<image>gcr.io/distroless/java:java${env.JAVA_VERSION}-debian11</image>
+					</from>
+					<container>
+						<jvmFlags>
+							<jvmFlag>-javaagent:./newrelic.jar</jvmFlag>
+							<jvmFlag>-Dnewrelic.environment=${app.environment}</jvmFlag>
+						</jvmFlags>
+					</container>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
