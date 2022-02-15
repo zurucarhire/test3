@@ -74,7 +74,7 @@ public class LoginLogServiceImplTest {
         when(loginLogRepository.findAll()).thenReturn(Arrays.asList(loginLog1, loginLog2));
 
         // when
-        List<LoginLog> loginLogList = loginLogRepository.findAll();
+        List<LoginLog> loginLogList = loginLogService.findAll();
 
         // then
         // assert

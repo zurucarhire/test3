@@ -158,6 +158,22 @@ public class ClientServiceImplTest {
     }
 
     @Test
+    @DisplayName("shouldUpdateClientThrowResourceExistsExceptionIfEntityNameConflicts2")
+    public void shouldUpdateClientThrowResourceExistsExceptionIfEntityNameConflicts2() {
+        // create mock behaviour
+        when(clientRepository.findByClientID(1L)).thenReturn(Optional.ofNullable(client2));
+
+        when(clientRepository.findByClientNameIgnoreCase(client1.getClientName()))
+                .thenReturn(Optional.ofNullable(null));
+
+        // execute service call
+        clientService.update(1, 1, client1);
+
+        // mock never saves any user, mock never executed
+        verify(clientRepository).save(any(Client.class));
+    }
+
+    @Test
     @DisplayName("shouldDeleteClient")
     public void shouldDeleteClient() {
         // create mock behaviour

@@ -151,6 +151,22 @@ public class RequestTypeServiceImplTest {
     }
 
     @Test
+    @DisplayName("shouldUpdateRequestTypeIfRequestNamesAreDifferentButNewRequestNameNotExists")
+    public void shouldUpdateRequestTypeIfRequestNamesAreDifferentButNewRequestNameNotExists() {
+        // create mock behaviour
+        when(requestTypeRepository.findByRequestTypeID(1L)).thenReturn(Optional.ofNullable(requestType2));
+
+        when(requestTypeRepository.findByRequestTypeNameIgnoreCase(requestType1.getRequestTypeName()))
+                .thenReturn(Optional.ofNullable(null));
+
+        // execute service call
+        requestTypeService.update(1, 1, requestType1);
+
+        // mock never saves any user, mock never executed
+        verify(requestTypeRepository).save(any(RequestType.class));
+    }
+
+    @Test
     @DisplayName("shouldDeleteRequestType")
     public void shouldDeleteRequestType() {
         // create mock behaviour

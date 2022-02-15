@@ -1,6 +1,7 @@
 package com.cellulant.iprs.controller;
 
 import com.cellulant.iprs.model.ChangeLog;
+import com.cellulant.iprs.security.CustomAuthorizationFilter;
 import com.cellulant.iprs.service.IChangeLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -64,6 +65,7 @@ public class ChangeLogResourceTest {
     public void setup() {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
+                .addFilter(new CustomAuthorizationFilter(), "/*")
                 .apply(springSecurity())
                 .build();
     }

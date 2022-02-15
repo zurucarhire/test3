@@ -329,21 +329,19 @@ public class UserServiceImplTest {
     }
 
     @Test
-    @DisplayName("shouldUpdateUserThrowResourceNotFoundIfIDNumberConflicts")
-    public void shouldUpdateUserThrowResourceNotFoundIfMsisdnConflicts2() {
+    @DisplayName("shouldUpdateUserIfUserNamesAreDifferentButNewUserNameNotExists")
+    public void shouldUpdateUserIfUserNamesAreDifferentButNewUserNameNotExists() {
         // create mock behaviour
         when(userRepository.findByUserID(1L)).thenReturn(Optional.ofNullable(user2));
 
         when(userRepository.findByMsisdn(user1.getMsisdn()))
-                .thenReturn(Optional.ofNullable(user1));
+                .thenReturn(Optional.ofNullable(null));
 
         // execute service call
-        assertThatThrownBy(() -> userService.update(1, 1, user1))
-                .isInstanceOf(ResourceExistsException.class)
-                .hasMessageContaining("Phone Number Already Exists");
+        userService.update(1, 1, user1);
 
         // mock never saves any user, mock never executed
-        verify(userRepository, never()).save(any(User.class));
+        verify(userRepository).save(any(User.class));
     }
 
     @Test

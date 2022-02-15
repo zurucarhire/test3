@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -12,7 +12,7 @@
 	<groupId>com.cellulant</groupId>
 	<artifactId>iprs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-<!--	<packaging>war</packaging>-->
+	<!--	<packaging>war</packaging>-->
 	<name>iprs</name>
 	<description>IPRS Management</description>
 	<properties>
@@ -207,37 +207,38 @@
 					</container>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.jacoco</groupId>
-				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.version}</version>
-				<configuration>
-					<skip>${maven.test.skip}</skip>
-					<destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
-					<datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
-					<output>file</output>
-					<append>true</append>
-					<excludes>
-						<exclude>*MethodAccess</exclude>
-					</excludes>
-				</configuration>
-				<executions>
-					<execution>
-						<id>jacoco-initialize</id>
-						<goals>
-							<goal>prepare-agent</goal>
-						</goals>
-						<phase>test-compile</phase>
-					</execution>
-					<execution>
-						<id>jacoco-site</id>
-						<phase>verify</phase>
-						<goals>
-							<goal>report</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
+						<plugin>
+							<groupId>org.jacoco</groupId>
+							<artifactId>jacoco-maven-plugin</artifactId>
+							<version>${jacoco.version}</version>
+							<configuration>
+								<skip>${maven.test.skip}</skip>
+								<destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
+								<datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
+								<output>file</output>
+								<append>true</append>
+								<excludes>
+									<exclude>*MethodAccess</exclude>
+								</excludes>
+							</configuration>
+							<executions>
+								<execution>
+									<id>jacoco-initialize</id>
+									<goals>
+										<goal>prepare-agent</goal>
+									</goals>
+									<phase>test-compile</phase>
+								</execution>
+								<execution>
+									<id>jacoco-site</id>
+									<phase>verify</phase>
+									<goals>
+										<goal>report</goal>
+									</goals>
+								</execution>
+							</executions>
+						</plugin>
+
 		</plugins>
 	</build>
 
