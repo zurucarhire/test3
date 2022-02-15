@@ -23,18 +23,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * ExpiryPeriod repository tests
  */
-@Testcontainers
 @DataJpaTest
-@ContextConfiguration(initializers = ExpiryPeriodRepositoryTest.Initializer.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ExpiryPeriodRepositoryTest {
     // create Postgres container definition
-    @Container
-    static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:latest")
-            .withUsername("testrepo")
-            .withPassword("testrepo")
-            .withInitScript("init.sql")
-            .withDatabaseName("testrepo");
 
     @Autowired
     ExpiryPeriodRepository expiryPeriodRepository;
@@ -60,21 +51,6 @@ public class ExpiryPeriodRepositoryTest {
     @AfterEach
     public void tearDown() {
         expiryPeriod1 = null;
-    }
-
-    /**
-     * Establish connection to postgres instance
-     */
-    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        @Override
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues values = TestPropertyValues.of(
-                    "spring.datasource.url=" + container.getJdbcUrl(),
-                    "spring.datasource.password=" + container.getPassword(),
-                    "spring.datasource.username=" + container.getUsername()
-            );
-            values.applyTo(configurableApplicationContext);
-        }
     }
 
     @Test

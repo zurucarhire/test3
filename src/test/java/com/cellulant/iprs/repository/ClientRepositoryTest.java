@@ -26,18 +26,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * Client repository tests
  */
-@Testcontainers
 @DataJpaTest
-@ContextConfiguration(initializers = ClientRepositoryTest.Initializer.class)
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class ClientRepositoryTest {
     // create Postgres container definition
-    @Container
-    static PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:latest")
-            .withUsername("testrepo")
-            .withPassword("testrepo")
-            .withInitScript("init.sql")
-            .withDatabaseName("testrepo");
 
     @Autowired
     ClientRepository clientRepository;
@@ -81,21 +72,6 @@ public class ClientRepositoryTest {
         client2 = null;
         client3 = null;
 
-    }
-
-    /**
-     * Establish connection to postgres instance
-     */
-    public static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        @Override
-        public void initialize(ConfigurableApplicationContext configurableApplicationContext) {
-            TestPropertyValues values = TestPropertyValues.of(
-                    "spring.datasource.url=" + container.getJdbcUrl(),
-                    "spring.datasource.password=" + container.getPassword(),
-                    "spring.datasource.username=" + container.getUsername()
-            );
-            values.applyTo(configurableApplicationContext);
-        }
     }
 
     @Test
