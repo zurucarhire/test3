@@ -216,7 +216,7 @@ public class UserServiceImplTest {
     @DisplayName("shouldCreateUserThrowResourceExistsExceptionIfIDNumberExists")
     public void shouldCreateUserThrowResourceExistsExceptionIfMsisdnExists()  {
         when(roleRepository.findByRoleID(1L)).thenReturn(Optional.ofNullable(role1));
-        when(userRepository.findByMsisdn(anyString())).thenReturn(Optional.ofNullable(user1));
+        when(userRepository.findByMsisdn(user1.getMsisdn())).thenReturn(Optional.ofNullable(user1));
 
         assertThatThrownBy(() -> userService.create(1, user1))
                 .isInstanceOf(ResourceExistsException.class)
