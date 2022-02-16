@@ -43,7 +43,7 @@ variables:
 
 
   SERVICE_PORT: 8090 # port to expose service on
-  SERVICE_ENABLED: "false" # IMPORTANT: SET TO "false" if your service does not need a public url  and "true" if you need it to have a public url 
+  SERVICE_ENABLED: "true" # IMPORTANT: SET TO "false" if your service does not need a public url  and "true" if you need it to have a public url
 
   ## Enter the name of the project
   PROJECT: scbiprs
