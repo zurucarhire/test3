@@ -19,4 +19,6 @@ public class IprsApplication {
 	PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
+
 }

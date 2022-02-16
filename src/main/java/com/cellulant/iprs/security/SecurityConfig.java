@@ -48,8 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors();
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        // ORDER MATTERS, PUT BELOW CODE ABOVE ALL PERMITS
 
+        // ORDER MATTERS, PUT BELOW CODE ABOVE ALL PERMITS
+        http.authorizeRequests().antMatchers("/actuator/**").permitAll();
         http.authorizeRequests().antMatchers("/api/iprs/user/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/delete/**").hasAnyAuthority("ROLE_ADMIN");
