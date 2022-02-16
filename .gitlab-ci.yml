@@ -26,19 +26,19 @@ variables:
   MAVEN_CLI_OPTS: "-s settings.xml --batch-mode --errors --fail-at-end --show-version -Dnexus.username=$NEX_USER -Dnexus.password=$NEX_PASS"
   ## Edit this section to configure the internet-facing proxy (ingress controller)
   ##Development
-  DEV_HOSTNAME: demoapp.dev.tingg.africa  # Configures development domain 
+  DEV_HOSTNAME: scb-iprs-api.18.216.147.169.nip.io  # Configures development domain
   DEV_CONFIGFILE: application-dev.properties # name of development config file
   
   ##Testing
-  TEST_HOSTNAME: demoapp.test.tingg.africa 
+  TEST_HOSTNAME: scb-iprs-api.18.216.147.169.nip.io
   TEST_CONFIGFILE: application-dev.properties
 
   ##Approval
-  APPROVAL_HOSTNAME: demoapp.sandbox.tingg.africa 
+  APPROVAL_HOSTNAME: scb-iprs-api.18.216.147.169.nip.io
   APPROVAL_CONFIGFILE: application-dev.properties
 
   ##Production
-  PROD_HOSTNAME: demoapp.prod.tingg.africa# Configures production domain
+  PROD_HOSTNAME: scb-iprs-api.18.216.147.169.nip.io # Configures production domain
   PROD_CONFIGFILE: application-dev.properties # name of production config file
 
 
