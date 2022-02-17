@@ -50,8 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
         // ORDER MATTERS, PUT BELOW CODE ABOVE ALL PERMITS
-        http.authorizeRequests().antMatchers("/actuator/**","/api/iprs/user/findall","/api/login","/api/iprs/user/create").permitAll();
-        //http.authorizeRequests().antMatchers("/api/iprs/user/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
+        http.authorizeRequests().antMatchers("/actuator/**","/api/iprs/user/findall").permitAll();
+        http.authorizeRequests().antMatchers("/api/iprs/user/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/delete/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/api/iprs/user/findalluserroles/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR","ROLE_CREATOR");
