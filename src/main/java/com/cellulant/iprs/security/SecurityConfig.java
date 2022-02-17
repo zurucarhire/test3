@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
         // ORDER MATTERS, PUT BELOW CODE ABOVE ALL PERMITS
-        http.authorizeRequests().antMatchers("/actuator/**").permitAll();
+        http.authorizeRequests().antMatchers("/actuator/**","/api/iprs/user/findall").permitAll();
         http.authorizeRequests().antMatchers("/api/iprs/user/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/delete/**").hasAnyAuthority("ROLE_ADMIN");
@@ -58,7 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/iprs/user/resetpassword/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/updateuserrole/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/user/deleteuserrole/**").hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().antMatchers("/api/iprs/user/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
+        //http.authorizeRequests().antMatchers("/api/iprs/user/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR","ROLE_USER");
 
         http.authorizeRequests().antMatchers("/api/iprs/client/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/client/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");

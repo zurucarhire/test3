@@ -30,6 +30,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         //if(request.getServletPath().equals("/api/login") || request.getServletPath().equals("/api/zuru/token/refresh")) {
         if(request.getServletPath().equals("/api/login")) {
+            log.info("hello world login");
             filterChain.doFilter(request, response); // if permitted url pass request to next filter in filter chain
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
