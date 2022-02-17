@@ -39,9 +39,9 @@ public class IprsApplication {
 							   UserRepository userRepository) {
 		return args -> {
 			log.info("============ starting inserting data ===============");
-			Role role = Role.builder().roleName("ADMIN")
-					.updatedBy(1L).permissions("READ,WRITE,UPDATE,DELETE")
-					.description("admin").roleAlias("ADMIN").updatedBy(1L)
+			Role role = Role.builder().roleName("ROLE_ADMIN")
+					.updatedBy(1L).permissions("READ, WRITE, UPDATE, DELETE")
+					.description("Admin Role").roleAlias("ADMIN").updatedBy(1L)
 					.createdBy(1L).active(1).build();
 			RequestType requestType = RequestType.builder()
 					.requestTypeName("Passport")
@@ -49,6 +49,7 @@ public class IprsApplication {
 					.createdBy(1L)
 					.updatedBy(1L)
 					.build();
+
 			Client client = Client.builder()
 					.clientName("Cellulant")
 					.clientDescription("cellulant")
