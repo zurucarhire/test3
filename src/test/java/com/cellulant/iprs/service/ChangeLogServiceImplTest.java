@@ -1,8 +1,6 @@
 package com.cellulant.iprs.service;
 
-import com.cellulant.iprs.model.ChangeLog;
-import com.cellulant.iprs.model.User;
-import com.cellulant.iprs.model.UserRole;
+import com.cellulant.iprs.entity.ChangeLog;
 import com.cellulant.iprs.repository.ChangeLogRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -18,11 +16,9 @@ import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest

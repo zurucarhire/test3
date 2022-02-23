@@ -1,6 +1,6 @@
 package com.cellulant.iprs.service;
 
-import com.cellulant.iprs.model.Client;
+import com.cellulant.iprs.entity.Client;
 
 import java.util.List;
 

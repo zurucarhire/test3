@@ -1,6 +1,6 @@
 package com.cellulant.iprs.controller;
 
-import com.cellulant.iprs.model.LoginLog;
+import com.cellulant.iprs.entity.LoginLog;
 import com.cellulant.iprs.service.ILoginLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;

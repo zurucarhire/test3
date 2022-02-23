@@ -1,6 +1,6 @@
 package com.cellulant.iprs.controller;
 
-import com.cellulant.iprs.model.ChangeLog;
+import com.cellulant.iprs.entity.ChangeLog;
 import com.cellulant.iprs.security.CustomAuthorizationFilter;
 import com.cellulant.iprs.service.IChangeLogService;
 import com.fasterxml.jackson.databind.ObjectMapper;

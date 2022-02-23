@@ -31,7 +31,8 @@ import static org.springframework.http.HttpStatus.*;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = ResourceExistsException.class)
     public ResponseEntity<Object> resourceFoundException(ResourceExistsException exception) {
-        return buildResponseEntity(new ApiException(NOT_FOUND, exception.getMessage(), ZonedDateTime.now(ZoneId.of("Africa/Nairobi"))));
+        System.out.println("ttt===? " + exception.getMessage());
+        return buildResponseEntity(new ApiException(FOUND, exception.getMessage(), ZonedDateTime.now(ZoneId.of("Africa/Nairobi"))));
     }
 
     @ExceptionHandler(value = ResourceNotFoundException.class)

@@ -1,4 +1,4 @@
-package com.cellulant.iprs.model;
+package com.cellulant.iprs.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

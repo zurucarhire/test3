@@ -1,6 +1,6 @@
 package com.cellulant.iprs.controller;
 
-import com.cellulant.iprs.model.ExpiryPeriod;
+import com.cellulant.iprs.entity.ExpiryPeriod;
 import com.cellulant.iprs.service.IExpiryCheckPeriodService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;

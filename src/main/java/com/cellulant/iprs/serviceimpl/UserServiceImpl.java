@@ -1,9 +1,11 @@
 package com.cellulant.iprs.serviceimpl;
 
+import com.cellulant.iprs.dto.ResetPasswordDTO;
+import com.cellulant.iprs.dto.UserRoleDTO;
 import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
-import com.cellulant.iprs.model.*;
+import com.cellulant.iprs.entity.*;
 import com.cellulant.iprs.repository.RoleRepository;
 import com.cellulant.iprs.repository.UserRepository;
 import com.cellulant.iprs.service.IChangeLogService;
@@ -58,7 +60,7 @@ public class UserServiceImpl implements IUserService {
 
         user.getRoles().add(role);
 
-        user.setPassword("nil");
+        user.setPassword(passwordEncoder.encode("test123"));
         user.setCanAccessUi("YES");
         user.setActive(1);
         user.setPasswordAttempts(0);
@@ -74,32 +76,38 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User update(long userId, long updatedBy, User user) {
+        log.info("one====");
         User user1 = userRepository.findByUserID(userId).
                 orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
+        log.info("two====");
         if (!user.getUserName().equals(user1.getUserName())){
             userRepository.findByUserNameIgnoreCase(user.getUserName()).ifPresent(s -> {
                 throw new ResourceExistsException("Username Already Exists");
             });
         }
 
+        log.info("three====");
         if (!user.getEmailAddress().equals(user1.getEmailAddress())){
             userRepository.findByEmailAddressIgnoreCase(user.getEmailAddress()).ifPresent(s -> {
                 throw new ResourceExistsException("Email Address Already Exists");
             });
         }
 
+        log.info("four====");
         if (!user.getIdNumber().equals(user1.getIdNumber())){
             userRepository.findByIdNumber(user.getIdNumber()).ifPresent(s -> {
                 throw new ResourceExistsException("ID Number Already Exists");
             });
         }
 
+        log.info("five====");
         if (!user.getMsisdn().equals(user1.getMsisdn())){
             userRepository.findByMsisdn(user.getMsisdn()).ifPresent(s -> {
                 throw new ResourceExistsException("Phone Number Already Exists");
             });
         }
+        log.info("six====");
         user1.setClient(user.getClient());
         user1.setFullName(user.getFullName());
         user1.setEmailAddress(user.getEmailAddress());
@@ -163,7 +171,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserRole updateUserRole(long userId, long roleId, long updatedBy) {
+    public UserRoleDTO updateUserRole(long userId, long roleId, long updatedBy) {
         User user1 = userRepository.findByUserID(userId).
                 orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         user1.setRoleID(roleId);
@@ -172,7 +180,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<UserRole> findAllUserRoles() {
+    public List<UserRoleDTO> findAllUserRoles() {
         return userRepository.findAllUserRoles();
     }
 }

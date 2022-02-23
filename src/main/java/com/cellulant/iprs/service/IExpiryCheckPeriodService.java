@@ -1,6 +1,6 @@
 package com.cellulant.iprs.service;
 
-import com.cellulant.iprs.model.ExpiryPeriod;
+import com.cellulant.iprs.entity.ExpiryPeriod;
 
 import java.util.List;
 

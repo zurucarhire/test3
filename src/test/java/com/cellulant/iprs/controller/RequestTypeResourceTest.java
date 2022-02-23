@@ -1,7 +1,6 @@
 package com.cellulant.iprs.controller;
 
-import com.cellulant.iprs.model.RequestType;
-import com.cellulant.iprs.model.User;
+import com.cellulant.iprs.entity.RequestType;
 import com.cellulant.iprs.service.IRequestTypeService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;

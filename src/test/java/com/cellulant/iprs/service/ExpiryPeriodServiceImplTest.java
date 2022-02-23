@@ -1,11 +1,9 @@
 package com.cellulant.iprs.service;
 
 import com.cellulant.iprs.exception.ResourceNotFoundException;
-import com.cellulant.iprs.model.ExpiryPeriod;
-import com.cellulant.iprs.model.RequestType;
+import com.cellulant.iprs.entity.ExpiryPeriod;
 import com.cellulant.iprs.repository.ExpiryPeriodRepository;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

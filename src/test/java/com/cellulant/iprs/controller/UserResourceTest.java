@@ -1,19 +1,14 @@
 package com.cellulant.iprs.controller;
 
-import com.cellulant.iprs.api.UserResource;
-import com.cellulant.iprs.model.Role;
-import com.cellulant.iprs.model.User;
-import com.cellulant.iprs.model.UserRole;
+import com.cellulant.iprs.entity.User;
+import com.cellulant.iprs.dto.UserRoleDTO;
 import com.cellulant.iprs.service.IUserService;
-import com.cellulant.iprs.serviceimpl.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.*;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -54,7 +49,7 @@ public class UserResourceTest {
     private ObjectMapper objectMapper;
 
     private static User user1, user2;
-    private static UserRole userRole1, userRole2;
+    private static UserRoleDTO userRoleDTO1, userRoleDTO2;
 
     @BeforeEach
     public void setup() {
@@ -102,7 +97,7 @@ public class UserResourceTest {
                 .canAccessUi("no")
                 .build();
 
-        userRole1 = UserRole.builder()
+        userRoleDTO1 = UserRoleDTO.builder()
                 .userID(1)
                 .roleID(1)
                 .userName("joeabala")
@@ -110,7 +105,7 @@ public class UserResourceTest {
                 .active(1)
                 .build();
 
-        userRole2 = UserRole.builder()
+        userRoleDTO2 = UserRoleDTO.builder()
                 .userID(2)
                 .roleID(2)
                 .userName("marymugambi")
@@ -491,7 +486,7 @@ public class UserResourceTest {
     @Test
     @DisplayName("shouldAllowUpdateUserRoleIfRoleEditor")
     public void shouldAllowUpdateUserRoleIfRoleEditor() throws Exception {
-        when(userService.updateUserRole(anyLong(), anyLong(), anyLong())).thenReturn(userRole1);
+        when(userService.updateUserRole(anyLong(), anyLong(), anyLong())).thenReturn(userRoleDTO1);
         mockMvc.perform(put("/api/iprs/user/updateuserrole/{userId}/{roleId}/{updatedBy}",1, 1, 1)
                         .with(SecurityMockMvcRequestPostProcessors.user("test").roles("EDITOR"))
                         .with(csrf())
@@ -506,7 +501,7 @@ public class UserResourceTest {
     @Test
     @DisplayName("shouldAllowUpdateUserRoleIfRoleAdmin")
     public void shouldAllowUpdateUserRoleIfRoleAdmin() throws Exception {
-        when(userService.updateUserRole(anyLong(), anyLong(), anyLong())).thenReturn(userRole1);
+        when(userService.updateUserRole(anyLong(), anyLong(), anyLong())).thenReturn(userRoleDTO1);
         mockMvc.perform(put("/api/iprs/user/updateuserrole/{userId}/{roleId}/{updatedBy}",1, 1, 1)
                         .with(SecurityMockMvcRequestPostProcessors.user("test").roles("ADMIN"))
                         .with(csrf())
@@ -531,7 +526,7 @@ public class UserResourceTest {
     @Test
     @DisplayName("shouldAllowFindAllUserRolesIfRoleCreator")
     public void shouldAllowFindAllUserRolesIfRoleCreator() throws Exception {
-        when(userService.findAllUserRoles()).thenReturn(Arrays.asList(userRole1, userRole2));
+        when(userService.findAllUserRoles()).thenReturn(Arrays.asList(userRoleDTO1, userRoleDTO2));
         mockMvc.perform(get("/api/iprs/user/findalluserroles")
                         .with(SecurityMockMvcRequestPostProcessors.user("test").roles("CREATOR"))
                         .with(csrf())
@@ -547,7 +542,7 @@ public class UserResourceTest {
     @Test
     @DisplayName("shouldAllowFindAllUserRolesIfRoleEditor")
     public void shouldAllowFindAllUserRolesIfRoleEditor() throws Exception {
-        when(userService.findAllUserRoles()).thenReturn(Arrays.asList(userRole1, userRole2));
+        when(userService.findAllUserRoles()).thenReturn(Arrays.asList(userRoleDTO1, userRoleDTO2));
         mockMvc.perform(get("/api/iprs/user/findalluserroles")
                         .with(SecurityMockMvcRequestPostProcessors.user("test").roles("EDITOR"))
                         .with(csrf())
@@ -563,7 +558,7 @@ public class UserResourceTest {
     @Test
     @DisplayName("shouldAllowFindAllUserRolesIfRoleAdmin")
     public void shouldAllowFindAllUserRolesIfRoleAdmin() throws Exception {
-        when(userService.findAllUserRoles()).thenReturn(Arrays.asList(userRole1, userRole2));
+        when(userService.findAllUserRoles()).thenReturn(Arrays.asList(userRoleDTO1, userRoleDTO2));
         mockMvc.perform(get("/api/iprs/user/findalluserroles")
                         .with(SecurityMockMvcRequestPostProcessors.user("test").roles("ADMIN"))
                         .with(csrf())

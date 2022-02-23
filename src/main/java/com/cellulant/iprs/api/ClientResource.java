@@ -1,7 +1,6 @@
 package com.cellulant.iprs.api;
 
-import com.cellulant.iprs.model.Client;
-import com.cellulant.iprs.model.User;
+import com.cellulant.iprs.entity.Client;
 import com.cellulant.iprs.service.IClientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

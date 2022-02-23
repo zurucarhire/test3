@@ -1,6 +1,6 @@
 package com.cellulant.iprs.api;
 
-import com.cellulant.iprs.model.RequestType;
+import com.cellulant.iprs.entity.RequestType;
 import com.cellulant.iprs.service.IRequestTypeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

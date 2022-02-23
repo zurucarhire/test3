@@ -1,6 +1,6 @@
 package com.cellulant.iprs.api;
 
-import com.cellulant.iprs.model.ChangeLog;
+import com.cellulant.iprs.entity.ChangeLog;
 import com.cellulant.iprs.service.IChangeLogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

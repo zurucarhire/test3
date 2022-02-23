@@ -1,4 +1,4 @@
-package com.cellulant.iprs.model;
+package com.cellulant.iprs.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Date;
 
 import static javax.persistence.FetchType.EAGER;

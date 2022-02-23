@@ -1,6 +1,6 @@
 package com.cellulant.iprs.service;
 
-import com.cellulant.iprs.model.LoginLog;
+import com.cellulant.iprs.entity.LoginLog;
 import com.cellulant.iprs.repository.LoginLogRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;

@@ -1,6 +1,6 @@
 package com.cellulant.iprs.repository;
 
-import com.cellulant.iprs.model.Role;
+import com.cellulant.iprs.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

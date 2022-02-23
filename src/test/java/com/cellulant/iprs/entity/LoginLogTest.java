@@ -1,4 +1,4 @@
-package com.cellulant.iprs.model;
+package com.cellulant.iprs.entity;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

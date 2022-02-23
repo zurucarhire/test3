@@ -1,4 +1,4 @@
-package com.cellulant.iprs.model;
+package com.cellulant.iprs.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -1,7 +1,7 @@
 package com.cellulant.iprs.serviceimpl;
 
 import com.cellulant.iprs.exception.ResourceNotFoundException;
-import com.cellulant.iprs.model.ExpiryPeriod;
+import com.cellulant.iprs.entity.ExpiryPeriod;
 import com.cellulant.iprs.repository.ExpiryPeriodRepository;
 import com.cellulant.iprs.service.IExpiryCheckPeriodService;
 import lombok.RequiredArgsConstructor;

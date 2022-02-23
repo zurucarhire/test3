@@ -1,4 +1,4 @@
-package com.cellulant.iprs.model;
+package com.cellulant.iprs.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 @Builder
-public class UserRole {
+public class UserRoleDTO {
     private long userID;
     private String userName;
     private int active;
@@ -16,7 +16,7 @@ public class UserRole {
     private String roleName;
     private String permissions;
 
-    public UserRole(long userID, String userName, int active, long roleID, String roleAlias, String roleName, String permissions) {
+    public UserRoleDTO(long userID, String userName, int active, long roleID, String roleAlias, String roleName, String permissions) {
         this.userID = userID;
         this.userName = userName;
         this.active = active;

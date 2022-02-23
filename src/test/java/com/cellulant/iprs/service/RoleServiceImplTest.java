@@ -2,8 +2,8 @@ package com.cellulant.iprs.service;
 
 import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
-import com.cellulant.iprs.model.ChangeLog;
-import com.cellulant.iprs.model.Role;
+import com.cellulant.iprs.entity.ChangeLog;
+import com.cellulant.iprs.entity.Role;
 import com.cellulant.iprs.repository.RoleRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Assertions;

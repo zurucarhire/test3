@@ -1,15 +1,11 @@
 package com.cellulant.iprs.repository;
 
-import com.cellulant.iprs.model.User;
-import com.cellulant.iprs.model.UserRole;
-import org.springframework.data.jpa.datatables.repository.DataTablesRepository;
+import com.cellulant.iprs.entity.User;
+import com.cellulant.iprs.dto.UserRoleDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,10 +18,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByIdNumber(String IDNumber);
     Optional<User> findByMsisdn(String msisdn);
     Long deleteByUserID(long userId);
-    @Query("SELECT new com.cellulant.iprs.model.UserRole(u.userID, u.userName, u.active, r.roleID, r.roleAlias, r.roleName, r.permissions) FROM User u INNER JOIN Role r ON u.roleID = r.roleID where u.userID = :userId")
-    UserRole findUserRolesById(long userId);
-    @Query("SELECT new com.cellulant.iprs.model.UserRole(u.userID, u.userName, u.active, r.roleID, r.roleAlias, r.roleName, r.permissions) FROM User u INNER JOIN Role r ON u.roleID = r.roleID")
-    List<UserRole> findAllUserRoles();
-    @Query("SELECT new com.cellulant.iprs.model.UserRole(u.userID, u.userName, u.active, r.roleID, r.roleAlias, r.roleName, r.permissions) FROM User u INNER JOIN Role r ON u.roleID = r.roleID")
-    List<UserRole> deleteUserRole();
+    @Query("SELECT new com.cellulant.iprs.dto.UserRoleDTO(u.userID, u.userName, u.active, r.roleID, r.roleAlias, r.roleName, r.permissions) FROM User u INNER JOIN Role r ON u.roleID = r.roleID where u.userID = :userId")
+    UserRoleDTO findUserRolesById(long userId);
+    @Query("SELECT new com.cellulant.iprs.dto.UserRoleDTO(u.userID, u.userName, u.active, r.roleID, r.roleAlias, r.roleName, r.permissions) FROM User u INNER JOIN Role r ON u.roleID = r.roleID")
+    List<UserRoleDTO> findAllUserRoles();
+    @Query("SELECT new com.cellulant.iprs.dto.UserRoleDTO(u.userID, u.userName, u.active, r.roleID, r.roleAlias, r.roleName, r.permissions) FROM User u INNER JOIN Role r ON u.roleID = r.roleID")
+    List<UserRoleDTO> deleteUserRole();
 }

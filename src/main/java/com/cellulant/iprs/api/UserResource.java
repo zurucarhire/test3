@@ -1,21 +1,15 @@
 package com.cellulant.iprs.api;
 
-import com.cellulant.iprs.model.ResetPasswordDTO;
-import com.cellulant.iprs.model.User;
-import com.cellulant.iprs.model.UserRole;
+import com.cellulant.iprs.dto.ResetPasswordDTO;
+import com.cellulant.iprs.entity.User;
+import com.cellulant.iprs.dto.UserRoleDTO;
 import com.cellulant.iprs.service.IUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.net.URI;
 import java.util.List;
 
@@ -83,15 +77,15 @@ public class UserResource {
     // =================================== USER ROLES ===========================================
 
     @PutMapping(value = "/updateuserrole/{userId}/{roleId}/{updatedBy}")
-    public ResponseEntity<UserRole> updateUserRole(@PathVariable(value = "userId") long userId,
-                                                 @PathVariable(value = "roleId") long roleId,
-                                                 @PathVariable(value = "updatedBy") long updatedBy) {
+    public ResponseEntity<UserRoleDTO> updateUserRole(@PathVariable(value = "userId") long userId,
+                                                      @PathVariable(value = "roleId") long roleId,
+                                                      @PathVariable(value = "updatedBy") long updatedBy) {
         log.info("editUserRole {} {} {}", roleId, userId, updatedBy);
         return ResponseEntity.ok(userService.updateUserRole(userId, roleId,updatedBy));
     }
 
     @GetMapping("/findalluserroles")
-    public ResponseEntity<List<UserRole>> findAllUserRoles() {
+    public ResponseEntity<List<UserRoleDTO>> findAllUserRoles() {
         return ResponseEntity.ok().body(userService.findAllUserRoles());
     }
 

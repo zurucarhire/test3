@@ -1,4 +1,4 @@
-package com.cellulant.iprs.model;
+package com.cellulant.iprs.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.naming.Name;
 import javax.persistence.*;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
@@ -19,16 +16,14 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "clients")
-public class Client {
+@Table(name = "expiryperiod")
+public class ExpiryPeriod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "clientID")
-    private Long clientID;
-    @Column(name = "clientName", nullable = false)
-    private String clientName;
-    @Column(name = "clientDescription")
-    private String clientDescription;
+    @Column(name = "expiryPeriodID")
+    private Long expiryPeriodID;
+    @Column(name = "expiryPeriod", nullable = false)
+    private int expiryPeriod;
     @Column(name = "active")
     private int active;
     @Column(name = "createdBy")

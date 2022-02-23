@@ -1,9 +1,8 @@
 package com.cellulant.iprs.security;
 
 import com.cellulant.iprs.exception.ResourceNotFoundException;
-import com.cellulant.iprs.model.User;
+import com.cellulant.iprs.entity.User;
 import com.cellulant.iprs.repository.UserRepository;
-import com.cellulant.iprs.serviceimpl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

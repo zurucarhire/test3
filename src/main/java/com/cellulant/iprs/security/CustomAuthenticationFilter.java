@@ -3,13 +3,11 @@ package com.cellulant.iprs.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
-import com.cellulant.iprs.model.AuthenticationResponse;
-import com.cellulant.iprs.model.LoginLog;
-import com.cellulant.iprs.model.User;
-import com.cellulant.iprs.repository.LoginLogRepository;
+import com.cellulant.iprs.dto.AuthenticationResponseDTO;
+import com.cellulant.iprs.entity.LoginLog;
+import com.cellulant.iprs.entity.User;
 import com.cellulant.iprs.repository.UserRepository;
 import com.cellulant.iprs.service.ILoginLogService;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -126,15 +124,15 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 .build();
         loginLogService.create(loginLog);
 
-        AuthenticationResponse authenticationResponse = AuthenticationResponse.builder().
+        AuthenticationResponseDTO authenticationResponseDTO = AuthenticationResponseDTO.builder().
                 user(user1)
                 .accessToken(access_token)
                 .refreshToken(refresh_token)
                 .build();
 
-        log.info("authResponse {}", authenticationResponse);
+        log.info("authResponse {}", authenticationResponseDTO);
         response.setContentType(APPLICATION_JSON_VALUE);
-        new ObjectMapper().writeValue(response.getOutputStream(), authenticationResponse);
+        new ObjectMapper().writeValue(response.getOutputStream(), authenticationResponseDTO);
     }
 
     private AuthenticationDTO getAuthenticationDTO(HttpServletRequest request)  {

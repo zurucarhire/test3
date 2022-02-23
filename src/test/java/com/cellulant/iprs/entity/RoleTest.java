@@ -1,6 +1,5 @@
-package com.cellulant.iprs.model;
+package com.cellulant.iprs.entity;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.contains;
 
 @SpringBootTest
 class RoleTest {

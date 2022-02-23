@@ -3,7 +3,7 @@ package com.cellulant.iprs.serviceimpl;
 import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
-import com.cellulant.iprs.model.RequestType;
+import com.cellulant.iprs.entity.RequestType;
 import com.cellulant.iprs.repository.ChangeLogRepository;
 import com.cellulant.iprs.repository.RequestTypeRepository;
 import com.cellulant.iprs.service.IChangeLogService;

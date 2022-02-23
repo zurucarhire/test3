@@ -2,7 +2,7 @@ package com.cellulant.iprs.serviceimpl;
 
 import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
-import com.cellulant.iprs.model.Role;
+import com.cellulant.iprs.entity.Role;
 import com.cellulant.iprs.repository.RoleRepository;
 import com.cellulant.iprs.service.IChangeLogService;
 import com.cellulant.iprs.service.IRoleService;

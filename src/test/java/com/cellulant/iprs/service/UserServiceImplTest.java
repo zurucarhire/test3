@@ -1,9 +1,10 @@
 package com.cellulant.iprs.service;
 
+import com.cellulant.iprs.dto.UserRoleDTO;
 import com.cellulant.iprs.exception.ResourceExistsException;
 import com.cellulant.iprs.exception.ResourceNotFoundException;
 import com.cellulant.iprs.exception.UnprocessedResourceException;
-import com.cellulant.iprs.model.*;
+import com.cellulant.iprs.entity.*;
 import com.cellulant.iprs.repository.RoleRepository;
 import com.cellulant.iprs.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.sql.Timestamp;
 import java.util.*;
@@ -48,7 +48,7 @@ public class UserServiceImplTest {
     private IChangeLogService changeLogService;
 
     private User user1, user2;
-    private UserRole userRole1, userRole2;
+    private UserRoleDTO userRoleDTO1, userRoleDTO2;
     private Role role1, role2;
 
     private static ChangeLog changeLog;
@@ -105,7 +105,7 @@ public class UserServiceImplTest {
                 .canAccessUi("no")
                 .build();
 
-        userRole1 = UserRole.builder()
+        userRoleDTO1 = UserRoleDTO.builder()
                 .userID(1)
                 .roleID(1)
                 .userName("joeabala")
@@ -113,7 +113,7 @@ public class UserServiceImplTest {
                 .active(1)
                 .build();
 
-        userRole2 = UserRole.builder()
+        userRoleDTO2 = UserRoleDTO.builder()
                 .userID(2)
                 .roleID(2)
                 .userName("marymugambi")
@@ -495,8 +495,8 @@ public class UserServiceImplTest {
         // verify
         verify(userRepository).save(any(User.class));
 
-        when(userService.updateUserRole(1, 1, 1)).thenReturn(userRole1);
-        assertEquals(1, userRole1.getUserID());
+        when(userService.updateUserRole(1, 1, 1)).thenReturn(userRoleDTO1);
+        assertEquals(1, userRoleDTO1.getUserID());
     }
 
     @Test
@@ -515,10 +515,10 @@ public class UserServiceImplTest {
     @DisplayName("shouldFindAllUserRoles")
     public void shouldFindAllUserRoles(){
         // create mock behaviour
-        when(userRepository.findAllUserRoles()).thenReturn(Arrays.asList(userRole1, userRole2));
+        when(userRepository.findAllUserRoles()).thenReturn(Arrays.asList(userRoleDTO1, userRoleDTO2));
 
         // Execute service call
-        List<UserRole> usersList = userService.findAllUserRoles();
+        List<UserRoleDTO> usersList = userService.findAllUserRoles();
 
         // assert
         assertEquals(2, usersList.size());
