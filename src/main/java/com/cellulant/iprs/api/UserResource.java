@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/iprs/user")
+@RequestMapping("/api/psm/user")
 @Slf4j
 public class UserResource {
     private final IUserService userService;
@@ -25,11 +25,11 @@ public class UserResource {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
-    @PostMapping("/create/{createdBy}")
-    public ResponseEntity<User> create(@PathVariable(value = "createdBy") long createdBy, @RequestBody User user) {
+    @PostMapping("/create")
+    public ResponseEntity<User> create(@RequestBody User user) {
         log.info("createUser {}", user);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/iprs/user/create").toUriString());
-        return ResponseEntity.created(uri).body(userService.create(createdBy, user));
+        return ResponseEntity.created(uri).body(userService.create(user));
     }
 
     @PutMapping(value = "/update/{userId}/{updatedBy}")

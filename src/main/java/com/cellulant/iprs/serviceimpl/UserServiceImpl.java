@@ -38,7 +38,7 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public User create(long createdBy, User user) {
+    public User create(User user) {
         Role role = roleRepository.findByRoleID(user.getRoleID()).
                 orElseThrow(() -> new ResourceNotFoundException("Role Not Found"));
 
@@ -50,71 +50,29 @@ public class UserServiceImpl implements IUserService {
             throw new ResourceExistsException("Email Address Already Exists");
         });
 
-        userRepository.findByIdNumber(user.getIdNumber()).ifPresent(s -> {
-            throw new ResourceExistsException("ID Number Already Exists");
-        });
-
-        userRepository.findByMsisdn(user.getMsisdn()).ifPresent(s -> {
-            throw new ResourceExistsException("Phone Number Already Exists");
-        });
-
         user.getRoles().add(role);
 
-        user.setPassword(passwordEncoder.encode("test123"));
-        user.setCanAccessUi("YES");
-        user.setActive(1);
-        user.setPasswordAttempts(0);
-        user.setCreatedBy(createdBy);
-        user.setUpdatedBy(createdBy);
-        user.setLastLoginDate(new Date());
-        User user1 = userRepository.save(user);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        changeLogService.create(createdBy, "create user " + user.getUserName());
-
-        return user1;
+        return userRepository.save(user);
     }
 
     @Override
     public User update(long userId, long updatedBy, User user) {
-        log.info("one====");
         User user1 = userRepository.findByUserID(userId).
                 orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
-        log.info("two====");
         if (!user.getUserName().equals(user1.getUserName())){
             userRepository.findByUserNameIgnoreCase(user.getUserName()).ifPresent(s -> {
                 throw new ResourceExistsException("Username Already Exists");
             });
         }
 
-        log.info("three====");
         if (!user.getEmailAddress().equals(user1.getEmailAddress())){
             userRepository.findByEmailAddressIgnoreCase(user.getEmailAddress()).ifPresent(s -> {
                 throw new ResourceExistsException("Email Address Already Exists");
             });
         }
-
-        log.info("four====");
-        if (!user.getIdNumber().equals(user1.getIdNumber())){
-            userRepository.findByIdNumber(user.getIdNumber()).ifPresent(s -> {
-                throw new ResourceExistsException("ID Number Already Exists");
-            });
-        }
-
-        log.info("five====");
-        if (!user.getMsisdn().equals(user1.getMsisdn())){
-            userRepository.findByMsisdn(user.getMsisdn()).ifPresent(s -> {
-                throw new ResourceExistsException("Phone Number Already Exists");
-            });
-        }
-        log.info("six====");
-        user1.setClient(user.getClient());
-        user1.setFullName(user.getFullName());
-        user1.setEmailAddress(user.getEmailAddress());
-        user1.setIdNumber(user.getIdNumber());
-        user1.setMsisdn(user.getMsisdn());
-        user1.setRoleID(user.getRoleID());
-        user1.setActive(user.getActive());
 
         changeLogService.create(updatedBy, "update user " + user.getUserName());
 
@@ -153,8 +111,7 @@ public class UserServiceImpl implements IUserService {
         User user1 = userRepository.findByUserID(userId).
                 orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         user1.setEmailAddress(email);
-        user1.setIdNumber(idNumber);
-        user1.setMsisdn(msisdn);
+
         return userRepository.save(user1);
     }
 
@@ -176,11 +133,11 @@ public class UserServiceImpl implements IUserService {
                 orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         user1.setRoleID(roleId);
         userRepository.save(user1);
-        return userRepository.findUserRolesById(userId);
+        return null;
     }
 
     @Override
     public List<UserRoleDTO> findAllUserRoles() {
-        return userRepository.findAllUserRoles();
+        return null;
     }
 }

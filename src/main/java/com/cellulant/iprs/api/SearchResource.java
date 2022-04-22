@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/iprs/search")
+@RequestMapping("/api/psm/search")
 @Slf4j
 public class SearchResource {
     private final ISearchService searchService;

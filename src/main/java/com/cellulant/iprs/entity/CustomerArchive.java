@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "customerarchive")
+@Table(name = "customerarchives")
 public class CustomerArchive {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,14 +34,19 @@ public class CustomerArchive {
     @Column(name = "citizenship", columnDefinition = "VARCHAR(30) NOT NULL")
     private String citizenship;
     @Column(name = "dateOfBirth")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateOfBirth;
     @Column(name = "passportDateOfBirth")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date passportDateOfBirth;
     @Column(name = "dateOfDeath")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateOfDeath;
     @Column(name = "dateOfIssue")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date dateOfIssue;
     @Column(name = "passportExpiryDate")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date passportExpiryDate;
     @Column(name = "ethnicGroup", columnDefinition = "VARCHAR(200) NOT NULL")
     private String ethnicGroup;
@@ -59,13 +64,15 @@ public class CustomerArchive {
     private String occupation;
     @Column(name = "pin", columnDefinition = "VARCHAR(20) NOT NULL")
     private String pin;
-    @Column(name = "placeOfBirth", columnDefinition = "text NOT NULL")
+    @Column(name = "photo", columnDefinition = "TEXT NOT NULL")
+    private String photo;
+    @Column(name = "placeOfBirth", columnDefinition = "VARCHAR(100) NOT NULL")
     private String placeOfBirth;
-    @Column(name = "placeOfDeath", columnDefinition = "text NOT NULL")
+    @Column(name = "placeOfDeath", columnDefinition = "VARCHAR(100) NOT NULL")
     private String placeOfDeath;
-    @Column(name = "placeOfLive", columnDefinition = "text NOT NULL")
+    @Column(name = "placeOfLive", columnDefinition = "VARCHAR(100) NOT NULL")
     private String placeOfLive;
-    @Column(name = "regOffice", columnDefinition = "text NOT NULL")
+    @Column(name = "regOffice", columnDefinition = "VARCHAR(100) NOT NULL")
     private String regOffice;
     @Column(name = "dateCreated")
     @CreationTimestamp

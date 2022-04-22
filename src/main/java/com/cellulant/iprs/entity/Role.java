@@ -29,24 +29,5 @@ public class Role {
     private String roleName;
     @Column(name = "roleAlias", columnDefinition = "VARCHAR(50) NOT NULL")
     private String roleAlias;
-    @Column(name = "description",columnDefinition = "VARCHAR(150) NOT NULL")
-    @NotBlank(message = "Description is mandatory")
-    private String description;
-    @Column(name = "permissions",columnDefinition = "VARCHAR(250) NOT NULL")
-    @NotBlank(message = "Permissions is mandatory")
-    private String permissions;
-    @Column(name = "active")
-    private int active;
-    @Column(name = "createdBy")
-    private Long createdBy;
-    @Column(name = "updatedBy")
-    private Long updatedBy;
-    @Column(name = "dateCreated")
-    @CreationTimestamp
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date dateCreated;
-    @Column(name = "dateModified")
-    @UpdateTimestamp
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm")
-    private Date dateModified;
+
 }

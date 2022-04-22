@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/iprs/changelog")
+@RequestMapping("/api/psm/changelog")
 @Slf4j
 public class ChangeLogResource {
     private final IChangeLogService changeLogService;

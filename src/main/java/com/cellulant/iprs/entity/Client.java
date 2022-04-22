@@ -22,11 +22,11 @@ public class Client {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "clientID")
     private Long clientID;
-    @Column(name = "clientName", nullable = false)
+    @Column(name = "clientName", columnDefinition = "VARCHAR(100) NOT NULL UNIQUE")
     private String clientName;
-    @Column(name = "clientDescription")
+    @Column(name = "clientDescription", columnDefinition = "VARCHAR(250) NOT NULL")
     private String clientDescription;
-    @Column(name = "active")
+    @Column(name = "active", nullable = false)
     private int active;
     @Column(name = "createdBy")
     private Long createdBy;

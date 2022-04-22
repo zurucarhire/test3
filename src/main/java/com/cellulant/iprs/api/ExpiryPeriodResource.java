@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/iprs/expiryperiod")
+@RequestMapping("/api/psm/expiryperiod")
 @Slf4j
 public class ExpiryPeriodResource {
     private final IExpiryCheckPeriodService expiryCheckPeriodService;

@@ -34,6 +34,7 @@ public class CustomAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response); // if permitted url pass request to next filter in filter chain
         } else {
             String authorizationHeader = request.getHeader(AUTHORIZATION);
+            log.info("auth => {}", authorizationHeader);
             if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
                 String token = authorizationHeader.substring("Bearer ".length()); // remove 'Bearer ' and get token
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes()); // define algorithm; use same secret used to sign algorithm

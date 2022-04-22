@@ -9,7 +9,7 @@ import java.util.List;
 public interface IUserService {
     List<User> findAll();
     List<UserRoleDTO> findAllUserRoles();
-    User create(long createdBy, User user);
+    User create(User user);
     User update(long id, long updatedBy, User user);
     Long delete(long id, long updatedBy);
     void changePassword(long userId, String oldPassword, String newPassword, String confirmPassword);

@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/iprs/loginlog")
+@RequestMapping("/api/psm/loginlog")
 @Slf4j
 public class LoginLogResource {
     private final ILoginLogService loginLogService;

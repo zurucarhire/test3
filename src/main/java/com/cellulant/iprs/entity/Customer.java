@@ -56,21 +56,21 @@ public class Customer {
     private String otherName;
     @Column(name = "surName", columnDefinition = "VARCHAR(50) NOT NULL")
     private String surName;
-    @Column(name = "gender", columnDefinition = "VARCHAR(20) NOT NULL")
+    @Column(name = "gender", columnDefinition = "VARCHAR(10) NOT NULL")
     private String gender;
     @Column(name = "occupation", columnDefinition = "VARCHAR(100) NOT NULL")
     private String occupation;
-    @Column(name = "pin", columnDefinition = "VARCHAR(20) NOT NULL")
+    @Column(name = "pin", columnDefinition = "VARCHAR(30) NOT NULL UNIQUE")
     private String pin;
-    @Column(name = "photo", nullable = false)
+    @Column(name = "photo", columnDefinition = "TEXT NOT NULL")
     private String photo;
-    @Column(name = "placeOfBirth", columnDefinition = "text NOT NULL")
+    @Column(name = "placeOfBirth", columnDefinition = "VARCHAR(250) NOT NULL")
     private String placeOfBirth;
-    @Column(name = "placeOfDeath", columnDefinition = "text NOT NULL")
+    @Column(name = "placeOfDeath", columnDefinition = "VARCHAR(250) NOT NULL")
     private String placeOfDeath;
-    @Column(name = "placeOfLive", columnDefinition = "text NOT NULL")
+    @Column(name = "placeOfLive", columnDefinition = "VARCHAR(250) NOT NULL")
     private String placeOfLive;
-    @Column(name = "regOffice", columnDefinition = "text NOT NULL")
+    @Column(name = "regOffice", columnDefinition = "VARCHAR(250) NOT NULL")
     private String regOffice;
     @Column(name = "dateCreated")
     @CreationTimestamp

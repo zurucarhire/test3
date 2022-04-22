@@ -17,12 +17,12 @@ import static javax.persistence.FetchType.EAGER;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "userlogs")
+@Table(name = "loginlogs")
 public class LoginLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userLogID", nullable = false)
-    private Long userLogID;
+    @Column(name = "loginLogID")
+    private Long loginLogID;
     @Column(name = "userID", nullable = false)
     private Long userID;
     @Column(name = "loginTime")
@@ -32,7 +32,7 @@ public class LoginLog {
     @Column(name = "logoutTime")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date logoutTime;
-    @Column(name = "loginIP", nullable = false)
+    @Column(name = "loginIP", columnDefinition = "VARCHAR(20) NOT NULL")
     private String loginIP;
     @Column(name = "attemptsBeforeLogin", nullable = false)
     private int attemptsBeforeLogin;

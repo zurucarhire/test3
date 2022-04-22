@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/iprs/requesttype")
+@RequestMapping("/api/psm/requesttype")
 @Slf4j
 public class RequestTypeResource {
     private final IRequestTypeService requestTypeService;

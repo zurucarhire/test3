@@ -16,20 +16,20 @@ import java.util.Date;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "requestlog")
+@Table(name = "requestlogs")
 public class RequestLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "requestLogID")
     private Long requestLogID;
-    @Column(name = "requestType", columnDefinition = "VARCHAR(30) NOT NULL")
+    @Column(name = "requestType", columnDefinition = "VARCHAR(50) NOT NULL UNIQUE")
     private String requestType;
     @Column(name = "requestNumber", nullable = false)
     private Long requestNumber;
     @Column(name = "requestSerialNumber", nullable = false)
     private Long requestSerialNumber;
-    @Column(name = "insertedBy", nullable = false)
-    private Long insertedBy;
+    @Column(name = "createdBy", nullable = false)
+    private Long createdBy;
     @Column(name = "dateCreated")
     @CreationTimestamp
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")

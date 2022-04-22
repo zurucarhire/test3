@@ -23,7 +23,7 @@ public class RequestType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "requestTypeID")
     private Long requestTypeID;
-    @Column(name = "requestTypeName")
+    @Column(name = "requestTypeName", columnDefinition = "VARCHAR(50) NOT NULL UNIQUE")
     @NotNull(message = "Please provide request name")
     private String requestTypeName;
     @Column(name = "active")

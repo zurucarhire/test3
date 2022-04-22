@@ -23,15 +23,15 @@ public class ChangeLog {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "changeLogID", nullable = false)
     private Long changeLogID;
-    @Column(name = "narration", nullable = false)
+    @Column(name = "narration", columnDefinition = "VARCHAR(250) NOT NULL")
     private String narration;
-    @Column(name = "insertedBy", nullable = false)
-    private Long insertedBy;
+    @Column(name = "createdBy", nullable = false)
+    private Long createdBy;
     @Column(name = "dateCreated", nullable = false)
     @CreationTimestamp
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date dateCreated;
     @ManyToOne(fetch = EAGER)
-    @JoinColumn(name = "insertedBy", referencedColumnName = "userID", insertable = false, updatable = false)
+    @JoinColumn(name = "createdBy", referencedColumnName = "userID", insertable = false, updatable = false)
     private User user;
 }

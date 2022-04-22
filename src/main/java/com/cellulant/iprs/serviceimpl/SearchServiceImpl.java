@@ -1,6 +1,5 @@
 package com.cellulant.iprs.serviceimpl;
 
-import com.cellulant.iprs.dto.RequestLogDTO;
 import com.cellulant.iprs.dto.SearchDTO;
 import com.cellulant.iprs.entity.Customer;
 import com.cellulant.iprs.entity.CustomerArchive;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -103,7 +101,7 @@ public class SearchServiceImpl implements ISearchService {
                 .requestNumber(searchDTO.getRequestNumber())
                 .requestSerialNumber(searchDTO.getRequestSerialNumber())
                 .requestType(searchDTO.getRequestType())
-                .insertedBy(userId).build();
+                .createdBy(userId).build();
         requestLogRepository.save(requestLog);
 
         Customer customer = customerRepository.findCustomerByIDNumber(String.valueOf(searchDTO.getRequestNumber()));
@@ -134,16 +132,7 @@ public class SearchServiceImpl implements ISearchService {
 
 @Override
 public List<?> findRequests(String fromDate, String toDate, String tag, String requestType, Long requestNumber, Long requestSerialNumber, String requestBy) {
-    Map<String, Object> map = Map.of("r.requestNumber", requestNumber == null ? "" : requestNumber, "r.requestType", requestType,
-            "r.requestSerialNumber", requestSerialNumber == null ? "" : requestSerialNumber, "u.userName",requestBy);
-    //StringBuilder jpql = new StringBuilder("SELECT new com.cellulant.iprs.dto.RequestLogDTO(u.userName, r.requestType, r.requestNumber, r.requestSerialNumber, r.dateCreated) FROM RequestLog r INNER JOIN User u ON r.insertedBy = u.userID where r.dateCreated >= '20200101' and r.dateCreated <= '20220220'");
-    StringBuilder jpql = new StringBuilder(String.format(IPRSConstants.REQUEST_LOGS.get(tag), fromDate, toDate));
-    map.entrySet().stream().filter(x -> !x.getValue().equals("")).forEach(x -> {
-        jpql.append(" and ").append(x.getKey()).append(" = ").append('\'').append(x.getValue()).append('\'');
-    });
-    log.info("eee-? {}", jpql);
-    log.info("hhh-?22 {}", em.createQuery(jpql.toString()).getResultList());
-    return em.createQuery(jpql.toString()).getResultList();
+   return null;
 }
 
     private void archiveRecord(Customer customer){

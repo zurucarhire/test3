@@ -37,9 +37,6 @@ public class RoleServiceImpl implements IRoleService {
         Role role1 = roleRepository.findByRoleID(id).
                 orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
 
-        role1.setDescription(role.getDescription());
-        role1.setActive(role.getActive());
-
         Role updatedRole = roleRepository.save(role);
         changeLogService.create(updatedBy, "update role " + role.getRoleName());
         return updatedRole;
@@ -51,11 +48,6 @@ public class RoleServiceImpl implements IRoleService {
                 orElseThrow(() -> new ResourceNotFoundException("Resource Not Found"));
         changeLogService.create(updatedBy, "deleted role " + role.getRoleName());
         roleRepository.deleteById(roleId);
-    }
-
-    @Override
-    public List<Role> findAllActive() {
-        return roleRepository.findAllActive();
     }
 
     @Override

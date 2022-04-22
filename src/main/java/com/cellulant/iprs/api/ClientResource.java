@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/iprs/client")
+@RequestMapping("/api/psm/client")
 @Slf4j
 public class ClientResource {
     private final IClientService clientService;

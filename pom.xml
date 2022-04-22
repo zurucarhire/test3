@@ -146,6 +146,11 @@
 			<artifactId>wsdl4j</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180130</version>
+		</dependency>
+		<dependency>
 			<groupId>com.github.darrachequesne</groupId>
 			<artifactId>spring-data-jpa-datatables</artifactId>
 			<version>5.1.0</version>
@@ -179,81 +184,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
 				<configuration>
-					<source>9</source>
-					<target>9</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.jvnet.jaxb2.maven2</groupId>
-				<artifactId>maven-jaxb2-plugin</artifactId>
-				<version>0.13.2</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>generate</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<schemaDirectory>${project.basedir}/src/main/resources/wsdl</schemaDirectory>
-					<schemaIncludes>
-						<include>*.wsdl</include>
-					</schemaIncludes>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>com.google.cloud.tools</groupId>
-				<artifactId>jib-maven-plugin</artifactId>
-				<version>3.2.0</version>
-				<configuration>
-					<from>
-						<!-- <image>gcr.io/distroless/java:${env.JAVA_VERSION}</image>  -->
-						<image>gcr.io/distroless/java${env.JAVA_VERSION}-debian11:latest</image>
-					</from>
-					<container>
-						<jvmFlags>
-							<jvmFlag>-javaagent:./newrelic.jar</jvmFlag>
-							<jvmFlag>-Dnewrelic.environment=${app.environment}</jvmFlag>
-							<jvmFlag>-Xmx500m</jvmFlag>
-							<jvmFlag>-Xms500m</jvmFlag>
-							<jvmFlag>-Xss512k</jvmFlag>
-						</jvmFlags>
-					</container>
-				</configuration>
-			</plugin>
-						<plugin>
-							<groupId>org.jacoco</groupId>
-							<artifactId>jacoco-maven-plugin</artifactId>
-							<version>${jacoco.version}</version>
-							<configuration>
-								<skip>${maven.test.skip}</skip>
-								<destfile>${basedir}/target/coverage-reports/jacoco-unit.exec</destfile>
-								<datafile>${basedir}/target/coverage-reports/jacoco-unit.exec</datafile>
-								<output>file</output>
-								<append>true</append>
-								<excludes>
-									<exclude>*MethodAccess</exclude>
-								</excludes>
-							</configuration>
-							<executions>
-								<execution>
-									<id>jacoco-initialize</id>
-									<goals>
-										<goal>prepare-agent</goal>
-									</goals>
-									<phase>test-compile</phase>
-								</execution>
-								<execution>
-									<id>jacoco-site</id>
-									<phase>verify</phase>
-									<goals>
-										<goal>report</goal>
-									</goals>
-								</execution>
-							</executions>
-						</plugin>
 
 		</plugins>
 	</build>

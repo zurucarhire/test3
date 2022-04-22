@@ -21,7 +21,7 @@ public class ChangeLogServiceImpl implements IChangeLogService {
     @Override
     public ChangeLog create(Long createdBy, String narration) {
         ChangeLog changeLog = ChangeLog.builder()
-                .insertedBy(createdBy)
+                .createdBy(createdBy)
                 .narration(narration)
                 .build();
 

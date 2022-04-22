@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/iprs/role")
+@RequestMapping("/api/psm/role")
 @Slf4j
 public class RoleResource {
     private final IRoleService roleService;
@@ -47,11 +47,5 @@ public class RoleResource {
     public ResponseEntity<List<Role>> findAll(){
         log.info("findAllRoles");
         return ResponseEntity.ok().body(roleService.findAll());
-    }
-
-    @GetMapping("/findallactive")
-    public ResponseEntity<List<Role>> findAllActive(){
-        log.info("findAllActiveRoles");
-        return ResponseEntity.ok().body(roleService.findAllActive());
     }
 }
