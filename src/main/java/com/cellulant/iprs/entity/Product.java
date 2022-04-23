@@ -10,6 +10,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 
+import static javax.persistence.FetchType.EAGER;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +27,10 @@ public class Product {
     private Long userID;
     @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "category", nullable = false)
+    private String category;
+    @Column(name = "subcategory", nullable = false)
+    private String subcategory;
     @Column(name = "price", nullable = false)
     private double price;
     @Column(name = "overallprice", nullable = false)
@@ -45,4 +51,7 @@ public class Product {
     @CreationTimestamp
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")
     private Date dateCreated;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = EAGER)
+    @JoinColumn(name = "userID", referencedColumnName = "userID", insertable = false, updatable = false)
+    private User user;
 }

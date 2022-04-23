@@ -38,7 +38,8 @@ public class IprsApplication {
 							   QuestionRepository questionRepository,
 							   ExperienceRepository experienceRepository,
 							   ExperienceCommentRepository experienceCommentRepository,
-							   ProductRepository productRepository) {
+							   ProductRepository productRepository,
+							   ProductCategoryRepository productCategoryRepository) {
 		return args -> {
 			log.info("============ starting inserting data ===============");
 			Role adminRole = Role.builder()
@@ -64,33 +65,7 @@ public class IprsApplication {
 					.roleName("ROLE_USER")
 					.roleAlias("USER").build();
 
-			RequestType requestType = RequestType.builder()
-					.requestTypeName("Passport")
-					.active(1)
-					.createdBy(1L)
-					.updatedBy(1L)
-					.build();
-			RequestType requestType2 = RequestType.builder()
-					.requestTypeName("ID Number")
-					.active(1)
-					.createdBy(1L)
-					.updatedBy(1L)
-					.build();
 
-			RequestType requestType3 = RequestType.builder()
-					.requestTypeName("Alien ID")
-					.active(1)
-					.createdBy(1L)
-					.updatedBy(1L)
-					.build();
-
-			Client client = Client.builder()
-					.clientName("Cellulant")
-					.clientDescription("cellulant")
-					.active(1)
-					.createdBy(1L)
-					.updatedBy(1L)
-					.build();
 			Collection<Role> roles = new ArrayList<>();
 			roles.add(adminRole);
 
@@ -138,11 +113,6 @@ public class IprsApplication {
 					.password("$2a$10$mshYoSOeC.zPw7q94KzDIePZmTad.qjQLkgXlhwBd8sNUjeHCQcSa")
 					.roles(roles4)
 					.build();
-			ExpiryPeriod expiryPeriod = ExpiryPeriod.builder()
-					.expiryPeriod(10)
-					.active(1)
-					.createdBy(1L)
-					.updatedBy(1L).build();
 
 			Procedure procedure = Procedure.builder()
 					.procedureName("Face Lift")
@@ -243,29 +213,137 @@ public class IprsApplication {
 					.build();
 
 			Product product = Product.builder()
-					.productID(1L)
 					.userID(2L)
-					.name("Perfume")
-					.description("hello world")
+					.name("Product 1")
+					.category("Beauty Products")
+					.subcategory("Skin & Body")
+					.description("Product 1 Lorem Ipsum")
 					.price(1000)
-					.overallprice(990)
-					.discount(100)
+					.overallprice(890)
+					.discount(10)
+					.sale(100)
+					.count(4)
+					.thumbnail("hello.png")
+					.status(1)
+					.build();
+
+			Product product2 = Product.builder()
+					.userID(2L)
+					.name("Product 2")
+					.category("Beauty Products")
+					.subcategory("Skin & Body")
+					.description("Product 2 Lorem Ipsum")
+					.price(500)
+					.overallprice(500)
+					.discount(0)
+					.sale(0)
+					.count(6)
+					.thumbnail("hello.png")
+					.status(1)
+					.build();
+
+			Product product22 = Product.builder()
+					.userID(2L)
+					.name("Product 3")
+					.category("Beauty Products")
+					.subcategory("Skin & Body")
+					.description("Product 22 Lorem Ipsum")
+					.price(1500)
+					.overallprice(1300)
+					.discount(0)
+					.sale(200)
+					.count(6)
+					.thumbnail("hello.png")
+					.status(1)
+					.build();
+			Product product3 = Product.builder()
+					.userID(2L)
+					.name("Product 3")
+					.category("Beauty Products")
+					.subcategory("Facial Treatment")
+					.description("Product 3 Lorem Ipsum")
+					.price(900)
+					.overallprice(790)
+					.discount(10)
 					.sale(10)
 					.count(4)
 					.thumbnail("hello.png")
 					.status(1)
 					.build();
 
+			Product product4 = Product.builder()
+					.userID(2L)
+					.name("Product 4")
+					.category("Beauty Products")
+					.subcategory("Scars & Stretch marks")
+					.description("Product 4 Lorem Ipsum")
+					.price(200)
+					.overallprice(90)
+					.discount(10)
+					.sale(10)
+					.count(5)
+					.thumbnail("hello.png")
+					.status(1)
+					.build();
+
+			Product product5 = Product.builder()
+					.userID(2L)
+					.name("Product 4")
+					.category("Beauty Products")
+					.subcategory("Hair Treatment")
+					.description("Product 5 Lorem Ipsum")
+					.price(1200)
+					.overallprice(1090)
+					.discount(10)
+					.sale(10)
+					.count(2)
+					.thumbnail("hello.png")
+					.status(1)
+					.build();
+
+			Product product6 = Product.builder()
+					.userID(2L)
+					.name("Product 4")
+					.category("Beauty Products")
+					.subcategory("Hair Treatment")
+					.description("Product 6 Lorem Ipsum")
+					.price(1500)
+					.overallprice(1500)
+					.discount(0)
+					.sale(0)
+					.count(12)
+					.thumbnail("hello.png")
+					.status(1)
+					.build();
+
+			ProductCategory productCategory = ProductCategory.builder()
+					.name("Skin & Body")
+					.description("Skin & Body Lorem Ipsum")
+					.thumbnail("skinbody.png")
+					.build();
+			ProductCategory productCategory2 = ProductCategory.builder()
+					.name("Facial Treatment ")
+					.description("Facial Treatment  Lorem Ipsum")
+					.thumbnail("facialtreatment .png")
+					.build();
+			ProductCategory productCategory3 = ProductCategory.builder()
+					.name("Scars & Stretch marks")
+					.description("Scars & Stretch marks Lorem Ipsum")
+					.thumbnail("scarsstretchmarks.png")
+					.build();
+			ProductCategory productCategory4 = ProductCategory.builder()
+					.name("Hair Treatment")
+					.description("Hair Treatment Lorem Ipsum")
+					.thumbnail("hairtreatment.png")
+					.build();
 			roleRepository.saveAll(Arrays.asList(adminRole, editorRole, creatorRole, userRole));
-			clientRepository.save(client);
-			requestTypeRepository.saveAll(Arrays.asList(requestType, requestType2));
 			userRepository.saveAll(Arrays.asList(user, user2, user3, user4));
-			expiryPeriodRepository.save(expiryPeriod);
 			procedureRepository.saveAll(Arrays.asList(procedure, procedure2, procedure3, procedure4, procedure5));
 			questionRepository.saveAll(Arrays.asList(question, question2));
 			experienceRepository.saveAll(Arrays.asList(experience, experience2));
 			experienceCommentRepository.saveAll(Arrays.asList(experienceComment, experienceComment2));
-			productRepository.save(product);
+			productRepository.saveAll(Arrays.asList(product, product2, product22, product3, product4, product5, product6));
+			productCategoryRepository.saveAll(Arrays.asList(productCategory, productCategory2, productCategory3, productCategory4));
 			log.info("============ finished inserting data ===============");
 		};
 	}

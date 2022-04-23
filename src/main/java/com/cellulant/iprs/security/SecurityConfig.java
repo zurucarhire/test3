@@ -52,7 +52,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         // ORDER MATTERS, PUT BELOW CODE ABOVE ALL PERMITS
         http.authorizeRequests().antMatchers("/actuator/**","/swagger-ui/**","/api/psm/user/**","/api/psm/procedure/**"
-                ,"/api/psm/question/**","/api/psm/experience/**", "/api/psm/newsletter/**","/api/psm/merchant/findall/**").permitAll();
+                ,"/api/psm/question/**","/api/psm/experience/**","/api/psm/misc/**","/api/psm/mpesa/**","/api/psm/newsletter/**"
+                ,"/api/psm/merchant/findbyproductid/**","/api/psm/merchant/findall/**").permitAll();
         http.authorizeRequests().antMatchers("/api/psm/user/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/psm/user/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/psm/user/delete/**").hasAnyAuthority("ROLE_ADMIN");

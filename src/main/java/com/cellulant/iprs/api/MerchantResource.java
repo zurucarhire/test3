@@ -1,6 +1,7 @@
 package com.cellulant.iprs.api;
 
 import com.cellulant.iprs.entity.Product;
+import com.cellulant.iprs.entity.ProductCategory;
 import com.cellulant.iprs.service.IMerchantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,18 @@ public class MerchantResource {
         return ResponseEntity.ok().body(merchantService.findAll());
     }
 
+    @GetMapping("/findbyproductid/{productId}")
+    public ResponseEntity<Product> findByProductId(@PathVariable(value = "productId") Long productId){
+        log.info("findByProductId {}", productId);
+        return ResponseEntity.ok().body(merchantService.findByProductId(productId));
+    }
+
+    @GetMapping("/findallbycategory/{name}")
+    public ResponseEntity<List<Product>> findAllByCategory(@PathVariable(value = "name") String name){
+        log.info("findAllByCategory {}", name);
+        return ResponseEntity.ok().body(merchantService.findAllByCategory(name));
+    }
+
     @GetMapping("/findbyuserid")
     public ResponseEntity<List<Product>> findByUserID(@RequestParam("userID") Long userID){
         log.info("findAllProduct {}", userID);
@@ -33,6 +46,7 @@ public class MerchantResource {
     @PostMapping("/createproduct")
     public ResponseEntity<Product> createProduct(
             @RequestParam("userID") Long userID,
+            @RequestParam("category") String category,
             @RequestParam("name") String name,
             @RequestParam("price") double price,
             @RequestParam("count") int count,
@@ -40,9 +54,9 @@ public class MerchantResource {
             @RequestParam("sale") int sale,
             @RequestParam("description") String description,
             @RequestParam("thumbnail") MultipartFile[] thumbnail) {
-        log.info("createProduct {} {} {} {} {} {} {} {}", userID, name, price, count, discount, sale, description, thumbnail);
+        log.info("createProduct {} {} {} {} {} {} {} {} {}", userID, category, name, price, count, discount, sale, description, thumbnail);
         //return null;
-        return ResponseEntity.ok(merchantService.createProduct(userID, name, price, count, discount, sale, description, thumbnail));
+        return ResponseEntity.ok(merchantService.createProduct(userID, category, name, price, count, discount, sale, description, thumbnail));
     }
 
     @PutMapping("/updateproduct")

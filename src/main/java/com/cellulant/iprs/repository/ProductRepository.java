@@ -12,6 +12,7 @@ import java.util.Optional;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT i FROM Product i WHERE i.status = 1")
     List<Product> findAllByUserID(Long userID);
+    List<Product> findAllBySubcategory(String name);
     Optional<Product> findByUserID(Long userID);
     Optional<Product> findByNameIgnoreCase(String nameD);
     Optional<Product> findByProductID(Long productID);

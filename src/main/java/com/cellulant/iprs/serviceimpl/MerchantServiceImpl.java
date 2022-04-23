@@ -24,7 +24,8 @@ import java.util.List;
 @Transactional
 @Slf4j
 public class MerchantServiceImpl implements IMerchantService {
-    private static String UPLOADED_FOLDER = "/Users/abala/Desktop/zuru/";
+    //private static String UPLOADED_FOLDER = "/Users/abala/Desktop/zuru/";
+    private static String UPLOADED_FOLDER = "/opt/psm/images/";
     private final ProductRepository productRepository;
 
     @Override
@@ -38,7 +39,7 @@ public class MerchantServiceImpl implements IMerchantService {
     }
 
     @Override
-    public Product createProduct(Long userId, String name, double price, int count, double discount, int sale, String description, MultipartFile[] thumbnail) {
+    public Product createProduct(Long userId, String category, String name, double price, int count, double discount, int sale, String description, MultipartFile[] thumbnail) {
         productRepository.findByNameIgnoreCase(name).ifPresent(s -> {
             throw new ResourceExistsException("Product name exists");
         });
@@ -69,6 +70,8 @@ public class MerchantServiceImpl implements IMerchantService {
 
             Product product = new Product();
             product.setUserID(userId);
+            product.setCategory(category);
+            product.setSubcategory(category);
             product.setName(name);
             product.setPrice(price);
             product.setOverallprice(overallPrice);
@@ -114,5 +117,16 @@ public class MerchantServiceImpl implements IMerchantService {
                 orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
 
         return productRepository.deleteByProductID(productID);
+    }
+
+    @Override
+    public Product findByProductId(Long productId) {
+        return productRepository.findByProductID(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product Not Found"));
+    }
+
+    @Override
+    public List<Product> findAllByCategory(String name) {
+        return productRepository.findAllBySubcategory(name);
     }
 }
