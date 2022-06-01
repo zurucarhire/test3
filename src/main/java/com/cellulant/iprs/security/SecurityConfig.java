@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // ORDER MATTERS, PUT BELOW CODE ABOVE ALL PERMITS
         http.authorizeRequests().antMatchers("/actuator/**","/swagger-ui/**","/api/psm/user/**","/api/psm/procedure/**"
                 ,"/api/psm/question/**","/api/psm/experience/**","/api/psm/misc/**","/api/psm/mpesa/**","/api/psm/newsletter/**"
-                ,"/api/psm/merchant/findbyproductid/**","/api/psm/merchant/findall/**").permitAll();
+                ,"/api/psm/merchant/findbyproductid/**","/api/psm/merchant/findall/**","/api/psm/merchant/findallbycategory/**").permitAll();
         http.authorizeRequests().antMatchers("/api/psm/user/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/psm/user/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/psm/user/delete/**").hasAnyAuthority("ROLE_ADMIN");
@@ -63,6 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/psm/user/deleteuserrole/**").hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers("/api/psm/user/*").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/psm/merchant/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
+//        http.authorizeRequests().antMatchers("/api/psm/merchant/**").hasAnyAuthority("ROLE_CREATOR");
 
         http.authorizeRequests().antMatchers("/api/iprs/client/create/**").hasAnyAuthority("ROLE_ADMIN","ROLE_CREATOR","ROLE_EDITOR");
         http.authorizeRequests().antMatchers("/api/iprs/client/update/**").hasAnyAuthority("ROLE_ADMIN","ROLE_EDITOR");

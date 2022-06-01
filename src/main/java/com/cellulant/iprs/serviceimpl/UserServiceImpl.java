@@ -1,5 +1,6 @@
 package com.cellulant.iprs.serviceimpl;
 
+import com.cellulant.iprs.configuration.AppConfig;
 import com.cellulant.iprs.dto.ResetPasswordDTO;
 import com.cellulant.iprs.dto.UserRoleDTO;
 import com.cellulant.iprs.exception.ResourceExistsException;
@@ -15,8 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.utility.RandomString;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
 
@@ -42,17 +48,14 @@ public class UserServiceImpl implements IUserService {
         Role role = roleRepository.findByRoleID(user.getRoleID()).
                 orElseThrow(() -> new ResourceNotFoundException("Role Not Found"));
 
-        userRepository.findByUserNameIgnoreCase(user.getUserName()).ifPresent(s -> {
-            throw new ResourceExistsException("Username Already Exists");
-        });
-
         userRepository.findByEmailAddressIgnoreCase(user.getEmailAddress()).ifPresent(s -> {
             throw new ResourceExistsException("Email Address Already Exists");
         });
 
         user.getRoles().add(role);
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!user.getPassword().equals("nil"))
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return userRepository.save(user);
     }
@@ -62,8 +65,8 @@ public class UserServiceImpl implements IUserService {
         User user1 = userRepository.findByUserID(userId).
                 orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
-        if (!user.getUserName().equals(user1.getUserName())){
-            userRepository.findByUserNameIgnoreCase(user.getUserName()).ifPresent(s -> {
+        if (!user.getEmailAddress().equals(user1.getEmailAddress())){
+            userRepository.findByEmailAddressIgnoreCase(user.getEmailAddress()).ifPresent(s -> {
                 throw new ResourceExistsException("Username Already Exists");
             });
         }
@@ -74,7 +77,7 @@ public class UserServiceImpl implements IUserService {
             });
         }
 
-        changeLogService.create(updatedBy, "update user " + user.getUserName());
+        changeLogService.create(updatedBy, "update user " + user.getEmailAddress());
 
         return userRepository.save(user1);
     }
@@ -84,7 +87,7 @@ public class UserServiceImpl implements IUserService {
         User user1 = userRepository.findById(userId).
                 orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
 
-        changeLogService.create(updatedBy, "deleted user " + user1.getUserName());
+        changeLogService.create(updatedBy, "deleted user " + user1.getEmailAddress());
 
         return userRepository.deleteByUserID(userId);
     }
@@ -116,6 +119,47 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public User updateAccount2(long userId, String tag, String value) {
+        User user1 = userRepository.findByUserID(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+        if (tag.equals("username")){
+            user1.setEmailAddress(value);
+        } else if (tag.equals("fullname")){
+            user1.setFullName(value);
+        } else if (tag.equals("businessname")){
+            user1.setBusinessName(value);
+        } else if (tag.equals("shoplocation")){
+            user1.setShopLocation(value);
+        } else if (tag.equals("phone")){
+            user1.setPhone(value);
+        }
+        return userRepository.save(user1);
+
+    }
+
+    @Override
+    public User uploadImage(Long userId, MultipartFile image) {
+        User user1 = userRepository.findByUserID(userId).
+                orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
+        try {
+            byte[] bytes = image.getBytes();
+            //Path pathProfilePic = Paths.get(AppConfig.UPLOAD_PATH + image.getOriginalFilename());
+            //Files.write(pathProfilePic, bytesProfilePic);
+
+            String fileName = System.currentTimeMillis()+".png";
+            Path path = Paths.get(AppConfig.UPLOAD_PATH + fileName);
+            Files.write(path, bytes);
+
+            user1.setProfileImage(fileName);
+
+            return userRepository.save(user1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new UnprocessedResourceException("Something went wrong please try again");
+        }
+    }
+
+    @Override
     public ResetPasswordDTO resetPassword(long userId, String updatedBy) {
         User user1 = userRepository.findByUserID(userId).
                 orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
@@ -124,7 +168,7 @@ public class UserServiceImpl implements IUserService {
         log.info("session -> {}", generatedPassword);
         user1.setPassword(passwordEncoder.encode(generatedPassword));
         userRepository.save(user1);
-        return ResetPasswordDTO.builder().username(user1.getUserName()).password(generatedPassword).build();
+        return ResetPasswordDTO.builder().username(user1.getEmailAddress()).password(generatedPassword).build();
     }
 
     @Override

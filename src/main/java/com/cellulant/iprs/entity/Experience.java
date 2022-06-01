@@ -26,8 +26,16 @@ public class Experience {
     private Long experienceID;
     @Column(name = "procedureID")
     private Long procedureID;
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "category", nullable = false)
+    private String category;
+    @Column(name = "title", columnDefinition = "VARCHAR(100) NOT NULL")
+    private String title;
+    @Column(name = "completed", columnDefinition = "VARCHAR(100) NOT NULL")
+    private String completed;
+    @Column(name = "cost", nullable = false)
+    private Double cost;
+    @Column(name = "thumbnail", columnDefinition = "TEXT NOT NULL")
+    private String thumbnail;
     @Column(name = "description", columnDefinition = "TEXT NOT NULL")
     private String description;
     @Column(name = "dateCreated")

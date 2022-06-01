@@ -1,15 +1,17 @@
 package com.cellulant.iprs.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +23,9 @@ import static javax.persistence.FetchType.EAGER;
 @Entity
 @Builder
 @Table(name = "procedures")
+@TypeDefs({
+        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+})
 public class Procedure {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,8 +45,11 @@ public class Procedure {
     private String subType;
     @Column(name = "photo", nullable = false)
     private String photo;
-    @Column(name = "procedureDescription", nullable = false)
+    @Column(name = "cost", nullable = false)
     private Double cost;
+    @Type(type = "jsonb")
+    @Column(name = "city",columnDefinition = "jsonb", nullable = false)
+    private String city;
     @Column(name = "dateCreated")
     @CreationTimestamp
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")

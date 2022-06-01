@@ -107,7 +107,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setContentType(APPLICATION_JSON_VALUE);
 
         log.info("authResponse101 {}", user.getUsername());
-        User user1 = userRepository.findByUserName(user.getUsername()).orElseThrow(() -> new ResourceNotFoundException("User not found "));;
+        User user1 = userRepository.findByEmailAddressIgnoreCase(user.getUsername()).orElseThrow(() -> new ResourceNotFoundException("User not found "));;
         Date date = new Date();
         Timestamp timestamp = new Timestamp(date.getTime());
         LoginLog loginLog = LoginLog.builder()

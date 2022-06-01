@@ -34,6 +34,12 @@ public class ProcedureResource {
         return ResponseEntity.ok().body(procedureService.findAll());
     }
 
+    @GetMapping("/findallname/{name}")
+    public ResponseEntity<List<Procedure>> findAllName(@PathVariable (value = "name") String name){
+        log.info("findAllName {}", name);
+        return ResponseEntity.ok().body(procedureService.findAllName(name));
+    }
+
     @GetMapping("/count")
     public ResponseEntity<Long> findCount() {
         log.info("findCount");
@@ -52,6 +58,12 @@ public class ProcedureResource {
         return ResponseEntity.ok().body(procedureService.findByName(name));
     }
 
+    @GetMapping("/findbyid/{id}")
+    public ResponseEntity<List<Procedure>> findById(@PathVariable (value = "id") Long id){
+        log.info("findByName");
+        return ResponseEntity.ok().body(procedureService.findById(id));
+    }
+
     // ADMIN
     @PostMapping("/create")
     public ResponseEntity<Procedure> create(
@@ -60,13 +72,14 @@ public class ProcedureResource {
             @RequestParam("subcategory") String subcategory,
             @RequestParam("type") String type,
             @RequestParam("subtype") String subtype,
+            @RequestParam("city") String city,
             @RequestParam("cost") Double cost,
             @RequestParam("description") String description,
             @RequestParam("thumbnail") MultipartFile thumbnail) throws IOException {
-        log.info("save {} {} {} {} {} {} {} {}", name, category, subcategory, type,
-                subtype, cost, description, thumbnail);
+        log.info("save {} {} {} {} {} {} {} {} {}", name, category, subcategory, type,
+                subtype, city, cost, description, thumbnail);
 
-        return ResponseEntity.ok(procedureService.create(name, category, subcategory, type, subtype, cost, description, thumbnail));
+        return ResponseEntity.ok(procedureService.create(name, category, subcategory, type, subtype, city, cost, description, thumbnail));
     }
 
     @PutMapping("/update")

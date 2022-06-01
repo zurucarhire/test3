@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -38,6 +39,22 @@ public class UserResource {
                                        @RequestBody User user) {
         log.info("update {} {}", userId, user);
         return ResponseEntity.ok(userService.update(userId, updatedBy, user));
+    }
+
+    @PutMapping(value = "/updateaccount/{userId}/{tag}/{value}")
+    public ResponseEntity<User> updateAccount(@PathVariable(value = "userId") long userId,
+                                              @PathVariable(value = "tag") String tag,
+                                              @PathVariable(value = "value") String value
+                                              ) {
+        log.info("updateAccount {} {} {}", userId, tag, value);
+        return ResponseEntity.ok(userService.updateAccount2(userId, tag, value));
+    }
+
+    @PutMapping("/uploadpic")
+    public ResponseEntity<User> uploadImage(@RequestParam("userId") Long userId,
+                                            @RequestParam("imageFile") MultipartFile image) {
+        log.info("uploadImage  {} {}", userId, image);
+        return ResponseEntity.ok(userService.uploadImage(userId, image));
     }
 
     @PutMapping(value = "/changepassword")

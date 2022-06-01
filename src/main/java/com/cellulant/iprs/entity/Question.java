@@ -25,12 +25,14 @@ public class Question {
     private Long questionID;
     @Column(name = "procedureID")
     private Long procedureID;
-    @Column(name = "name", nullable = false)
-    private String name;
+    @Column(name = "category", nullable = false)
+    private String category;
     @Column(name = "title", nullable = false)
     private String title;
     @Column(name = "description", nullable = false)
     private String description;
+    @Column(name = "thumbnail", columnDefinition = "TEXT NOT NULL")
+    private String thumbnail;
     @Column(name = "dateCreated")
     @CreationTimestamp
     @JsonFormat(pattern="yyyy-MM-dd HH:mm")

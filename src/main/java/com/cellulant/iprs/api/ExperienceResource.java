@@ -3,11 +3,13 @@ package com.cellulant.iprs.api;
 import com.cellulant.iprs.dto.ExperienceDTO;
 import com.cellulant.iprs.entity.Experience;
 import com.cellulant.iprs.entity.ExperienceComment;
+import com.cellulant.iprs.entity.Product;
 import com.cellulant.iprs.service.IExperienceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -48,5 +50,19 @@ public class ExperienceResource {
         log.info("createExperienceComment {} {} {}", experienceID, name, description);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/iprs/experience/create").toUriString());
         return ResponseEntity.created(uri).body(experienceService.createComment(experienceID, name, description));
+    }
+
+    @PostMapping("/createexperience")
+    public ResponseEntity<Experience> createExperience(
+            @RequestParam("procedureID") Long procedureID,
+            @RequestParam("category") String category,
+            @RequestParam("title") String title,
+            @RequestParam("completed") String completed,
+            @RequestParam("cost") double cost,
+            @RequestParam("description") String description,
+            @RequestParam(value = "thumbnail", required = false) MultipartFile[] thumbnail) {
+        log.info("createExperience {} {} {} {} {} {} {}", procedureID, category, title, completed, cost, description, thumbnail);
+        //return null;
+        return ResponseEntity.ok(experienceService.createExperience(procedureID, category, title, completed, cost, description, thumbnail));
     }
 }

@@ -3,6 +3,8 @@ package com.cellulant.iprs;
 import com.cellulant.iprs.entity.*;
 import com.cellulant.iprs.repository.*;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -80,39 +82,37 @@ public class IprsApplication {
 
 			User user = User.builder()
 					.roleID(1)
-					.userName("kenotieno")
 					.fullName("Ken Otieno")
+					.businessName("Kennedy Enterprices")
+					.shopLocation("CBD")
+					.phone("254717722334")
+					.profileImage("test.png")
 					.emailAddress("kenotieno@gmail.com")
+					.phone("254717729123")
 					.password("$2a$10$mshYoSOeC.zPw7q94KzDIePZmTad.qjQLkgXlhwBd8sNUjeHCQcSa")
 					.roles(roles)
+					.category("merchant")
+					.status(1)
 					.build();
 
 			User user2 = User.builder()
 					.roleID(2)
-					.userName("marynjoroge")
 					.fullName("mary njoroge")
 					.emailAddress("marynjoroge@gmail.com")
+					.businessName("nil")
+					.shopLocation("nil")
+					.phone("nil")
+					.profileImage("test.png")
 					.password("$2a$10$mshYoSOeC.zPw7q94KzDIePZmTad.qjQLkgXlhwBd8sNUjeHCQcSa")
 					.roles(roles2)
+					.category("customer")
+					.status(1)
+					.phone("nil")
 					.build();
 
-			User user3 = User.builder()
-					.roleID(3)
-					.userName("katekamau")
-					.fullName("kate kamau")
-					.emailAddress("katekamau@gmail.com")
-					.password("$2a$10$mshYoSOeC.zPw7q94KzDIePZmTad.qjQLkgXlhwBd8sNUjeHCQcSa")
-					.roles(roles3)
-					.build();
-
-			User user4 = User.builder()
-					.roleID(4)
-					.userName("paulomondi")
-					.fullName("paul omondi")
-					.emailAddress("paulomondi@gmail.com")
-					.password("$2a$10$mshYoSOeC.zPw7q94KzDIePZmTad.qjQLkgXlhwBd8sNUjeHCQcSa")
-					.roles(roles4)
-					.build();
+			JSONArray jsonArray = new JSONArray();
+			jsonArray.put("Toronto");
+			jsonArray.put("New York");
 
 			Procedure procedure = Procedure.builder()
 					.procedureName("Face Lift")
@@ -124,6 +124,7 @@ public class IprsApplication {
 					.photo("team-1.jpg")
 					.cost(2000D)
 					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Toronto").put("New York").toString())
 					.build();
 
 			Procedure procedure2 = Procedure.builder()
@@ -136,6 +137,7 @@ public class IprsApplication {
 					.photo("team-2.jpg")
 					.cost(4000D)
 					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Miami").put("Tenessee").toString())
 					.build();
 
 			Procedure procedure3 = Procedure.builder()
@@ -148,6 +150,7 @@ public class IprsApplication {
 					.photo("team-3.jpg")
 					.cost(1000D)
 					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Miami").put("Tenessee").put("New York").toString())
 					.build();
 
 			Procedure procedure4 = Procedure.builder()
@@ -160,6 +163,7 @@ public class IprsApplication {
 					.photo("team-4.jpg")
 					.cost(1400D)
 					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Philadelphia").put("Tenessee").put("New York").toString())
 					.build();
 
 			Procedure procedure5 = Procedure.builder()
@@ -172,31 +176,146 @@ public class IprsApplication {
 					.photo("team-1.jpg")
 					.cost(1450D)
 					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Kansas").put("Tenessee").put("New York").toString())
+					.build();
+
+			Procedure procedure6 = Procedure.builder()
+					.procedureName("Consultative Cardiology")
+					.description("You might choose to have Consultative Cardiology if you're bothered by how far your ears stick out from your head. You might also consider otoplasty if your ear or ears are misshapen due to an injury or birth defect. Otoplasty can be done at any age after the ears have reached their full size — usually after age 5 — through adulthood.")
+					.category("Non Invasive")
+					.subCategory("Ear")
+					.type("Ear")
+					.subType("Ear")
+					.photo("team-1.jpg")
+					.cost(1450D)
+					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Miami").put("Kansas").put("New York").toString())
+					.build();
+
+			Procedure procedure7 = Procedure.builder()
+					.procedureName("Nuclear Imaging")
+					.description("You might choose to have Nuclear Imaging if you're bothered by how far your ears stick out from your head. You might also consider otoplasty if your ear or ears are misshapen due to an injury or birth defect. Otoplasty can be done at any age after the ears have reached their full size — usually after age 5 — through adulthood.")
+					.category("Non Invasive")
+					.subCategory("Ear")
+					.type("Ear")
+					.subType("Ear")
+					.photo("team-1.jpg")
+					.cost(1450D)
+					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Kansas").put("Tenessee").put("New York").toString())
+					.build();
+
+			Procedure procedure8 = Procedure.builder()
+					.procedureName("Stress Testing")
+					.description("You might choose to have Stress Testing if you're bothered by how far your ears stick out from your head. You might also consider otoplasty if your ear or ears are misshapen due to an injury or birth defect. Otoplasty can be done at any age after the ears have reached their full size — usually after age 5 — through adulthood.")
+					.category("Non Invasive")
+					.subCategory("Ear")
+					.type("Ear")
+					.subType("Ear")
+					.photo("team-1.jpg")
+					.cost(1450D)
+					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Kansas").put("Tenessee").put("New York").toString())
+					.build();
+
+			Procedure procedure9 = Procedure.builder()
+					.procedureName("Echocardiography")
+					.description("You might choose to have Echocardiography if you're bothered by how far your ears stick out from your head. You might also consider otoplasty if your ear or ears are misshapen due to an injury or birth defect. Otoplasty can be done at any age after the ears have reached their full size — usually after age 5 — through adulthood.")
+					.category("Non Invasive")
+					.subCategory("Ear")
+					.type("Ear")
+					.subType("Ear")
+					.photo("team-1.jpg")
+					.cost(1450D)
+					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Kansas").put("Tenessee").put("New York").toString())
+					.build();
+
+			Procedure procedure10 = Procedure.builder()
+					.procedureName("Hair Transplant")
+					.description("You might choose to have Hair Transplant if you're bothered by how far your ears stick out from your head. You might also consider otoplasty if your ear or ears are misshapen due to an injury or birth defect. Otoplasty can be done at any age after the ears have reached their full size — usually after age 5 — through adulthood.")
+					.category("Non Invasive")
+					.subCategory("Ear")
+					.type("Ear")
+					.subType("Ear")
+					.photo("team-1.jpg")
+					.cost(1450D)
+					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Kansas").put("Tenessee").put("New York").toString())
+					.build();
+
+			Procedure procedure11 = Procedure.builder()
+					.procedureName("Neck Lift")
+					.description("You might choose to have Neck Lift if you're bothered by how far your ears stick out from your head. You might also consider otoplasty if your ear or ears are misshapen due to an injury or birth defect. Otoplasty can be done at any age after the ears have reached their full size — usually after age 5 — through adulthood.")
+					.category("Non Invasive")
+					.subCategory("Ear")
+					.type("Ear")
+					.subType("Ear")
+					.photo("team-1.jpg")
+					.cost(1450D)
+					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Kansas").put("Tenessee").put("New York").toString())
+					.build();
+
+			Procedure procedure12 = Procedure.builder()
+					.procedureName("Gynecomastia")
+					.description("You might choose to have Gynecomastia if you're bothered by how far your ears stick out from your head. You might also consider otoplasty if your ear or ears are misshapen due to an injury or birth defect. Otoplasty can be done at any age after the ears have reached their full size — usually after age 5 — through adulthood.")
+					.category("Non Invasive")
+					.subCategory("Ear")
+					.type("Ear")
+					.subType("Ear")
+					.photo("team-1.jpg")
+					.cost(1450D)
+					.photo("volvo.jpeg")
+					.city(new JSONArray().put("Kansas").put("Tenessee").put("New York").toString())
+					.build();
+
+			Procedure procedure13 = Procedure.builder()
+					.procedureName("Eyelid rejuvenation")
+					.description("You might choose to have Eyelid rejuvenation if you're bothered by how far your ears stick out from your head. You might also consider otoplasty if your ear or ears are misshapen due to an injury or birth defect. Otoplasty can be done at any age after the ears have reached their full size — usually after age 5 — through adulthood.")
+					.category("Non Invasive")
+					.subCategory("Ear")
+					.type("Ear")
+					.subType("Ear")
+					.photo("team-1.jpg")
+					.cost(1450D)
+					.photo("volvo.jpeg")
+					.city(new JSONObject().put("city",new JSONArray().put("Kansas").put("Miami").put("New York")).toString())
 					.build();
 
 			Question question = Question.builder()
 					.procedureID(1L)
-					.name("Pablo Fucasso")
+					.category("Pablo Fucasso")
 					.title("Face lift cost")
 					.description("I would like to know the cost of face lift. Is there a payment plan and is there a discount?")
+					.thumbnail("test.png")
 					.build();
 
 			Question question2= Question.builder()
 					.procedureID(2L)
-					.name("Anonymous")
+					.category("Anonymous")
 					.title("Nasal surgery healing process")
 					.description("What is the recovery process for nasal surgery treatment? When will I go back to my normal routine?")
+					.thumbnail("test.png")
 					.build();
 
 			Experience experience= Experience.builder()
 					.procedureID(1L)
-					.name("Miss Pekele")
+					.category("Miss Pekele")
+					.title("Miss Pekele2")
+					.completed("Yes")
+					.cost(200D)
+					.thumbnail("test.png")
 					.description("If you are considering a facelift procedure, it's important to know not just about the surgical procedure but the protocol following surgery as well. Although it may take a few months to begin seeing final results of a facelift, the recovery process takes much less time.")
 					.build();
 
 			Experience experience2= Experience.builder()
 					.procedureID(2L)
-					.name("Jack Karma")
+					.category("Jack Karma")
+					.title("Jack Karma2")
+					.completed("Yes")
+					.cost(200D)
+					.thumbnail("test.png")
 					.description("Like many others, one thing about my body that always brought about feelings of insecurity was my nose. I could tell you lots of stories about the kid in elementary school who nicknamed me “pelican, or the way my grandma so lovingly yet annoyingly referred to the shape of my nose as “Roman.”")
 					.build();
 
@@ -213,7 +332,7 @@ public class IprsApplication {
 					.build();
 
 			Product product = Product.builder()
-					.userID(2L)
+					.userID(1L)
 					.name("Product 1")
 					.category("Beauty Products")
 					.subcategory("Skin & Body")
@@ -228,7 +347,7 @@ public class IprsApplication {
 					.build();
 
 			Product product2 = Product.builder()
-					.userID(2L)
+					.userID(1L)
 					.name("Product 2")
 					.category("Beauty Products")
 					.subcategory("Skin & Body")
@@ -243,8 +362,8 @@ public class IprsApplication {
 					.build();
 
 			Product product22 = Product.builder()
-					.userID(2L)
-					.name("Product 3")
+					.userID(1L)
+					.name("Product 22")
 					.category("Beauty Products")
 					.subcategory("Skin & Body")
 					.description("Product 22 Lorem Ipsum")
@@ -257,7 +376,7 @@ public class IprsApplication {
 					.status(1)
 					.build();
 			Product product3 = Product.builder()
-					.userID(2L)
+					.userID(1L)
 					.name("Product 3")
 					.category("Beauty Products")
 					.subcategory("Facial Treatment")
@@ -272,10 +391,10 @@ public class IprsApplication {
 					.build();
 
 			Product product4 = Product.builder()
-					.userID(2L)
+					.userID(1L)
 					.name("Product 4")
 					.category("Beauty Products")
-					.subcategory("Scars & Stretch marks")
+					.subcategory("Scars & Stretch Marks")
 					.description("Product 4 Lorem Ipsum")
 					.price(200)
 					.overallprice(90)
@@ -287,8 +406,8 @@ public class IprsApplication {
 					.build();
 
 			Product product5 = Product.builder()
-					.userID(2L)
-					.name("Product 4")
+					.userID(1L)
+					.name("Product 5")
 					.category("Beauty Products")
 					.subcategory("Hair Treatment")
 					.description("Product 5 Lorem Ipsum")
@@ -302,8 +421,8 @@ public class IprsApplication {
 					.build();
 
 			Product product6 = Product.builder()
-					.userID(2L)
-					.name("Product 4")
+					.userID(1L)
+					.name("Product 6")
 					.category("Beauty Products")
 					.subcategory("Hair Treatment")
 					.description("Product 6 Lorem Ipsum")
@@ -337,8 +456,9 @@ public class IprsApplication {
 					.thumbnail("hairtreatment.png")
 					.build();
 			roleRepository.saveAll(Arrays.asList(adminRole, editorRole, creatorRole, userRole));
-			userRepository.saveAll(Arrays.asList(user, user2, user3, user4));
-			procedureRepository.saveAll(Arrays.asList(procedure, procedure2, procedure3, procedure4, procedure5));
+			userRepository.saveAll(Arrays.asList(user, user2));
+			procedureRepository.saveAll(Arrays.asList(procedure, procedure2, procedure3, procedure4, procedure5,
+					procedure6, procedure7, procedure8, procedure9, procedure10, procedure11, procedure12, procedure13));
 			questionRepository.saveAll(Arrays.asList(question, question2));
 			experienceRepository.saveAll(Arrays.asList(experience, experience2));
 			experienceCommentRepository.saveAll(Arrays.asList(experienceComment, experienceComment2));

@@ -12,6 +12,6 @@ import java.util.List;
 @Repository
 public interface RequestLogRepository extends JpaRepository<RequestLog, Long> {
 
-    @Query("SELECT new com.cellulant.iprs.dto.RequestLogDTO(u.userName, r.requestType, r.requestNumber, r.requestSerialNumber, r.dateCreated) FROM RequestLog r INNER JOIN User u ON r.createdBy = u.userID where r.dateCreated > ?1 and r.dateCreated < ?2 and r.requestNumber = ?3")
-    List<RequestLogDTO> findAllRequestLogs(Date startDate, Date endDate, Long requestNumber);
+//    @Query("SELECT new com.cellulant.iprs.dto.RequestLogDTO(u.userID, r.requestType, r.requestNumber, r.requestSerialNumber, r.dateCreated) FROM RequestLog r INNER JOIN User u ON r.createdBy = u.userID where r.dateCreated > ?1 and r.dateCreated < ?2 and r.requestNumber = ?3")
+//    List<RequestLogDTO> findAllRequestLogs(Date startDate, Date endDate, Long requestNumber);
 }

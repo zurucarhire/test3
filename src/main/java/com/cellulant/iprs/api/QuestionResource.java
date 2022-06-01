@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -39,5 +40,17 @@ public class QuestionResource {
         log.info("createQuestion {} {} {} {}", procedureID, name, title, description);
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/iprs/question/create").toUriString());
         return ResponseEntity.created(uri).body(questionService.create(procedureID, name, title, description));
+    }
+
+    @PostMapping("/createquestion")
+    public ResponseEntity<Question> createQuestion(
+            @RequestParam("procedureID") Long procedureID,
+            @RequestParam("category") String category,
+            @RequestParam("title") String title,
+            @RequestParam("description") String description,
+            @RequestParam(value = "thumbnail", required = false) MultipartFile[] thumbnail) {
+        log.info("createQuestion {} {} {} {} {}", procedureID, category, title, description, thumbnail);
+        //return null;
+        return ResponseEntity.ok(questionService.createQuestion(procedureID, category, title, description, thumbnail));
     }
 }
